@@ -4,15 +4,13 @@
  */
 
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
 import { practiceDefinitions } from '../../lib/practices';
 import { PracticeType } from '../../types';
 
 export default function PracticeScreen() {
-  const router = useRouter();
-
   const handlePracticeSelect = (practiceType: PracticeType) => {
-    router.push(`/practice/${practiceType}`);
+    // TODO: Navigate to practice session screen
+    console.log('Selected practice:', practiceType);
   };
 
   return (

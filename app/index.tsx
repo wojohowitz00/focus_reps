@@ -1,12 +1,48 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useNavigation } from '@react-navigation/native';
 
 export default function HomeScreen() {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Peak Mind</Text>
-      <Text style={styles.subtitle}>Mindfulness Practice App</Text>
       <StatusBar style="auto" />
+      
+      <View style={styles.header}>
+        <Text style={styles.title}>Peak Mind</Text>
+        <Text style={styles.subtitle}>Your mindfulness practice</Text>
+      </View>
+
+      <View style={styles.content}>
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Today's Practice</Text>
+          <Text style={styles.practiceName}>Find Your Flashlight</Text>
+          <Text style={styles.practiceDuration}>12 minutes</Text>
+          
+          <TouchableOpacity
+            style={styles.startButton}
+            onPress={() => navigation.navigate('Practice' as never)}
+          >
+            <Text style={styles.startButtonText}>Start Practice</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.stats}>
+          <View style={styles.statItem}>
+            <Text style={styles.statValue}>5</Text>
+            <Text style={styles.statLabel}>Day Streak</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={styles.statValue}>12</Text>
+            <Text style={styles.statLabel}>Sessions</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={styles.statValue}>Week 2</Text>
+            <Text style={styles.statLabel}>Current Week</Text>
+          </View>
+        </View>
+      </View>
     </View>
   );
 }

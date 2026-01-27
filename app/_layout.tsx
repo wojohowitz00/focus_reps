@@ -1,9 +1,65 @@
-import { Stack } from 'expo-router';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import HomeScreen from './(tabs)/index';
+import PracticeScreen from './(tabs)/practice';
+import ProgressScreen from './(tabs)/progress';
+import JournalScreen from './(tabs)/journal';
+
+const Tab = createBottomTabNavigator();
 
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: 'Peak Mind' }} />
-    </Stack>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: '#4CAF50',
+          tabBarInactiveTintColor: '#999',
+          tabBarStyle: {
+            backgroundColor: '#fff',
+            borderTopWidth: 1,
+            borderTopColor: '#e0e0e0',
+          },
+        }}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Practice"
+          component={PracticeScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="meditation" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Progress"
+          component={ProgressScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="chart-line" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Journal"
+          component={JournalScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="book-open" size={size} color={color} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
