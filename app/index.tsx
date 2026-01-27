@@ -22,7 +22,7 @@ export default function HomeScreen() {
           
           <TouchableOpacity
             style={styles.startButton}
-            onPress={() => navigation.navigate('Practice' as never)}
+            onPress={() => navigation.navigate('PracticeSession' as never, { id: 'find-your-flashlight' } as never)}
           >
             <Text style={styles.startButtonText}>Start Practice</Text>
           </TouchableOpacity>

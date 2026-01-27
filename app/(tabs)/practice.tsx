@@ -4,13 +4,16 @@
  */
 
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { practiceDefinitions } from '../../lib/practices';
 import { PracticeType } from '../../types';
 
 export default function PracticeScreen() {
+  const navigation = useNavigation();
+
   const handlePracticeSelect = (practiceType: PracticeType) => {
-    // TODO: Navigate to practice session screen
-    console.log('Selected practice:', practiceType);
+    // Navigate to practice session screen
+    navigation.navigate('PracticeSession' as never, { id: practiceType } as never);
   };
 
   return (
