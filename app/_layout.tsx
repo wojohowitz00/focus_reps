@@ -9,6 +9,9 @@ import ProgressScreen from './(tabs)/progress';
 import JournalScreen from './(tabs)/journal';
 import PracticeSessionScreen from './practice/[id]';
 import OnboardingScreen from './onboarding';
+import JournalEntryScreen from './journal-entry';
+import SettingsScreen from './(tabs)/settings';
+import PracticeHistoryScreen from './practice-history';
 import { getProgress } from '../lib/storage';
 
 const Tab = createBottomTabNavigator();
@@ -55,15 +58,24 @@ function TabNavigator() {
           ),
         }}
       />
-      <Tab.Screen
-        name="Journal"
-        component={JournalScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="book-open" size={size} color={color} />
-          ),
-        }}
-      />
+        <Tab.Screen
+          name="Journal"
+          component={JournalScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="book-open" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="cog" size={size} color={color} />
+            ),
+          }}
+        />
     </Tab.Navigator>
   );
 }
@@ -102,6 +114,16 @@ export default function RootLayout() {
           name="PracticeSession"
           component={PracticeSessionScreen}
           options={{ headerShown: true, title: 'Practice Session' }}
+        />
+        <Stack.Screen
+          name="JournalEntry"
+          component={JournalEntryScreen}
+          options={{ headerShown: true, title: 'Journal Entry' }}
+        />
+        <Stack.Screen
+          name="PracticeHistory"
+          component={PracticeHistoryScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -3,12 +3,14 @@
  * Shows user's practice statistics and progress
  */
 
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { calculateAllProgress, getWeeklyStats, checkMilestones } from '../../lib/progress';
 import { UserProgress, Milestone } from '../../types';
 
 export default function ProgressScreen() {
+  const navigation = useNavigation();
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [weeklyStats, setWeeklyStats] = useState<any>(null);
   const [milestones, setMilestones] = useState<Milestone[]>([]);
@@ -129,6 +131,13 @@ export default function ProgressScreen() {
           <Text style={styles.cardTitle}>Longest Streak</Text>
           <Text style={styles.streakValue}>{progress.longestStreak} days</Text>
         </View>
+
+        <TouchableOpacity
+          style={styles.historyButton}
+          onPress={() => navigation.navigate('PracticeHistory' as never)}
+        >
+          <Text style={styles.historyButtonText}>View Practice History</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -277,5 +286,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#4CAF50',
     marginTop: 8,
+  },
+  historyButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  historyButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

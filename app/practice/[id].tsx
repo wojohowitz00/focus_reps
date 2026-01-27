@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import Timer from '../../components/Timer';
+import AudioPlayer from '../../components/AudioPlayer';
 import { getPracticeInstruction } from '../../lib/practiceInstructions';
 import { PracticeType, PracticeSession } from '../../types';
 import { practiceDefinitions } from '../../lib/practices';
@@ -54,10 +55,13 @@ export default function PracticeSessionScreen() {
       await saveSession(session);
       setSessionCompleted(true);
       
-      // TODO: Navigate to journal entry screen after a delay
+      // Navigate to journal entry screen after showing completion
       setTimeout(() => {
-        navigation.goBack();
-      }, 3000);
+        navigation.navigate('JournalEntry' as never, {
+          sessionId: session.id,
+          practiceType: id,
+        } as never);
+      }, 2000);
     } catch (error) {
       console.error('Error saving session:', error);
       // Still show completion even if save fails
@@ -138,6 +142,8 @@ export default function PracticeSessionScreen() {
           duration={practice.defaultDuration}
           onComplete={handleComplete}
         />
+        {/* Audio player can be added here when audio files are available */}
+        {/* <AudioPlayer audioUri={instructions.audioUri} /> */}
       </View>
     </SafeAreaView>
   );

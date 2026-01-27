@@ -6,13 +6,17 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { getJournalEntries, deleteJournalEntry } from '../../lib/storage';
+import { getJournalEntries, deleteJournalEntry, getSessionById } from '../../lib/storage';
 import { JournalEntry as JournalEntryType } from '../../types';
 import { practiceDefinitions } from '../../lib/practices';
 
+interface JournalEntryWithPractice extends JournalEntryType {
+  practiceName?: string;
+}
+
 export default function JournalScreen() {
   const navigation = useNavigation();
-  const [entries, setEntries] = useState<JournalEntryType[]>([]);
+  const [entries, setEntries] = useState<JournalEntryWithPractice[]>([]);
 
   useEffect(() => {
     loadEntries();
@@ -25,7 +29,26 @@ export default function JournalScreen() {
       const sorted = journalEntries.sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
-      setEntries(sorted);
+
+      // Load practice names for entries with session IDs
+      const entriesWithPractice = await Promise.all(
+        sorted.map(async (entry) => {
+          let practiceName = 'Practice Session';
+          if (entry.sessionId) {
+            try {
+              const session = await getSessionById(entry.sessionId);
+              if (session) {
+                practiceName = practiceDefinitions[session.practiceType]?.name || practiceName;
+              }
+            } catch (error) {
+              // Ignore errors, use default
+            }
+          }
+          return { ...entry, practiceName };
+        })
+      );
+
+      setEntries(entriesWithPractice);
     } catch (error) {
       console.error('Error loading journal entries:', error);
     }
@@ -60,8 +83,7 @@ export default function JournalScreen() {
         <TouchableOpacity
           style={styles.newEntryButton}
           onPress={() => {
-            // TODO: Navigate to journal entry screen
-            console.log('New entry');
+            navigation.navigate('JournalEntry' as never);
           }}
         >
           <Text style={styles.newEntryButtonText}>+ New Entry</Text>
@@ -75,39 +97,39 @@ export default function JournalScreen() {
             </Text>
           </View>
         ) : (
-          entries.map((entry) => {
-            // Try to find practice type from session if available
-            const practiceName = 'Practice Session'; // Default
-            
-            return (
-              <View key={entry.id} style={styles.entryCard}>
-                <View style={styles.entryHeader}>
+          entries.map((entry) => (
+            <View key={entry.id} style={styles.entryCard}>
+              <View style={styles.entryHeader}>
+                <View>
                   <Text style={styles.entryDate}>{formatDate(entry.date)}</Text>
-                  <TouchableOpacity
-                    onPress={() => handleDelete(entry.id)}
-                    style={styles.deleteButton}
-                  >
-                    <Text style={styles.deleteButtonText}>Delete</Text>
-                  </TouchableOpacity>
+                  {entry.practiceName && (
+                    <Text style={styles.entryPractice}>{entry.practiceName}</Text>
+                  )}
                 </View>
-                {entry.mood && (
-                  <Text style={styles.entryMood}>
-                    Mood: {entry.mood.charAt(0).toUpperCase() + entry.mood.slice(1)}
-                  </Text>
-                )}
-                <Text style={styles.entryContent}>{entry.content}</Text>
-                {entry.tags && entry.tags.length > 0 && (
-                  <View style={styles.tagsContainer}>
-                    {entry.tags.map((tag) => (
-                      <View key={tag} style={styles.tag}>
-                        <Text style={styles.tagText}>{tag}</Text>
-                      </View>
-                    ))}
-                  </View>
-                )}
+                <TouchableOpacity
+                  onPress={() => handleDelete(entry.id)}
+                  style={styles.deleteButton}
+                >
+                  <Text style={styles.deleteButtonText}>Delete</Text>
+                </TouchableOpacity>
               </View>
-            );
-          })
+              {entry.mood && (
+                <Text style={styles.entryMood}>
+                  Mood: {entry.mood.charAt(0).toUpperCase() + entry.mood.slice(1)}
+                </Text>
+              )}
+              <Text style={styles.entryContent}>{entry.content}</Text>
+              {entry.tags && entry.tags.length > 0 && (
+                <View style={styles.tagsContainer}>
+                  {entry.tags.map((tag) => (
+                    <View key={tag} style={styles.tag}>
+                      <Text style={styles.tagText}>{tag}</Text>
+                    </View>
+                  ))}
+                </View>
+              )}
+            </View>
+          ))
         )}
       </ScrollView>
     </View>
@@ -188,6 +210,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: '#666',
+    marginBottom: 2,
+  },
+  entryPractice: {
+    fontSize: 12,
+    color: '#4CAF50',
+    fontWeight: '500',
   },
   deleteButton: {
     paddingHorizontal: 8,
