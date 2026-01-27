@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -7,6 +8,8 @@ import PracticeScreen from './(tabs)/practice';
 import ProgressScreen from './(tabs)/progress';
 import JournalScreen from './(tabs)/journal';
 import PracticeSessionScreen from './practice/[id]';
+import OnboardingScreen from './onboarding';
+import { getProgress } from '../lib/storage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -66,9 +69,34 @@ function TabNavigator() {
 }
 
 export default function RootLayout() {
+  const [showOnboarding, setShowOnboarding] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    checkOnboardingStatus();
+  }, []);
+
+  const checkOnboardingStatus = async () => {
+    try {
+      const progress = await getProgress();
+      // Show onboarding if no progress exists (first-time user)
+      setShowOnboarding(!progress || progress.totalSessions === 0);
+    } catch (error) {
+      console.error('Error checking onboarding status:', error);
+      setShowOnboarding(true); // Default to showing onboarding on error
+    }
+  };
+
+  if (showOnboarding === null) {
+    // Loading state
+    return null;
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {showOnboarding ? (
+          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+        ) : null}
         <Stack.Screen name="MainTabs" component={TabNavigator} />
         <Stack.Screen
           name="PracticeSession"
