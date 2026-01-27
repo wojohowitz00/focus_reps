@@ -8,8 +8,9 @@ import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } fr
 import { useRoute, useNavigation } from '@react-navigation/native';
 import Timer from '../../components/Timer';
 import { getPracticeInstruction } from '../../lib/practiceInstructions';
-import { PracticeType } from '../../types';
+import { PracticeType, PracticeSession } from '../../types';
 import { practiceDefinitions } from '../../lib/practices';
+import { saveSession } from '../../lib/storage';
 
 type RouteParams = {
   id: PracticeType;
@@ -38,10 +39,30 @@ export default function PracticeSessionScreen() {
     setSessionStarted(true);
   };
 
-  const handleComplete = () => {
-    setSessionCompleted(true);
-    // TODO: Save session to storage
-    // TODO: Navigate to journal entry screen
+  const handleComplete = async () => {
+    try {
+      // Save session to storage
+      const session: PracticeSession = {
+        id: `session-${Date.now()}`,
+        practiceType: id,
+        date: new Date(),
+        duration: practice.defaultDuration,
+        scheduledDuration: practice.defaultDuration,
+        completed: true,
+      };
+
+      await saveSession(session);
+      setSessionCompleted(true);
+      
+      // TODO: Navigate to journal entry screen after a delay
+      setTimeout(() => {
+        navigation.goBack();
+      }, 3000);
+    } catch (error) {
+      console.error('Error saving session:', error);
+      // Still show completion even if save fails
+      setSessionCompleted(true);
+    }
   };
 
   if (sessionCompleted) {
