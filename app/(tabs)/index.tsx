@@ -4,11 +4,38 @@
  */
 
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { useNavigation } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import { getTodayPractice, getCurrentWeek } from '../../lib/practices';
+import { calculateAllProgress } from '../../lib/progress';
+import { UserProgress } from '../../types';
+import { practiceDefinitions } from '../../lib/practices';
 
 export default function HomeScreen() {
-  const router = useRouter();
+  const navigation = useNavigation();
+  const [progress, setProgress] = useState<UserProgress | null>(null);
+  const [todayPractice, setTodayPractice] = useState<string>('find-your-flashlight');
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      // Use a default start date (should be stored in settings)
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - 14); // 2 weeks ago
+
+      const progressData = await calculateAllProgress(startDate);
+      setProgress(progressData);
+
+      const practice = getTodayPractice(startDate);
+      setTodayPractice(practice);
+    } catch (error) {
+      console.error('Error loading home data:', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -22,12 +49,16 @@ export default function HomeScreen() {
       <View style={styles.content}>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Today's Practice</Text>
-          <Text style={styles.practiceName}>Find Your Flashlight</Text>
-          <Text style={styles.practiceDuration}>12 minutes</Text>
+          <Text style={styles.practiceName}>
+            {practiceDefinitions[todayPractice as keyof typeof practiceDefinitions]?.name || 'Find Your Flashlight'}
+          </Text>
+          <Text style={styles.practiceDuration}>
+            {practiceDefinitions[todayPractice as keyof typeof practiceDefinitions]?.defaultDuration || 12} minutes
+          </Text>
           
           <TouchableOpacity
             style={styles.startButton}
-            onPress={() => router.push('/practice/find-your-flashlight')}
+            onPress={() => navigation.navigate('PracticeSession' as never, { id: todayPractice } as never)}
           >
             <Text style={styles.startButtonText}>Start Practice</Text>
           </TouchableOpacity>
@@ -35,15 +66,15 @@ export default function HomeScreen() {
 
         <View style={styles.stats}>
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>5</Text>
+            <Text style={styles.statValue}>{progress?.currentStreak || 0}</Text>
             <Text style={styles.statLabel}>Day Streak</Text>
           </View>
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>12</Text>
+            <Text style={styles.statValue}>{progress?.totalSessions || 0}</Text>
             <Text style={styles.statLabel}>Sessions</Text>
           </View>
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>Week 2</Text>
+            <Text style={styles.statValue}>Week {progress?.currentWeek || 1}</Text>
             <Text style={styles.statLabel}>Current Week</Text>
           </View>
         </View>
