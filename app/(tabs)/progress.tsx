@@ -6,7 +6,7 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { calculateAllProgress, getWeeklyStats, checkMilestones } from '../../lib/progress';
+import { calculateAllProgress, getWeeklyStats, checkMilestones, getWeeklySummary } from '../../lib/progress';
 import { UserProgress, Milestone } from '../../types';
 import { getSettings } from '../../lib/storage';
 
@@ -140,6 +140,13 @@ export default function ProgressScreen() {
           onPress={() => navigation.navigate('PracticeHistory' as never)}
         >
           <Text style={styles.historyButtonText}>View Practice History</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.reviewButton}
+          onPress={() => navigation.navigate('WeeklyReview' as never)}
+        >
+          <Text style={styles.reviewButtonText}>View Weekly Review</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -301,6 +308,21 @@ const styles = StyleSheet.create({
   },
   historyButtonText: {
     color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  reviewButton: {
+    backgroundColor: '#fff',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#4CAF50',
+    marginBottom: 40,
+  },
+  reviewButtonText: {
+    color: '#4CAF50',
     fontSize: 16,
     fontWeight: '600',
   },

@@ -11,6 +11,7 @@ import PracticeSessionScreen from './practice/[id]';
 import OnboardingScreen from './onboarding';
 import JournalEntryScreen from './journal-entry';
 import SessionCheckInScreen from './session-checkin';
+import WeeklyReviewScreen from './weekly-review';
 import SettingsScreen from './(tabs)/settings';
 import PracticeHistoryScreen from './practice-history';
 import { getProgress } from '../lib/storage';
@@ -130,6 +131,11 @@ export default function RootLayout() {
           name="PracticeHistory"
           component={PracticeHistoryScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="WeeklyReview"
+          component={WeeklyReviewScreen}
+          options={{ headerShown: true, title: 'Weekly Review' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
