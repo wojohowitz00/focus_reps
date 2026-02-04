@@ -68,12 +68,12 @@ export default function OnboardingScreen() {
             <Text style={styles.emoji}>🧘</Text>
             <Text style={styles.title}>Welcome to Focus Reps</Text>
             <Text style={styles.description}>
-              A science-backed mindfulness app based on Dr. Amishi Jha's research.
-              Build your attention and focus with just 12 minutes a day.
+              Focus Reps is deliberate-practice training for attention. You will do
+              short daily reps, track focus quality, and review progress each week.
             </Text>
             <Text style={styles.description}>
-              This six-week program will guide you through four core practices
-              designed to strengthen your attention system.
+              Expect 12 minutes a day, five days a week. Each return to focus is a rep
+              that builds stability and recovery speed.
             </Text>
           </View>
         )}
@@ -81,25 +81,25 @@ export default function OnboardingScreen() {
         {step === 2 && (
           <View style={styles.step}>
             <Text style={styles.emoji}>📅</Text>
-            <Text style={styles.title}>The Program</Text>
+            <Text style={styles.title}>Your Training Loop</Text>
             <Text style={styles.description}>
-              <Text style={styles.bold}>Week 1:</Text> Find Your Flashlight (breath awareness)
+              <Text style={styles.bold}>Week 1:</Text> Anchor Breath
             </Text>
             <Text style={styles.description}>
-              <Text style={styles.bold}>Week 2:</Text> Add Body Scan practice
+              <Text style={styles.bold}>Week 2:</Text> Add Body Sweep
             </Text>
             <Text style={styles.description}>
-              <Text style={styles.bold}>Week 3:</Text> Add River of Thought practice
+              <Text style={styles.bold}>Week 3:</Text> Add Thought Traffic
             </Text>
             <Text style={styles.description}>
-              <Text style={styles.bold}>Week 4:</Text> Add Connection Practice
+              <Text style={styles.bold}>Week 4:</Text> Add Kindness Circuit
             </Text>
             <Text style={styles.description}>
-              <Text style={styles.bold}>Weeks 5-6:</Text> Customize your practice
+              <Text style={styles.bold}>Weeks 5-6:</Text> Customize and continue
             </Text>
             <Text style={styles.description}>
-              Research shows measurable benefits after 4 weeks of consistent practice
-              (12 minutes, 5 days per week).
+              Daily practice → quick check-in → weekly review. The goal is steady
+              improvement, not perfection.
             </Text>
           </View>
         )}
@@ -109,7 +109,7 @@ export default function OnboardingScreen() {
             <Text style={styles.emoji}>⚙️</Text>
             <Text style={styles.title}>Set Up Reminders</Text>
             <Text style={styles.description}>
-              We'll remind you to practice daily. You can change this later in settings.
+              We will remind you to practice daily. You can change this later in settings.
             </Text>
 
             <View style={styles.settingRow}>
