@@ -14,8 +14,9 @@ import {
   TextInput,
 } from 'react-native';
 import { getSettings, updateSetting, saveSettings } from '../../lib/storage';
-import { UserSettings } from '../../types';
+import { ProgramMode, PracticeType, UserSettings } from '../../types';
 import { rescheduleReminder } from '../../lib/notifications';
+import { practiceDefinitions } from '../../lib/practices';
 
 export default function SettingsScreen() {
   const [settings, setSettings] = useState<UserSettings | null>(null);
@@ -79,6 +80,56 @@ export default function SettingsScreen() {
     }
   };
 
+  const handleProgramModeChange = async (mode: ProgramMode) => {
+    if (!settings) return;
+    try {
+      const nextSettings: UserSettings = {
+        ...settings,
+        programMode: mode,
+        customPracticeSet:
+          mode === 'open_training'
+            ? settings.customPracticeSet?.length
+              ? settings.customPracticeSet
+              : ['anchor-breath']
+            : undefined,
+      };
+      await saveSettings(nextSettings);
+      setSettings(nextSettings);
+    } catch (error) {
+      console.error('Error updating program mode:', error);
+    }
+  };
+
+  const handlePracticeToggle = async (practiceId: PracticeType) => {
+    if (!settings) return;
+    const current = settings.customPracticeSet ?? [];
+    let next: PracticeType[];
+
+    if (current.includes(practiceId)) {
+      next = current.filter((id) => id !== practiceId);
+    } else {
+      if (current.length >= 2) {
+        return;
+      }
+      next = [...current, practiceId];
+    }
+
+    if (next.length === 0) {
+      next = ['anchor-breath'];
+    }
+
+    try {
+      const nextSettings: UserSettings = {
+        ...settings,
+        customPracticeSet: next,
+      };
+      await saveSettings(nextSettings);
+      setSettings(nextSettings);
+    } catch (error) {
+      console.error('Error updating custom practice set:', error);
+    }
+  };
+
   if (!settings) {
     return (
       <View style={styles.container}>
@@ -132,6 +183,75 @@ export default function SettingsScreen() {
               ))}
             </View>
           </View>
+
+          <View style={styles.settingRow}>
+            <View style={styles.settingInfo}>
+              <Text style={styles.settingLabel}>Training Track</Text>
+              <Text style={styles.settingDescription}>
+                Choose your progression path
+              </Text>
+            </View>
+            <View style={styles.trackOptions}>
+              {[
+                { id: 'standard_6_week', label: '6-Week Standard' },
+                { id: 'extended_8_week', label: '8-Week Extended' },
+                { id: 'open_training', label: 'Open Training' },
+              ].map((option) => (
+                <TouchableOpacity
+                  key={option.id}
+                  style={[
+                    styles.trackOption,
+                    settings.programMode === option.id && styles.trackOptionSelected,
+                  ]}
+                  onPress={() => handleProgramModeChange(option.id as ProgramMode)}
+                >
+                  <Text
+                    style={[
+                      styles.trackOptionText,
+                      settings.programMode === option.id && styles.trackOptionTextSelected,
+                    ]}
+                  >
+                    {option.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          {settings.programMode === 'open_training' && (
+            <View style={styles.settingRow}>
+              <View style={styles.settingInfo}>
+                <Text style={styles.settingLabel}>Custom Rotation</Text>
+                <Text style={styles.settingDescription}>
+                  Pick 1–2 practices for your rotation
+                </Text>
+              </View>
+              <View style={styles.practiceChips}>
+                {Object.values(practiceDefinitions).map((practice) => {
+                  const selected = settings.customPracticeSet?.includes(practice.id);
+                  return (
+                    <TouchableOpacity
+                      key={practice.id}
+                      style={[
+                        styles.practiceChip,
+                        selected && styles.practiceChipSelected,
+                      ]}
+                      onPress={() => handlePracticeToggle(practice.id)}
+                    >
+                      <Text
+                        style={[
+                          styles.practiceChipText,
+                          selected && styles.practiceChipTextSelected,
+                        ]}
+                      >
+                        {practice.name}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+          )}
         </View>
 
         <View style={styles.section}>
@@ -316,6 +436,57 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 10,
+  },
+  trackOptions: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  trackOption: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 18,
+    borderWidth: 2,
+    borderColor: '#e0e0e0',
+    backgroundColor: '#fff',
+  },
+  trackOptionSelected: {
+    borderColor: '#4CAF50',
+    backgroundColor: '#f1f8f4',
+  },
+  trackOptionText: {
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '500',
+  },
+  trackOptionTextSelected: {
+    color: '#4CAF50',
+    fontWeight: '600',
+  },
+  practiceChips: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  practiceChip: {
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    backgroundColor: '#fff',
+  },
+  practiceChipSelected: {
+    borderColor: '#4CAF50',
+    backgroundColor: '#f1f8f4',
+  },
+  practiceChipText: {
+    fontSize: 13,
+    color: '#666',
+  },
+  practiceChipTextSelected: {
+    color: '#4CAF50',
+    fontWeight: '600',
   },
   timeOption: {
     paddingVertical: 8,
