@@ -15,10 +15,10 @@
 - [x] **SCHED-04**: Longer training option available (assumed extended schedule, e.g., 8‑week)
 
 ### Feedback & Metrics
-- [ ] **FEED-01**: Daily survey captures focus quality, mood, stress, and energy
-- [ ] **FEED-02**: Post‑session lapse count recorded
-- [ ] **METRIC-01**: Longest uninterrupted focus interval tracked per session
-- [ ] **METRIC-02**: Session minutes + reps summary tracked
+- [x] **FEED-01**: Daily survey captures focus quality, mood, stress, and energy
+- [x] **FEED-02**: Post‑session lapse count recorded
+- [x] **METRIC-01**: Longest uninterrupted focus interval tracked per session
+- [x] **METRIC-02**: Session minutes + reps summary tracked
 
 ### Weekly Review
 - [ ] **REVIEW-01**: Weekly review shows total focus minutes
@@ -33,7 +33,7 @@
 
 ### Platform & Privacy
 - [ ] **PLATFORM-01**: iOS and Android supported
-- [ ] **PRIV-01**: App works offline with local‑only storage (no account required)
+- [x] **PRIV-01**: App works offline with local‑only storage (no account required)
 
 ## v1.x (After Validation)
 
