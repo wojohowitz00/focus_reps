@@ -13,6 +13,24 @@ const STORAGE_KEYS = {
   SETTINGS: '@peak_mind:settings',
 } as const;
 
+const LEGACY_PRACTICE_ID_MAP: Record<string, string> = {
+  'find-your-flashlight': 'anchor-breath',
+  'body-scan': 'body-sweep',
+  'river-of-thought': 'thought-traffic',
+  'connection-practice': 'kindness-circuit',
+};
+
+function normalizePracticeType(practiceType: string): string {
+  return LEGACY_PRACTICE_ID_MAP[practiceType] ?? practiceType;
+}
+
+function normalizeSession(session: PracticeSession): PracticeSession {
+  return {
+    ...session,
+    practiceType: normalizePracticeType(session.practiceType as unknown as string) as PracticeSession['practiceType'],
+  };
+}
+
 // Generic storage operations
 export async function getItem<T>(key: string): Promise<T | null> {
   try {
@@ -58,7 +76,7 @@ export async function clear(): Promise<boolean> {
 export async function saveSession(session: PracticeSession): Promise<boolean> {
   try {
     const sessions = await getSessions();
-    const updatedSessions = [...sessions, session];
+    const updatedSessions = [...sessions, normalizeSession(session)];
     return await setItem(STORAGE_KEYS.SESSIONS, updatedSessions);
   } catch (error) {
     console.error('Error saving session:', error);
@@ -68,7 +86,7 @@ export async function saveSession(session: PracticeSession): Promise<boolean> {
 
 export async function getSessions(): Promise<PracticeSession[]> {
   const sessions = await getItem<PracticeSession[]>(STORAGE_KEYS.SESSIONS);
-  return sessions || [];
+  return sessions ? sessions.map(normalizeSession) : [];
 }
 
 export async function getSessionById(id: string): Promise<PracticeSession | null> {
@@ -93,7 +111,17 @@ export async function saveProgress(progress: UserProgress): Promise<boolean> {
 }
 
 export async function getProgress(): Promise<UserProgress | null> {
-  return await getItem<UserProgress>(STORAGE_KEYS.PROGRESS);
+  const progress = await getItem<UserProgress>(STORAGE_KEYS.PROGRESS);
+  if (!progress) {
+    return null;
+  }
+  if (!progress.practiceHistory?.length) {
+    return progress;
+  }
+  return {
+    ...progress,
+    practiceHistory: progress.practiceHistory.map(normalizeSession),
+  };
 }
 
 export async function updateProgress(updates: Partial<UserProgress>): Promise<boolean> {

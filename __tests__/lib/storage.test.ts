@@ -69,7 +69,7 @@ describe('Storage Functions', () => {
   describe('Session Storage', () => {
     const mockSession: PracticeSession = {
       id: 'session-1',
-      practiceType: 'find-your-flashlight',
+      practiceType: 'anchor-breath',
       date: new Date('2024-01-01'),
       duration: 12,
       scheduledDuration: 12,
@@ -92,6 +92,15 @@ describe('Storage Functions', () => {
       
       const sessions = await getSessions();
       expect(sessions).toHaveLength(2);
+    });
+
+    test('getSessions normalizes legacy practice IDs', async () => {
+      const legacySession = { ...mockSession, practiceType: 'find-your-flashlight' as PracticeSession['practiceType'] };
+      await setItem('@peak_mind:sessions', [legacySession]);
+
+      const sessions = await getSessions();
+      expect(sessions).toHaveLength(1);
+      expect(sessions[0].practiceType).toBe('anchor-breath');
     });
 
     test('getSessionById returns correct session', async () => {
@@ -141,6 +150,26 @@ describe('Storage Functions', () => {
       const progress = await getProgress();
       expect(progress?.currentWeek).toBe(2);
       expect(progress?.totalSessions).toBe(5); // Other fields unchanged
+    });
+
+    test('getProgress normalizes legacy practice history', async () => {
+      const legacyProgress: UserProgress = {
+        ...mockProgress,
+        practiceHistory: [
+          {
+            id: 'legacy-session',
+            practiceType: 'body-scan' as PracticeSession['practiceType'],
+            date: new Date('2024-01-03'),
+            duration: 12,
+            scheduledDuration: 12,
+            completed: true,
+          },
+        ],
+      };
+
+      await saveProgress(legacyProgress);
+      const progress = await getProgress();
+      expect(progress?.practiceHistory[0].practiceType).toBe('body-sweep');
     });
   });
 
