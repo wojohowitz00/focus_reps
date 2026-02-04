@@ -109,9 +109,11 @@ export default function PracticeSessionScreen() {
       
       // Navigate to journal entry screen after showing completion
       setTimeout(() => {
-        navigation.navigate('JournalEntry' as never, {
+        navigation.navigate('SessionCheckIn' as never, {
           sessionId: session.id,
           practiceType: id,
+          lapseCount: session.lapseCount,
+          longestFocusIntervalSec: session.longestFocusIntervalSec,
         } as never);
       }, 2000);
     } catch (error) {

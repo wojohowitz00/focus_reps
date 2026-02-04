@@ -10,6 +10,7 @@ import JournalScreen from './(tabs)/journal';
 import PracticeSessionScreen from './practice/[id]';
 import OnboardingScreen from './onboarding';
 import JournalEntryScreen from './journal-entry';
+import SessionCheckInScreen from './session-checkin';
 import SettingsScreen from './(tabs)/settings';
 import PracticeHistoryScreen from './practice-history';
 import { getProgress } from '../lib/storage';
@@ -119,6 +120,11 @@ export default function RootLayout() {
           name="JournalEntry"
           component={JournalEntryScreen}
           options={{ headerShown: true, title: 'Journal Entry' }}
+        />
+        <Stack.Screen
+          name="SessionCheckIn"
+          component={SessionCheckInScreen}
+          options={{ headerShown: true, title: 'Session Check-In' }}
         />
         <Stack.Screen
           name="PracticeHistory"
