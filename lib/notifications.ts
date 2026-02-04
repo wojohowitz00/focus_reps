@@ -123,12 +123,6 @@ export async function scheduleWeeklySummary(
       return null;
     }
 
-    // Schedule for Sunday evening
-    const nextSunday = new Date();
-    const daysUntilSunday = (7 - nextSunday.getDay()) % 7 || 7;
-    nextSunday.setDate(nextSunday.getDate() + daysUntilSunday);
-    nextSunday.setHours(19, 0, 0); // 7 PM
-
     const notificationId = await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Weekly Practice Summary 📊',
@@ -137,7 +131,10 @@ export async function scheduleWeeklySummary(
         data: { type: 'weekly_summary' },
       },
       trigger: {
-        date: nextSunday,
+        weekday: 1,
+        hour: 19,
+        minute: 0,
+        repeats: true,
       },
     });
 
@@ -145,6 +142,52 @@ export async function scheduleWeeklySummary(
   } catch (error) {
     console.error('Error scheduling weekly summary:', error);
     return null;
+  }
+}
+
+export async function scheduleWeeklyReminder(
+  day: number,
+  time: string
+): Promise<string | null> {
+  try {
+    const hasPermission = await requestPermissions();
+    if (!hasPermission) {
+      return null;
+    }
+
+    const [hours, minutes] = time.split(':').map(Number);
+    const weekday = Math.min(Math.max(day, 0), 6) + 1; // Notifications uses 1-7
+
+    return await Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'Weekly Review Ready 📈',
+        body: 'Your Focus Reps weekly review is ready. Take a look and set your next target.',
+        sound: true,
+        data: { type: 'weekly_reminder' },
+      },
+      trigger: {
+        weekday,
+        hour: hours,
+        minute: minutes,
+        repeats: true,
+      },
+    });
+  } catch (error) {
+    console.error('Error scheduling weekly reminder:', error);
+    return null;
+  }
+}
+
+export async function cancelWeeklyReminder(): Promise<void> {
+  try {
+    const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+    const weeklyIds = scheduled
+      .filter((item) => item.content.data?.type === 'weekly_reminder')
+      .map((item) => item.identifier);
+
+    await Promise.all(weeklyIds.map((id) => Notifications.cancelScheduledNotificationAsync(id)));
+  } catch (error) {
+    console.error('Error canceling weekly reminder:', error);
   }
 }
 

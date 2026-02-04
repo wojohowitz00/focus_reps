@@ -209,6 +209,9 @@ export async function getSettings(): Promise<UserSettings | null> {
     notificationsEnabled: true,
     programMode: 'standard_6_week',
     programStartDate: new Date().toISOString(),
+    weeklyReminderEnabled: false,
+    weeklyReminderDay: 0,
+    weeklyReminderTime: '19:00',
   };
 
   if (!settings) {

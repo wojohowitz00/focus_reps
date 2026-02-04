@@ -15,12 +15,14 @@ import {
 } from 'react-native';
 import { getSettings, updateSetting, saveSettings } from '../../lib/storage';
 import { ProgramMode, PracticeType, UserSettings } from '../../types';
-import { rescheduleReminder } from '../../lib/notifications';
+import { rescheduleReminder, scheduleWeeklyReminder, cancelWeeklyReminder } from '../../lib/notifications';
 import { practiceDefinitions } from '../../lib/practices';
 
 export default function SettingsScreen() {
   const [settings, setSettings] = useState<UserSettings | null>(null);
   const [reminderTime, setReminderTime] = useState('08:00');
+  const [weeklyReminderDay, setWeeklyReminderDay] = useState(0);
+  const [weeklyReminderTime, setWeeklyReminderTime] = useState('19:00');
 
   useEffect(() => {
     loadSettings();
@@ -32,6 +34,12 @@ export default function SettingsScreen() {
       setSettings(userSettings);
       if (userSettings?.reminderTime) {
         setReminderTime(userSettings.reminderTime);
+      }
+      if (userSettings?.weeklyReminderDay !== undefined) {
+        setWeeklyReminderDay(userSettings.weeklyReminderDay);
+      }
+      if (userSettings?.weeklyReminderTime) {
+        setWeeklyReminderTime(userSettings.weeklyReminderTime);
       }
     } catch (error) {
       console.error('Error loading settings:', error);
@@ -67,6 +75,63 @@ export default function SettingsScreen() {
       }
     } catch (error) {
       console.error('Error updating reminder time:', error);
+    }
+  };
+
+  const handleWeeklyReminderToggle = async (value: boolean) => {
+    if (!settings) return;
+    try {
+      const updated = {
+        ...settings,
+        weeklyReminderEnabled: value,
+        weeklyReminderDay,
+        weeklyReminderTime,
+      };
+      await saveSettings(updated);
+      setSettings(updated);
+      if (value) {
+        await scheduleWeeklyReminder(weeklyReminderDay, weeklyReminderTime);
+      } else {
+        await cancelWeeklyReminder();
+      }
+    } catch (error) {
+      console.error('Error updating weekly reminder:', error);
+    }
+  };
+
+  const handleWeeklyReminderDayChange = async (day: number) => {
+    setWeeklyReminderDay(day);
+    if (!settings) return;
+    try {
+      const updated = {
+        ...settings,
+        weeklyReminderDay: day,
+      };
+      await saveSettings(updated);
+      setSettings(updated);
+      if (updated.weeklyReminderEnabled) {
+        await scheduleWeeklyReminder(day, weeklyReminderTime);
+      }
+    } catch (error) {
+      console.error('Error updating weekly reminder day:', error);
+    }
+  };
+
+  const handleWeeklyReminderTimeChange = async (time: string) => {
+    setWeeklyReminderTime(time);
+    if (!settings) return;
+    try {
+      const updated = {
+        ...settings,
+        weeklyReminderTime: time,
+      };
+      await saveSettings(updated);
+      setSettings(updated);
+      if (updated.weeklyReminderEnabled) {
+        await scheduleWeeklyReminder(weeklyReminderDay, time);
+      }
+    } catch (error) {
+      console.error('Error updating weekly reminder time:', error);
     }
   };
 
@@ -303,6 +368,74 @@ export default function SettingsScreen() {
               </View>
             </View>
           )}
+
+          <View style={styles.settingRow}>
+            <View style={styles.settingInfo}>
+              <Text style={styles.settingLabel}>Weekly Summary</Text>
+              <Text style={styles.settingDescription}>
+                Reminder to review your weekly progress
+              </Text>
+            </View>
+            <Switch
+              value={settings.weeklyReminderEnabled}
+              onValueChange={handleWeeklyReminderToggle}
+              trackColor={{ false: '#e0e0e0', true: '#4CAF50' }}
+              thumbColor="#fff"
+            />
+          </View>
+
+          {settings.weeklyReminderEnabled && (
+            <View style={styles.settingRow}>
+              <View style={styles.settingInfo}>
+                <Text style={styles.settingLabel}>Weekly Reminder</Text>
+                <Text style={styles.settingDescription}>
+                  Choose a day and time
+                </Text>
+              </View>
+              <View style={styles.weeklyOptions}>
+                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((label, index) => (
+                  <TouchableOpacity
+                    key={label}
+                    style={[
+                      styles.weekdayOption,
+                      weeklyReminderDay === index && styles.weekdayOptionSelected,
+                    ]}
+                    onPress={() => handleWeeklyReminderDayChange(index)}
+                  >
+                    <Text
+                      style={[
+                        styles.weekdayOptionText,
+                        weeklyReminderDay === index && styles.weekdayOptionTextSelected,
+                      ]}
+                    >
+                      {label}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              <View style={styles.timeOptions}>
+                {['07:00', '12:00', '18:00', '19:00', '20:00'].map((time) => (
+                  <TouchableOpacity
+                    key={time}
+                    style={[
+                      styles.timeOption,
+                      weeklyReminderTime === time && styles.timeOptionSelected,
+                    ]}
+                    onPress={() => handleWeeklyReminderTimeChange(time)}
+                  >
+                    <Text
+                      style={[
+                        styles.timeOptionText,
+                        weeklyReminderTime === time && styles.timeOptionTextSelected,
+                      ]}
+                    >
+                      {time}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          )}
         </View>
 
         <View style={styles.section}>
@@ -436,6 +569,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 10,
+  },
+  weeklyOptions: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 12,
+  },
+  weekdayOption: {
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    backgroundColor: '#fff',
+  },
+  weekdayOptionSelected: {
+    borderColor: '#4CAF50',
+    backgroundColor: '#f1f8f4',
+  },
+  weekdayOptionText: {
+    fontSize: 12,
+    color: '#666',
+    fontWeight: '600',
+  },
+  weekdayOptionTextSelected: {
+    color: '#4CAF50',
   },
   trackOptions: {
     flexDirection: 'row',

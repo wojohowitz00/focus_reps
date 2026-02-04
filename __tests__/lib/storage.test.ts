@@ -230,6 +230,9 @@ describe('Storage Functions', () => {
       expect(settings?.soundEnabled).toBe(true);
       expect(settings?.programMode).toBe('standard_6_week');
       expect(settings?.programStartDate).toBeTruthy();
+      expect(settings?.weeklyReminderEnabled).toBe(false);
+      expect(settings?.weeklyReminderDay).toBe(0);
+      expect(settings?.weeklyReminderTime).toBe('19:00');
     });
 
     test('saveSettings stores settings', async () => {
@@ -240,6 +243,9 @@ describe('Storage Functions', () => {
         reminderTime: '08:00',
         programMode: 'extended_8_week',
         programStartDate: new Date('2024-01-01').toISOString(),
+        weeklyReminderEnabled: true,
+        weeklyReminderDay: 1,
+        weeklyReminderTime: '20:00',
       };
       
       await saveSettings(customSettings);
@@ -255,6 +261,9 @@ describe('Storage Functions', () => {
         notificationsEnabled: true,
         programMode: 'standard_6_week',
         programStartDate: new Date('2024-01-01').toISOString(),
+        weeklyReminderEnabled: false,
+        weeklyReminderDay: 0,
+        weeklyReminderTime: '19:00',
       });
       
       await updateSetting('soundEnabled', false);

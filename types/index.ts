@@ -57,6 +57,9 @@ export interface UserSettings {
   programMode: ProgramMode;
   programStartDate: string; // ISO string
   customPracticeSet?: PracticeType[];
+  weeklyReminderEnabled: boolean;
+  weeklyReminderDay: number; // 0-6 (Sun-Sat)
+  weeklyReminderTime: string; // "19:00"
 }
 
 export interface PracticeSchedule {
