@@ -46,8 +46,8 @@ export async function scheduleDailyReminder(time: string = '08:00'): Promise<str
       return null;
     }
 
-    // Cancel existing reminders
-    await cancelAllReminders();
+    // Cancel existing daily reminders
+    await cancelDailyReminders();
 
     const [hours, minutes] = time.split(':').map(Number);
 
@@ -69,6 +69,19 @@ export async function scheduleDailyReminder(time: string = '08:00'): Promise<str
   } catch (error) {
     console.error('Error scheduling daily reminder:', error);
     return null;
+  }
+}
+
+export async function cancelDailyReminders(): Promise<void> {
+  try {
+    const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+    const dailyIds = scheduled
+      .filter((item) => item.content.data?.type === 'daily_reminder')
+      .map((item) => item.identifier);
+
+    await Promise.all(dailyIds.map((id) => Notifications.cancelScheduledNotificationAsync(id)));
+  } catch (error) {
+    console.error('Error canceling daily reminders:', error);
   }
 }
 
@@ -217,7 +230,7 @@ export async function cancelReminder(notificationId: string): Promise<void> {
  * Reschedule reminder with new time
  */
 export async function rescheduleReminder(newTime: string): Promise<string | null> {
-  await cancelAllReminders();
+  await cancelDailyReminders();
   return await scheduleDailyReminder(newTime);
 }
 
@@ -230,6 +243,10 @@ export async function initializeNotifications(): Promise<void> {
     
     if (settings?.notificationsEnabled && settings?.reminderTime) {
       await scheduleDailyReminder(settings.reminderTime);
+    }
+
+    if (settings?.weeklyReminderEnabled) {
+      await scheduleWeeklyReminder(settings.weeklyReminderDay, settings.weeklyReminderTime);
     }
   } catch (error) {
     console.error('Error initializing notifications:', error);
