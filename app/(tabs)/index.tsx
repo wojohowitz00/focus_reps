@@ -15,7 +15,7 @@ import { practiceDefinitions } from '../../lib/practices';
 export default function HomeScreen() {
   const navigation = useNavigation();
   const [progress, setProgress] = useState<UserProgress | null>(null);
-  const [todayPractice, setTodayPractice] = useState<string>('find-your-flashlight');
+  const [todayPractice, setTodayPractice] = useState<string>('anchor-breath');
 
   useEffect(() => {
     loadData();
@@ -50,7 +50,7 @@ export default function HomeScreen() {
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Today's Practice</Text>
           <Text style={styles.practiceName}>
-            {practiceDefinitions[todayPractice as keyof typeof practiceDefinitions]?.name || 'Find Your Flashlight'}
+            {practiceDefinitions[todayPractice as keyof typeof practiceDefinitions]?.name || 'Anchor Breath'}
           </Text>
           <Text style={styles.practiceDuration}>
             {practiceDefinitions[todayPractice as keyof typeof practiceDefinitions]?.defaultDuration || 12} minutes

@@ -17,12 +17,12 @@ export default function HomeScreen() {
       <View style={styles.content}>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Today's Practice</Text>
-          <Text style={styles.practiceName}>Find Your Flashlight</Text>
+          <Text style={styles.practiceName}>Anchor Breath</Text>
           <Text style={styles.practiceDuration}>12 minutes</Text>
           
           <TouchableOpacity
             style={styles.startButton}
-            onPress={() => navigation.navigate('PracticeSession' as never, { id: 'find-your-flashlight' } as never)}
+            onPress={() => navigation.navigate('PracticeSession' as never, { id: 'anchor-breath' } as never)}
           >
             <Text style={styles.startButtonText}>Start Practice</Text>
           </TouchableOpacity>
