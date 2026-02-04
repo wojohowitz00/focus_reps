@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import WeeklyReview from '../components/WeeklyReview';
 import { getWeeklySummary, getWeeklyRecommendation } from '../lib/progress';
+import { getCurrentWeek } from '../lib/practices';
 import { getSettings } from '../lib/storage';
 import { WeeklySummary } from '../types';
 
@@ -22,7 +23,9 @@ export default function WeeklyReviewScreen() {
     const startDate = settings?.programStartDate
       ? new Date(settings.programStartDate)
       : new Date();
-    const summaryData = await getWeeklySummary(startDate, 0);
+    const programMode = settings?.programMode ?? 'standard_6_week';
+    const currentWeek = getCurrentWeek(startDate, programMode);
+    const summaryData = await getWeeklySummary(startDate, Math.max(currentWeek - 1, 0));
     setSummary(summaryData);
   };
 
