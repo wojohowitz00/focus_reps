@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Increase sustained focus time through deliberate, repeatable mindfulness practice.
-**Current focus:** Milestone v1 complete
+**Current focus:** Planning v1.1 milestone (tech debt cleanup + research expansion)
 
 ## Current Position
 
-Phase: 5 of 5 (Notifications & Release Readiness)
-Plan: 2 of 2 in current phase
-Status: Complete
-Last activity: 2026-02-04 — Phase 5 completed
+Phase: Planning next milestone
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-02-04 — v1.0 milestone complete
 
-Progress: [██████████] 100%
+Progress: [----------] 0%
 
 ## Performance Metrics
 
@@ -44,20 +44,21 @@ Progress: [██████████] 100%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- Phase 1: Rebrand existing Peak Mind app to Focus Reps
-- Phase 1: Rename practices and write original scripts
-- Phase 3: Local‑only MVP (no accounts)
+- Rebrand existing Peak Mind app to Focus Reps
+- Rename practices and write original scripts
+- Local‑only MVP (no accounts)
 
 ### Pending Todos
 
-None logged.
+- Resolve v1.0 tech debt (weekly reminder reschedule, device QA, docs drift)
+- Plan research-backed schedule variants and expanded practice library
 
 ### Blockers/Concerns
 
-None.
+None (planning next milestone).
 
 ## Session Continuity
 
 Last session: 2026-02-04
-Stopped at: v1 milestone complete
+Stopped at: v1.0 milestone complete
 Resume file: None
