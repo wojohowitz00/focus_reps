@@ -212,6 +212,8 @@ describe('Storage Functions', () => {
       expect(settings).not.toBeNull();
       expect(settings?.defaultDuration).toBe(12);
       expect(settings?.soundEnabled).toBe(true);
+      expect(settings?.programMode).toBe('standard_6_week');
+      expect(settings?.programStartDate).toBeTruthy();
     });
 
     test('saveSettings stores settings', async () => {
@@ -220,6 +222,8 @@ describe('Storage Functions', () => {
         soundEnabled: false,
         notificationsEnabled: true,
         reminderTime: '08:00',
+        programMode: 'extended_8_week',
+        programStartDate: new Date('2024-01-01').toISOString(),
       };
       
       await saveSettings(customSettings);
@@ -233,6 +237,8 @@ describe('Storage Functions', () => {
         defaultDuration: 12,
         soundEnabled: true,
         notificationsEnabled: true,
+        programMode: 'standard_6_week',
+        programStartDate: new Date('2024-01-01').toISOString(),
       });
       
       await updateSetting('soundEnabled', false);

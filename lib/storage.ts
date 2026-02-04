@@ -179,16 +179,29 @@ export async function saveSettings(settings: UserSettings): Promise<boolean> {
 export async function getSettings(): Promise<UserSettings | null> {
   const settings = await getItem<UserSettings>(STORAGE_KEYS.SETTINGS);
   // Return default settings if none exist
+  const defaults: UserSettings = {
+    defaultDuration: 12,
+    soundEnabled: true,
+    notificationsEnabled: true,
+    programMode: 'standard_6_week',
+    programStartDate: new Date().toISOString(),
+  };
+
   if (!settings) {
-    const defaults: UserSettings = {
-      defaultDuration: 12,
-      soundEnabled: true,
-      notificationsEnabled: true,
-    };
     await saveSettings(defaults);
     return defaults;
   }
-  return settings;
+
+  const merged = { ...defaults, ...settings };
+  if (
+    !settings.programMode ||
+    !settings.programStartDate ||
+    settings.programMode !== merged.programMode ||
+    settings.programStartDate !== merged.programStartDate
+  ) {
+    await saveSettings(merged);
+  }
+  return merged;
 }
 
 export async function updateSetting<K extends keyof UserSettings>(

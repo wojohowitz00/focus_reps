@@ -1,6 +1,11 @@
 /**
- * Type definitions for Peak Mind App
+ * Type definitions for Focus Reps App
  */
+
+export type ProgramMode =
+  | 'standard_6_week'
+  | 'extended_8_week'
+  | 'open_training';
 
 export type PracticeType = 
   | 'anchor-breath'
@@ -43,6 +48,9 @@ export interface UserSettings {
   defaultDuration: number; // 12 minutes
   soundEnabled: boolean;
   notificationsEnabled: boolean;
+  programMode: ProgramMode;
+  programStartDate: string; // ISO string
+  customPracticeSet?: PracticeType[];
 }
 
 export interface PracticeSchedule {
