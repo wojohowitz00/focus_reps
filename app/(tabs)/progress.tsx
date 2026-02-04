@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { calculateAllProgress, getWeeklyStats, checkMilestones } from '../../lib/progress';
 import { UserProgress, Milestone } from '../../types';
+import { getSettings } from '../../lib/storage';
 
 export default function ProgressScreen() {
   const navigation = useNavigation();
@@ -21,14 +22,16 @@ export default function ProgressScreen() {
 
   const loadProgress = async () => {
     try {
-      // Use a default start date (could be stored in settings)
-      const startDate = new Date();
-      startDate.setDate(startDate.getDate() - 14); // 2 weeks ago
+      const settings = await getSettings();
+      const startDate = settings?.programStartDate
+        ? new Date(settings.programStartDate)
+        : new Date();
+      const programMode = settings?.programMode ?? 'standard_6_week';
 
       const progressData = await calculateAllProgress(startDate);
       setProgress(progressData);
 
-      const weekly = await getWeeklyStats(startDate);
+      const weekly = await getWeeklyStats(startDate, programMode);
       setWeeklyStats(weekly);
 
       const milestoneData = await checkMilestones(progressData);

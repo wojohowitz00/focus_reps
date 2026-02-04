@@ -5,11 +5,41 @@
 
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { practiceDefinitions } from '../../lib/practices';
+import { useEffect, useState } from 'react';
+import { getTodayPractice, practiceDefinitions } from '../../lib/practices';
 import { PracticeType } from '../../types';
+import { getSettings } from '../../lib/storage';
 
 export default function PracticeScreen() {
   const navigation = useNavigation();
+  const [recommendedPractice, setRecommendedPractice] = useState<PracticeType>('anchor-breath');
+  const [programLabel, setProgramLabel] = useState('6-Week Standard');
+
+  useEffect(() => {
+    loadRecommendation();
+  }, []);
+
+  const loadRecommendation = async () => {
+    try {
+      const settings = await getSettings();
+      const startDate = settings?.programStartDate
+        ? new Date(settings.programStartDate)
+        : new Date();
+      const programMode = settings?.programMode ?? 'standard_6_week';
+      const customPracticeSet = settings?.customPracticeSet;
+      const recommended = getTodayPractice(startDate, programMode, customPracticeSet);
+      setRecommendedPractice(recommended);
+      setProgramLabel(getProgramLabel(programMode));
+    } catch (error) {
+      console.error('Error loading recommended practice:', error);
+    }
+  };
+
+  const getProgramLabel = (mode: string) => {
+    if (mode === 'extended_8_week') return '8-Week Extended';
+    if (mode === 'open_training') return 'Open Training';
+    return '6-Week Standard';
+  };
 
   const handlePracticeSelect = (practiceType: PracticeType) => {
     // Navigate to practice session screen
@@ -24,6 +54,24 @@ export default function PracticeScreen() {
       </View>
 
       <ScrollView style={styles.content}>
+        <View style={styles.recommendedCard}>
+          <Text style={styles.recommendedLabel}>Recommended Today</Text>
+          <Text style={styles.recommendedTitle}>
+            {practiceDefinitions[recommendedPractice].name}
+          </Text>
+          <Text style={styles.recommendedDescription}>
+            {practiceDefinitions[recommendedPractice].description}
+          </Text>
+          <Text style={styles.recommendedMeta}>Track: {programLabel}</Text>
+          <TouchableOpacity
+            style={styles.recommendedButton}
+            onPress={() => handlePracticeSelect(recommendedPractice)}
+          >
+            <Text style={styles.recommendedButtonText}>Start Recommended</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.sectionLabel}>All Practices</Text>
         {Object.values(practiceDefinitions).map((practice) => (
           <TouchableOpacity
             key={practice.id}
@@ -67,6 +115,57 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 20,
+  },
+  recommendedCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  recommendedLabel: {
+    fontSize: 12,
+    textTransform: 'uppercase',
+    letterSpacing: 0.6,
+    color: '#666',
+    marginBottom: 8,
+  },
+  recommendedTitle: {
+    fontSize: 22,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 6,
+  },
+  recommendedDescription: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 10,
+  },
+  recommendedMeta: {
+    fontSize: 12,
+    color: '#999',
+    marginBottom: 16,
+  },
+  recommendedButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  recommendedButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  sectionLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 12,
   },
   practiceCard: {
     backgroundColor: '#fff',

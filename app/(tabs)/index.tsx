@@ -7,10 +7,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { getTodayPractice, getCurrentWeek } from '../../lib/practices';
+import { getTodayPractice } from '../../lib/practices';
 import { calculateAllProgress } from '../../lib/progress';
 import { UserProgress } from '../../types';
 import { practiceDefinitions } from '../../lib/practices';
+import { getSettings } from '../../lib/storage';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -23,14 +24,17 @@ export default function HomeScreen() {
 
   const loadData = async () => {
     try {
-      // Use a default start date (should be stored in settings)
-      const startDate = new Date();
-      startDate.setDate(startDate.getDate() - 14); // 2 weeks ago
+      const settings = await getSettings();
+      const startDate = settings?.programStartDate
+        ? new Date(settings.programStartDate)
+        : new Date();
+      const programMode = settings?.programMode ?? 'standard_6_week';
+      const customPracticeSet = settings?.customPracticeSet;
 
       const progressData = await calculateAllProgress(startDate);
       setProgress(progressData);
 
-      const practice = getTodayPractice(startDate);
+      const practice = getTodayPractice(startDate, programMode, customPracticeSet);
       setTodayPractice(practice);
     } catch (error) {
       console.error('Error loading home data:', error);
