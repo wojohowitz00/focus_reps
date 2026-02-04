@@ -11,6 +11,7 @@ import {
   saveSession,
   getSessions,
   getSessionById,
+  updateSession,
   deleteSession,
   saveProgress,
   getProgress,
@@ -108,6 +109,21 @@ describe('Storage Functions', () => {
       const session = await getSessionById('session-1');
       expect(session).not.toBeNull();
       expect(session?.id).toBe('session-1');
+    });
+
+    test('updateSession merges metrics updates', async () => {
+      await saveSession(mockSession);
+      const updated = await updateSession('session-1', {
+        focusQuality: 4,
+        mood: 3,
+        stress: 2,
+        energy: 5,
+        lapseCount: 2,
+        longestFocusIntervalSec: 180,
+      });
+      expect(updated).not.toBeNull();
+      expect(updated?.focusQuality).toBe(4);
+      expect(updated?.lapseCount).toBe(2);
     });
 
     test('deleteSession removes session', async () => {

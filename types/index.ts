@@ -21,6 +21,12 @@ export interface PracticeSession {
   scheduledDuration: number; // intended duration (usually 12)
   completed: boolean;
   journalEntryId?: string;
+  focusQuality?: number; // 1-5
+  mood?: number; // 1-5
+  stress?: number; // 1-5
+  energy?: number; // 1-5
+  lapseCount?: number;
+  longestFocusIntervalSec?: number;
 }
 
 export interface JournalEntry {

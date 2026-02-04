@@ -94,6 +94,30 @@ export async function getSessionById(id: string): Promise<PracticeSession | null
   return sessions.find((s) => s.id === id) || null;
 }
 
+export async function updateSession(
+  id: string,
+  updates: Partial<PracticeSession>
+): Promise<PracticeSession | null> {
+  try {
+    const sessions = await getSessions();
+    const index = sessions.findIndex((s) => s.id === id);
+    if (index === -1) {
+      return null;
+    }
+    const updatedSession = normalizeSession({
+      ...sessions[index],
+      ...updates,
+    });
+    const updatedSessions = [...sessions];
+    updatedSessions[index] = updatedSession;
+    await setItem(STORAGE_KEYS.SESSIONS, updatedSessions);
+    return updatedSession;
+  } catch (error) {
+    console.error('Error updating session:', error);
+    return null;
+  }
+}
+
 export async function deleteSession(id: string): Promise<boolean> {
   try {
     const sessions = await getSessions();
