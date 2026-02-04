@@ -3,10 +3,10 @@
  */
 
 export type PracticeType = 
-  | 'find-your-flashlight'
-  | 'body-scan'
-  | 'river-of-thought'
-  | 'connection-practice';
+  | 'anchor-breath'
+  | 'body-sweep'
+  | 'thought-traffic'
+  | 'kindness-circuit';
 
 export interface PracticeSession {
   id: string;

@@ -14,62 +14,62 @@ export interface PracticeDefinition {
 }
 
 export const practiceDefinitions: Record<PracticeType, PracticeDefinition> = {
-  'find-your-flashlight': {
-    id: 'find-your-flashlight',
-    name: 'Find Your Flashlight',
-    description: 'Breath awareness meditation - the foundational practice',
+  'anchor-breath': {
+    id: 'anchor-breath',
+    name: 'Anchor Breath',
+    description: 'Foundational breath focus reps to build sustained attention',
     defaultDuration: 12,
   },
-  'body-scan': {
-    id: 'body-scan',
-    name: 'Body Scan',
-    description: 'Systematic body awareness practice',
+  'body-sweep': {
+    id: 'body-sweep',
+    name: 'Body Sweep',
+    description: 'Guided scan to train controlled shifts of attention',
     defaultDuration: 12,
   },
-  'river-of-thought': {
-    id: 'river-of-thought',
-    name: 'River of Thought',
-    description: 'Meta-awareness meditation observing thoughts',
+  'thought-traffic': {
+    id: 'thought-traffic',
+    name: 'Thought Traffic',
+    description: 'Observe thoughts passing without engagement',
     defaultDuration: 12,
   },
-  'connection-practice': {
-    id: 'connection-practice',
-    name: 'Connection Practice',
-    description: 'Loving-kindness meditation',
+  'kindness-circuit': {
+    id: 'kindness-circuit',
+    name: 'Kindness Circuit',
+    description: 'Warmth and connection practice to reset attention',
     defaultDuration: 12,
   },
 };
 
 /**
  * Six-week program structure
- * Week 1: Find Your Flashlight only
- * Week 2: Find Your Flashlight + Body Scan (alternating)
- * Week 3: Find Your Flashlight + River of Thought (alternating)
- * Week 4: Find Your Flashlight + Connection Practice (alternating)
+ * Week 1: Anchor Breath only
+ * Week 2: Anchor Breath + Body Sweep (alternating)
+ * Week 3: Anchor Breath + Thought Traffic (alternating)
+ * Week 4: Anchor Breath + Kindness Circuit (alternating)
  * Weeks 5-6: Customizable
  */
 export function getPracticeForWeekAndDay(week: number, day: number): PracticeType {
   if (week === 1) {
-    return 'find-your-flashlight';
+    return 'anchor-breath';
   }
   
   if (week === 2) {
-    // Alternating: Flashlight on odd days, Body Scan on even days
-    return day % 2 === 1 ? 'find-your-flashlight' : 'body-scan';
+    // Alternating: Anchor Breath on odd days, Body Sweep on even days
+    return day % 2 === 1 ? 'anchor-breath' : 'body-sweep';
   }
   
   if (week === 3) {
-    // Alternating: Flashlight on odd days, River of Thought on even days
-    return day % 2 === 1 ? 'find-your-flashlight' : 'river-of-thought';
+    // Alternating: Anchor Breath on odd days, Thought Traffic on even days
+    return day % 2 === 1 ? 'anchor-breath' : 'thought-traffic';
   }
   
   if (week === 4) {
-    // Alternating: Flashlight on odd days, Connection Practice on even days
-    return day % 2 === 1 ? 'find-your-flashlight' : 'connection-practice';
+    // Alternating: Anchor Breath on odd days, Kindness Circuit on even days
+    return day % 2 === 1 ? 'anchor-breath' : 'kindness-circuit';
   }
   
-  // Weeks 5-6: Default to Flashlight, but user can customize
-  return 'find-your-flashlight';
+  // Weeks 5-6: Default to Anchor Breath, but user can customize
+  return 'anchor-breath';
 }
 
 /**
