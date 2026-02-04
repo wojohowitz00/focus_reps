@@ -6,7 +6,7 @@ Transform the existing Peak Mind codebase into Focus Reps by rebranding, replaci
 
 ## Phases
 
-- [ ] **Phase 1: Rebrand + Content Foundation** - Rename practices, rewrite scripts, and reframe onboarding
+- [x] **Phase 1: Rebrand + Content Foundation** - Rename practices, rewrite scripts, and reframe onboarding
 - [ ] **Phase 2: Practice Progression & Schedule Control** - Solidify schedule logic, flexibility, and longer training options
 - [ ] **Phase 3: Feedback & Metrics Capture** - Daily survey, lapse counts, and uninterrupted interval tracking
 - [ ] **Phase 4: Weekly Review & Recommendations** - Aggregate metrics + journaling highlights into weekly insights
@@ -25,9 +25,9 @@ Transform the existing Peak Mind codebase into Focus Reps by rebranding, replaci
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: Rebrand UI + copy updates across screens
-- [ ] 01-02: Rename practices + replace scripts
-- [ ] 01-03: Update onboarding narrative
+- [x] 01-01: Rebrand UI + copy updates across screens
+- [x] 01-02: Rename practices + replace scripts
+- [x] 01-03: Update onboarding narrative
 
 ### Phase 2: Practice Progression & Schedule Control
 **Goal**: Support structured 6‑week program with flexibility, practice selection, and extended training option.
@@ -95,7 +95,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Rebrand + Content Foundation | 0/3 | Not started | - |
+| 1. Rebrand + Content Foundation | 3/3 | Complete | 2026-02-04 |
 | 2. Practice Progression & Schedule Control | 0/2 | Not started | - |
 | 3. Feedback & Metrics Capture | 0/3 | Not started | - |
 | 4. Weekly Review & Recommendations | 0/2 | Not started | - |

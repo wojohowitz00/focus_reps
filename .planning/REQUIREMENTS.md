@@ -3,10 +3,10 @@
 ## v1 Requirements
 
 ### Branding & Content
-- [ ] **BRAND-01**: App uses Focus Reps name, branding, and copy across all screens
-- [ ] **CONTENT-01**: Practices are renamed to original Focus Reps practice names
-- [ ] **CONTENT-02**: Original practice scripts created for audio + text (no Peak Mind IP reuse)
-- [ ] **ONBOARD-01**: Onboarding frames Focus Reps as a deliberate‑practice mentor
+- [x] **BRAND-01**: App uses Focus Reps name, branding, and copy across all screens
+- [x] **CONTENT-01**: Practices are renamed to original Focus Reps practice names
+- [x] **CONTENT-02**: Original practice scripts created for audio + text (no Peak Mind IP reuse)
+- [x] **ONBOARD-01**: Onboarding frames Focus Reps as a deliberate‑practice mentor
 
 ### Practice & Schedule
 - [ ] **SCHED-01**: Default 6‑week training schedule

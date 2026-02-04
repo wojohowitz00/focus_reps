@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Increase sustained focus time through deliberate, repeatable mindfulness practice.
-**Current focus:** Phase 1 — Rebrand + Content Foundation
+**Current focus:** Phase 2 — Practice Progression & Schedule Control
 
 ## Current Position
 
-Phase: 1 of 5 (Rebrand + Content Foundation)
-Plan: 0 of TBD in current phase
+Phase: 2 of 5 (Practice Progression & Schedule Control)
+Plan: 0 of 2 in current phase
 Status: Ready to plan
-Last activity: 2026-02-04 — Roadmap drafted
+Last activity: 2026-02-04 — Phase 1 completed
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██░░░░░░░░░░] 20%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: -
-- Total execution time: -
+- Total plans completed: 3
+- Average duration: ~22 min
+- Total execution time: ~1h 5m
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 1 | 3 | ~65 min | ~22 min |
 
 **Recent Trend:**
-- Last 5 plans: -
-- Trend: -
+- Last 5 plans: 3 completed
+- Trend: steady
 
 ## Accumulated Context
 
@@ -46,14 +46,14 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-None yet.
+None logged.
 
 ### Blockers/Concerns
 
-None yet.
+None.
 
 ## Session Continuity
 
 Last session: 2026-02-04
-Stopped at: Roadmap drafted, awaiting approval
+Stopped at: Phase 1 complete; Phase 2 ready for planning
 Resume file: None
