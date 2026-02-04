@@ -59,7 +59,7 @@ Each task was committed atomically:
 1. **Task 1: Expose elapsed time from Timer** - `df77954` (feat)
 2. **Task 2: Add lapse tracking UI + compute longest interval** - `387e1c6` (feat)
 
-**Plan metadata:** `docs(03-03): complete lapse tracking plan` (this commit)
+**Plan metadata:** `docs(03): complete feedback capture plans` (this commit)
 
 ## Files Created/Modified
 - `components/Timer.tsx` - Added onTick callback

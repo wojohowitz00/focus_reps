@@ -61,7 +61,7 @@ Each task was committed atomically:
 1. **Task 1: Create post-session check-in screen** - `8e91bd9` (feat)
 2. **Task 2: Wire navigation and persistence** - `dbd6cdf` (feat)
 
-**Plan metadata:** `docs(03-02): complete check-in plan` (this commit)
+**Plan metadata:** `docs(03): complete feedback capture plans` (this commit)
 
 ## Files Created/Modified
 - `components/SessionCheckIn.tsx` - Survey component

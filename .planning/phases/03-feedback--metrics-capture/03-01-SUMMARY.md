@@ -60,7 +60,7 @@ Each task was committed atomically:
 1. **Task 1: Add session metrics fields and update defaults** - `05a282c` (feat)
 2. **Task 2: Add session update helper in storage** - `05a282c` (feat)
 
-**Plan metadata:** `docs(03-01): complete metrics model plan` (this commit)
+**Plan metadata:** `docs(03): complete feedback capture plans` (this commit)
 
 ## Files Created/Modified
 - `types/index.ts` - PracticeSession metrics fields
