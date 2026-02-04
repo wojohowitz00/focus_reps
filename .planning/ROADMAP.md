@@ -9,7 +9,7 @@ Transform the existing Peak Mind codebase into Focus Reps by rebranding, replaci
 - [x] **Phase 1: Rebrand + Content Foundation** - Rename practices, rewrite scripts, and reframe onboarding
 - [x] **Phase 2: Practice Progression & Schedule Control** - Solidify schedule logic, flexibility, and longer training options
 - [x] **Phase 3: Feedback & Metrics Capture** - Daily survey, lapse counts, and uninterrupted interval tracking
-- [ ] **Phase 4: Weekly Review & Recommendations** - Aggregate metrics + journaling highlights into weekly insights
+- [x] **Phase 4: Weekly Review & Recommendations** - Aggregate metrics + journaling highlights into weekly insights
 - [ ] **Phase 5: Notifications & Release Readiness** - Weekly summary reminder + cross‑platform polish
 
 ## Phase Details
@@ -74,8 +74,8 @@ Plans:
 **Plans**: TBD (2–3 plans)
 
 Plans:
-- [ ] 04-01: Weekly aggregation logic
-- [ ] 04-02: Weekly review UI + recommendations
+- [x] 04-01: Weekly aggregation logic
+- [x] 04-02: Weekly review UI + recommendations
 
 ### Phase 5: Notifications & Release Readiness
 **Goal**: Enable weekly summary reminder and validate cross‑platform readiness.
@@ -98,5 +98,5 @@ Plans:
 | 1. Rebrand + Content Foundation | 3/3 | Complete | 2026-02-04 |
 | 2. Practice Progression & Schedule Control | 2/2 | Complete | 2026-02-04 |
 | 3. Feedback & Metrics Capture | 3/3 | Complete | 2026-02-04 |
-| 4. Weekly Review & Recommendations | 0/2 | Not started | - |
+| 4. Weekly Review & Recommendations | 2/2 | Complete | 2026-02-04 |
 | 5. Notifications & Release Readiness | 0/2 | Not started | - |

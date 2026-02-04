@@ -21,11 +21,11 @@
 - [x] **METRIC-02**: Session minutes + reps summary tracked
 
 ### Weekly Review
-- [ ] **REVIEW-01**: Weekly review shows total focus minutes
-- [ ] **REVIEW-02**: Weekly review shows longest uninterrupted interval
-- [ ] **REVIEW-03**: Weekly review shows lapses per session
-- [ ] **REVIEW-04**: Weekly review includes journaling highlights
-- [ ] **REVIEW-05**: Weekly review recommends next practice
+- [x] **REVIEW-01**: Weekly review shows total focus minutes
+- [x] **REVIEW-02**: Weekly review shows longest uninterrupted interval
+- [x] **REVIEW-03**: Weekly review shows lapses per session
+- [x] **REVIEW-04**: Weekly review includes journaling highlights
+- [x] **REVIEW-05**: Weekly review recommends next practice
 
 ### Notifications
 - [ ] **NOTIF-01**: Weekly summary reminder notification
