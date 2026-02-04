@@ -24,9 +24,18 @@ export default function PracticeSessionScreen() {
   
   const [sessionStarted, setSessionStarted] = useState(false);
   const [sessionCompleted, setSessionCompleted] = useState(false);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [lapseTimestamps, setLapseTimestamps] = useState<number[]>([]);
   
   const practice = practiceDefinitions[id];
   const instructions = getPracticeInstruction(id);
+
+  const setupSeconds = 90;
+  const closingSeconds = 60;
+  const totalSeconds = practice?.defaultDuration ? practice.defaultDuration * 60 : 0;
+  const practiceSeconds = Math.max(totalSeconds - setupSeconds - closingSeconds, 0);
+  const isPracticePhase = elapsedSeconds >= setupSeconds
+    && elapsedSeconds < Math.max(totalSeconds - closingSeconds, setupSeconds);
 
   if (!practice || !instructions) {
     return (
@@ -40,8 +49,49 @@ export default function PracticeSessionScreen() {
     setSessionStarted(true);
   };
 
+  const handleMarkLapse = () => {
+    if (!isPracticePhase) {
+      return;
+    }
+    setLapseTimestamps((prev) => {
+      const practiceElapsed = Math.max(elapsedSeconds - setupSeconds, 0);
+      const last = prev[prev.length - 1];
+      if (last === practiceElapsed) {
+        return prev;
+      }
+      return [...prev, practiceElapsed];
+    });
+  };
+
+  const calculateLongestFocusInterval = () => {
+    if (practiceSeconds <= 0) {
+      return 0;
+    }
+    if (lapseTimestamps.length === 0) {
+      return practiceSeconds;
+    }
+    const sorted = [...lapseTimestamps].sort((a, b) => a - b);
+    let longest = sorted[0];
+    let previous = sorted[0];
+
+    for (let i = 1; i < sorted.length; i++) {
+      const interval = sorted[i] - previous;
+      if (interval > longest) {
+        longest = interval;
+      }
+      previous = sorted[i];
+    }
+
+    const tailInterval = practiceSeconds - previous;
+    if (tailInterval > longest) {
+      longest = tailInterval;
+    }
+    return Math.max(0, Math.floor(longest));
+  };
+
   const handleComplete = async () => {
     try {
+      const longestFocusIntervalSec = calculateLongestFocusInterval();
       // Save session to storage
       const session: PracticeSession = {
         id: `session-${Date.now()}`,
@@ -50,6 +100,8 @@ export default function PracticeSessionScreen() {
         duration: practice.defaultDuration,
         scheduledDuration: practice.defaultDuration,
         completed: true,
+        lapseCount: lapseTimestamps.length,
+        longestFocusIntervalSec,
       };
 
       await saveSession(session);
@@ -140,8 +192,22 @@ export default function PracticeSessionScreen() {
         <Text style={styles.practiceName}>{practice.name}</Text>
         <Timer
           duration={practice.defaultDuration}
+          onTick={setElapsedSeconds}
           onComplete={handleComplete}
         />
+        <View style={styles.lapseRow}>
+          <TouchableOpacity
+            style={[styles.lapseButton, !isPracticePhase && styles.lapseButtonDisabled]}
+            onPress={handleMarkLapse}
+            disabled={!isPracticePhase}
+          >
+            <Text style={styles.lapseButtonText}>Mark Lapse</Text>
+          </TouchableOpacity>
+          <View style={styles.lapseCount}>
+            <Text style={styles.lapseCountLabel}>Lapses</Text>
+            <Text style={styles.lapseCountValue}>{lapseTimestamps.length}</Text>
+          </View>
+        </View>
         {/* Audio player can be added here when audio files are available */}
         {/* <AudioPlayer audioUri={instructions.audioUri} /> */}
       </View>
@@ -217,6 +283,43 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+  },
+  lapseRow: {
+    marginTop: 24,
+    alignItems: 'center',
+    width: '100%',
+  },
+  lapseButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: '#4CAF50',
+    backgroundColor: '#fff',
+    marginBottom: 12,
+  },
+  lapseButtonDisabled: {
+    borderColor: '#ccc',
+    opacity: 0.6,
+  },
+  lapseButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#4CAF50',
+  },
+  lapseCount: {
+    alignItems: 'center',
+  },
+  lapseCountLabel: {
+    fontSize: 12,
+    color: '#666',
+    textTransform: 'uppercase',
+    letterSpacing: 0.6,
+  },
+  lapseCountValue: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#333',
   },
   practiceName: {
     fontSize: 24,
