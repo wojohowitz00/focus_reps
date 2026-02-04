@@ -17,6 +17,7 @@ interface TimerProps {
   duration: number; // in minutes
   onComplete?: () => void;
   onPause?: (elapsed: number) => void;
+  onTick?: (elapsed: number) => void;
 }
 
 type TimerPhase = 'setup' | 'practice' | 'closing';
@@ -51,6 +52,8 @@ export default function Timer({ duration, onComplete, onPause }: TimerProps) {
             onComplete?.();
             return totalSeconds;
           }
+
+          onTick?.(newSeconds);
           
           return newSeconds;
         });
