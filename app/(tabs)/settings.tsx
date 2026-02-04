@@ -207,8 +207,8 @@ export default function SettingsScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>About</Text>
           <Text style={styles.aboutText}>
-            Peak Mind is based on Dr. Amishi Jha's research on attention and mindfulness.
-            The program follows a six-week structure designed to strengthen your attention system.
+            Focus Reps is grounded in attention research and mindfulness practice.
+            The program follows a six-week structure designed to build sustained focus.
           </Text>
           <Text style={styles.aboutText}>
             Minimum effective dose: 12 minutes, 5 days per week for 4 weeks.

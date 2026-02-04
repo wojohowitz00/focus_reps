@@ -10,8 +10,8 @@ export default function HomeScreen() {
       <StatusBar style="auto" />
       
       <View style={styles.header}>
-        <Text style={styles.title}>Peak Mind</Text>
-        <Text style={styles.subtitle}>Your mindfulness practice</Text>
+        <Text style={styles.title}>Focus Reps</Text>
+        <Text style={styles.subtitle}>Train your focus</Text>
       </View>
 
       <View style={styles.content}>

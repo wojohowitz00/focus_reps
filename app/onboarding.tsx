@@ -66,7 +66,7 @@ export default function OnboardingScreen() {
         {step === 1 && (
           <View style={styles.step}>
             <Text style={styles.emoji}>🧘</Text>
-            <Text style={styles.title}>Welcome to Peak Mind</Text>
+            <Text style={styles.title}>Welcome to Focus Reps</Text>
             <Text style={styles.description}>
               A science-backed mindfulness app based on Dr. Amishi Jha's research.
               Build your attention and focus with just 12 minutes a day.
