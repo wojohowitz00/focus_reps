@@ -50,4 +50,26 @@
 
 ## Traceability
 
-(Will be populated by ROADMAP phases)
+| Requirement | Phase |
+|------------|-------|
+| BRAND-01 | Phase 1 |
+| CONTENT-01 | Phase 1 |
+| CONTENT-02 | Phase 1 |
+| ONBOARD-01 | Phase 1 |
+| SCHED-01 | Phase 2 |
+| SCHED-02 | Phase 2 |
+| SCHED-03 | Phase 2 |
+| SCHED-04 | Phase 2 |
+| FEED-01 | Phase 3 |
+| FEED-02 | Phase 3 |
+| METRIC-01 | Phase 3 |
+| METRIC-02 | Phase 3 |
+| PRIV-01 | Phase 3 |
+| REVIEW-01 | Phase 4 |
+| REVIEW-02 | Phase 4 |
+| REVIEW-03 | Phase 4 |
+| REVIEW-04 | Phase 4 |
+| REVIEW-05 | Phase 4 |
+| NOTIF-01 | Phase 5 |
+| NOTIF-02 | Phase 5 |
+| PLATFORM-01 | Phase 5 |
