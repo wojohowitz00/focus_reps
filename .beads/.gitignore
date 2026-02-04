@@ -10,7 +10,6 @@ daemon.lock
 daemon.log
 daemon.pid
 bd.sock
-*.startlock
 sync-state.json
 last-touched
 
@@ -37,8 +36,6 @@ beads.right.meta.json
 # These files are machine-specific and should not be shared across clones
 .sync.lock
 sync_base.jsonl
-
-# Local export state (per-machine)
 export-state/
 
 # NOTE: Do NOT add negation patterns (e.g., !issues.jsonl) here.
