@@ -3,8 +3,8 @@
  * Calculates streaks, statistics, and progress metrics
  */
 
-import { PracticeSession, UserProgress, ProgramMode } from '../types';
-import { getSessions } from './storage';
+import { PracticeSession, UserProgress, ProgramMode, WeeklySummary, WeeklyRecommendation } from '../types';
+import { getSessions, getJournalEntries } from './storage';
 import { getCurrentWeek, getCurrentDay } from './practices';
 
 /**
@@ -254,4 +254,80 @@ export async function checkMilestones(progress: UserProgress): Promise<Milestone
   ];
 
   return milestones;
+}
+
+export async function getWeeklySummary(startDate: Date, weekOffset = 0): Promise<WeeklySummary> {
+  const sessions = await getSessions();
+  const entries = await getJournalEntries();
+
+  const weekStart = new Date(startDate);
+  weekStart.setDate(weekStart.getDate() + weekOffset * 7);
+  weekStart.setHours(0, 0, 0, 0);
+
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekEnd.getDate() + 7);
+
+  const weekSessions = sessions.filter((session) => {
+    const sessionDate = new Date(session.date);
+    return sessionDate >= weekStart && sessionDate < weekEnd && session.completed;
+  });
+
+  const sessionsCount = weekSessions.length;
+  const totalMinutes = weekSessions.reduce((sum, session) => sum + session.duration, 0);
+  const longestIntervalSec = weekSessions.reduce(
+    (max, session) => Math.max(max, session.longestFocusIntervalSec ?? 0),
+    0
+  );
+  const lapses = weekSessions
+    .map((session) => session.lapseCount)
+    .filter((value): value is number => typeof value === 'number');
+  const avgLapses = lapses.length > 0
+    ? lapses.reduce((sum, value) => sum + value, 0) / lapses.length
+    : 0;
+
+  const journalHighlights = entries
+    .filter((entry) => {
+      const entryDate = new Date(entry.date);
+      return entryDate >= weekStart && entryDate < weekEnd;
+    })
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3);
+
+  return {
+    weekStart,
+    weekEnd,
+    sessionsCount,
+    totalMinutes,
+    longestIntervalSec,
+    avgLapses,
+    journalHighlights,
+  };
+}
+
+export function getWeeklyRecommendation(summary: WeeklySummary): WeeklyRecommendation {
+  if (summary.sessionsCount === 0) {
+    return {
+      practiceType: 'anchor-breath',
+      rationale: 'Start with Anchor Breath to rebuild consistency and reset your baseline.',
+    };
+  }
+
+  if (summary.avgLapses >= 6 || summary.longestIntervalSec < 120) {
+    return {
+      practiceType: 'anchor-breath',
+      rationale: 'Anchor Breath strengthens recovery speed when lapses are frequent.',
+    };
+  }
+
+  if (summary.longestIntervalSec >= 240) {
+    return {
+      practiceType: 'thought-traffic',
+      rationale: 'Your intervals are improving. Thought Traffic will deepen meta-awareness.',
+    };
+  }
+
+  return {
+    practiceType: 'body-sweep',
+    rationale: 'Body Sweep builds steady focus while moving attention smoothly.',
+  };
 }

@@ -67,3 +67,18 @@ export interface PracticeSchedule {
   completed: boolean;
   date?: Date;
 }
+
+export interface WeeklySummary {
+  weekStart: Date;
+  weekEnd: Date;
+  sessionsCount: number;
+  totalMinutes: number;
+  longestIntervalSec: number;
+  avgLapses: number;
+  journalHighlights: JournalEntry[];
+}
+
+export interface WeeklyRecommendation {
+  practiceType: PracticeType;
+  rationale: string;
+}
