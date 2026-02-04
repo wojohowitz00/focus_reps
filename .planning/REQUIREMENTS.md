@@ -28,11 +28,11 @@
 - [x] **REVIEW-05**: Weekly review recommends next practice
 
 ### Notifications
-- [ ] **NOTIF-01**: Weekly summary reminder notification
-- [ ] **NOTIF-02**: Optional daily reminder (opt‑in)
+- [x] **NOTIF-01**: Weekly summary reminder notification
+- [x] **NOTIF-02**: Optional daily reminder (opt‑in)
 
 ### Platform & Privacy
-- [ ] **PLATFORM-01**: iOS and Android supported
+- [x] **PLATFORM-01**: iOS and Android supported
 - [x] **PRIV-01**: App works offline with local‑only storage (no account required)
 
 ## v1.x (After Validation)

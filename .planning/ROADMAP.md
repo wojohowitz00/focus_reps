@@ -10,7 +10,7 @@ Transform the existing Peak Mind codebase into Focus Reps by rebranding, replaci
 - [x] **Phase 2: Practice Progression & Schedule Control** - Solidify schedule logic, flexibility, and longer training options
 - [x] **Phase 3: Feedback & Metrics Capture** - Daily survey, lapse counts, and uninterrupted interval tracking
 - [x] **Phase 4: Weekly Review & Recommendations** - Aggregate metrics + journaling highlights into weekly insights
-- [ ] **Phase 5: Notifications & Release Readiness** - Weekly summary reminder + cross‑platform polish
+- [x] **Phase 5: Notifications & Release Readiness** - Weekly summary reminder + cross‑platform polish
 
 ## Phase Details
 
@@ -88,8 +88,8 @@ Plans:
 **Plans**: TBD (1–2 plans)
 
 Plans:
-- [ ] 05-01: Weekly/daily reminder scheduling
-- [ ] 05-02: Cross‑platform QA + polish
+- [x] 05-01: Weekly/daily reminder scheduling
+- [x] 05-02: Cross‑platform QA + polish
 
 ## Progress
 
@@ -99,4 +99,4 @@ Plans:
 | 2. Practice Progression & Schedule Control | 2/2 | Complete | 2026-02-04 |
 | 3. Feedback & Metrics Capture | 3/3 | Complete | 2026-02-04 |
 | 4. Weekly Review & Recommendations | 2/2 | Complete | 2026-02-04 |
-| 5. Notifications & Release Readiness | 0/2 | Not started | - |
+| 5. Notifications & Release Readiness | 2/2 | Complete | 2026-02-04 |
