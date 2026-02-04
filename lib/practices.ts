@@ -3,7 +3,7 @@
  * Implements the six-week Peak Mind program structure
  */
 
-import { PracticeType, PracticeSchedule } from '../types';
+import { PracticeType, PracticeSchedule, ProgramMode } from '../types';
 
 export interface PracticeDefinition {
   id: PracticeType;
@@ -11,6 +11,26 @@ export interface PracticeDefinition {
   description: string;
   defaultDuration: number; // minutes
   icon?: string;
+}
+
+const DEFAULT_PROGRAM_MODE: ProgramMode = 'standard_6_week';
+
+function getProgramWeekLimit(programMode: ProgramMode): number | null {
+  if (programMode === 'standard_6_week') return 6;
+  if (programMode === 'extended_8_week') return 8;
+  return null;
+}
+
+function getCustomPracticeForDay(
+  customPracticeSet: PracticeType[] | undefined,
+  day: number,
+  fallback: PracticeType = 'anchor-breath'
+): PracticeType {
+  if (!customPracticeSet || customPracticeSet.length === 0) {
+    return fallback;
+  }
+  const index = (day - 1) % customPracticeSet.length;
+  return customPracticeSet[index];
 }
 
 export const practiceDefinitions: Record<PracticeType, PracticeDefinition> = {
@@ -48,7 +68,16 @@ export const practiceDefinitions: Record<PracticeType, PracticeDefinition> = {
  * Week 4: Anchor Breath + Kindness Circuit (alternating)
  * Weeks 5-6: Customizable
  */
-export function getPracticeForWeekAndDay(week: number, day: number): PracticeType {
+export function getPracticeForWeekAndDay(
+  week: number,
+  day: number,
+  programMode: ProgramMode = DEFAULT_PROGRAM_MODE,
+  customPracticeSet?: PracticeType[]
+): PracticeType {
+  if (programMode === 'open_training') {
+    return getCustomPracticeForDay(customPracticeSet, day);
+  }
+
   if (week === 1) {
     return 'anchor-breath';
   }
@@ -67,22 +96,29 @@ export function getPracticeForWeekAndDay(week: number, day: number): PracticeTyp
     // Alternating: Anchor Breath on odd days, Kindness Circuit on even days
     return day % 2 === 1 ? 'anchor-breath' : 'kindness-circuit';
   }
-  
-  // Weeks 5-6: Default to Anchor Breath, but user can customize
+
+  if (programMode === 'extended_8_week') {
+    return getCustomPracticeForDay(customPracticeSet, day);
+  }
+
+  // Weeks 5-6: Default to Anchor Breath for standard program
   return 'anchor-breath';
 }
 
 /**
  * Get current week based on start date
  */
-export function getCurrentWeek(startDate: Date): number {
+export function getCurrentWeek(
+  startDate: Date,
+  programMode: ProgramMode = DEFAULT_PROGRAM_MODE
+): number {
   const now = new Date();
   const diffTime = Math.abs(now.getTime() - startDate.getTime());
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   const week = Math.floor(diffDays / 7) + 1;
-  
-  // Cap at 6 weeks for the program
-  return Math.min(week, 6);
+
+  const limit = getProgramWeekLimit(programMode);
+  return limit ? Math.min(week, limit) : week;
 }
 
 /**
@@ -98,25 +134,35 @@ export function getCurrentDay(startDate: Date): number {
 /**
  * Get today's recommended practice
  */
-export function getTodayPractice(startDate: Date): PracticeType {
-  const week = getCurrentWeek(startDate);
+export function getTodayPractice(
+  startDate: Date,
+  programMode: ProgramMode = DEFAULT_PROGRAM_MODE,
+  customPracticeSet?: PracticeType[]
+): PracticeType {
+  const week = getCurrentWeek(startDate, programMode);
   const day = getCurrentDay(startDate);
-  return getPracticeForWeekAndDay(week, day);
+  return getPracticeForWeekAndDay(week, day, programMode, customPracticeSet);
 }
 
 /**
  * Get next practice in schedule
  */
-export function getNextPractice(startDate: Date): PracticeType {
-  const week = getCurrentWeek(startDate);
+export function getNextPractice(
+  startDate: Date,
+  programMode: ProgramMode = DEFAULT_PROGRAM_MODE,
+  customPracticeSet?: PracticeType[]
+): PracticeType {
+  const week = getCurrentWeek(startDate, programMode);
   const day = getCurrentDay(startDate);
-  
+
+  const limit = getProgramWeekLimit(programMode);
   if (day === 7) {
     // Next week, day 1
-    return getPracticeForWeekAndDay(Math.min(week + 1, 6), 1);
+    const nextWeek = limit ? Math.min(week + 1, limit) : week + 1;
+    return getPracticeForWeekAndDay(nextWeek, 1, programMode, customPracticeSet);
   }
-  
-  return getPracticeForWeekAndDay(week, day + 1);
+
+  return getPracticeForWeekAndDay(week, day + 1, programMode, customPracticeSet);
 }
 
 /**
@@ -138,11 +184,15 @@ export function isPracticeCompleted(
 /**
  * Get practice schedule for a specific week
  */
-export function getWeekSchedule(week: number): PracticeSchedule[] {
+export function getWeekSchedule(
+  week: number,
+  programMode: ProgramMode = DEFAULT_PROGRAM_MODE,
+  customPracticeSet?: PracticeType[]
+): PracticeSchedule[] {
   const schedule: PracticeSchedule[] = [];
   
   for (let day = 1; day <= 7; day++) {
-    const practice = getPracticeForWeekAndDay(week, day);
+    const practice = getPracticeForWeekAndDay(week, day, programMode, customPracticeSet);
     schedule.push({
       week,
       day,

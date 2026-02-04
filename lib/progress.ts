@@ -3,7 +3,7 @@
  * Calculates streaks, statistics, and progress metrics
  */
 
-import { PracticeSession, UserProgress } from '../types';
+import { PracticeSession, UserProgress, ProgramMode } from '../types';
 import { getSessions } from './storage';
 import { getCurrentWeek, getCurrentDay } from './practices';
 
@@ -71,14 +71,17 @@ export async function getTotalMinutes(): Promise<number> {
 /**
  * Get weekly statistics
  */
-export async function getWeeklyStats(startDate: Date): Promise<{
+export async function getWeeklyStats(
+  startDate: Date,
+  programMode: ProgramMode = 'standard_6_week'
+): Promise<{
   currentWeek: number;
   daysCompleted: number;
   goalDays: number;
   totalMinutes: number;
 }> {
   const sessions = await getSessions();
-  const currentWeek = getCurrentWeek(startDate);
+  const currentWeek = getCurrentWeek(startDate, programMode);
   const currentDay = getCurrentDay(startDate);
 
   // Get sessions from current week
@@ -177,18 +180,22 @@ export async function getLongestStreak(startDate: Date): Promise<number> {
 /**
  * Calculate all progress metrics
  */
-export async function calculateAllProgress(startDate: Date): Promise<UserProgress> {
+export async function calculateAllProgress(startDate?: Date): Promise<UserProgress> {
   const sessions = await getSessions();
   const totalSessions = sessions.filter((s) => s.completed).length;
   const totalMinutes = await getTotalMinutes();
-  const currentStreak = await calculateStreak(startDate);
-  const longestStreak = await getLongestStreak(startDate);
-  const currentWeek = getCurrentWeek(startDate);
-  const currentDay = getCurrentDay(startDate);
 
   // Get default settings
   const { getSettings } = await import('./storage');
   const settings = await getSettings();
+  const programMode = settings?.programMode ?? 'standard_6_week';
+  const resolvedStartDate = startDate
+    ?? (settings?.programStartDate ? new Date(settings.programStartDate) : new Date());
+
+  const currentStreak = await calculateStreak(resolvedStartDate);
+  const longestStreak = await getLongestStreak(resolvedStartDate);
+  const currentWeek = getCurrentWeek(resolvedStartDate, programMode);
+  const currentDay = getCurrentDay(resolvedStartDate);
 
   return {
     currentWeek,
@@ -202,6 +209,8 @@ export async function calculateAllProgress(startDate: Date): Promise<UserProgres
       defaultDuration: 12,
       soundEnabled: true,
       notificationsEnabled: true,
+      programMode: 'standard_6_week',
+      programStartDate: new Date().toISOString(),
     },
   };
 }

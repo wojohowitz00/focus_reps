@@ -45,6 +45,18 @@ describe('Practice Schedule Functions', () => {
       expect(getPracticeForWeekAndDay(5, 1)).toBe('anchor-breath');
       expect(getPracticeForWeekAndDay(6, 1)).toBe('anchor-breath');
     });
+
+    test('Extended 8-week mode defaults to anchor-breath in weeks 7-8', () => {
+      expect(getPracticeForWeekAndDay(7, 1, 'extended_8_week')).toBe('anchor-breath');
+      expect(getPracticeForWeekAndDay(8, 2, 'extended_8_week')).toBe('anchor-breath');
+    });
+
+    test('Open training mode uses custom practice set rotation', () => {
+      const customSet = ['anchor-breath', 'body-sweep'] as PracticeType[];
+      expect(getPracticeForWeekAndDay(1, 1, 'open_training', customSet)).toBe('anchor-breath');
+      expect(getPracticeForWeekAndDay(1, 2, 'open_training', customSet)).toBe('body-sweep');
+      expect(getPracticeForWeekAndDay(1, 3, 'open_training', customSet)).toBe('anchor-breath');
+    });
   });
 
   describe('getCurrentWeek', () => {
@@ -60,6 +72,12 @@ describe('Practice Schedule Functions', () => {
       const startDate = new Date('2020-01-01'); // Very old date
       const week = getCurrentWeek(startDate);
       expect(week).toBe(6);
+    });
+
+    test('Caps at 8 weeks for extended program', () => {
+      const startDate = new Date('2020-01-01'); // Very old date
+      const week = getCurrentWeek(startDate, 'extended_8_week');
+      expect(week).toBe(8);
     });
   });
 
