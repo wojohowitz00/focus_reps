@@ -22,7 +22,7 @@ Transform the existing Peak Mind codebase into Focus Reps by rebranding, replaci
   1. User sees Focus Reps branding and copy on all primary screens.
   2. All practices display new names and original scripts (audio + text).
   3. Onboarding explains deliberate‑practice focus and mentor framing.
-**Plans**: TBD (2–3 plans)
+**Plans**: 3 plans
 
 Plans:
 - [ ] 01-01: Rebrand UI + copy updates across screens
