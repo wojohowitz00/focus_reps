@@ -7,7 +7,7 @@ Transform the existing Peak Mind codebase into Focus Reps by rebranding, replaci
 ## Phases
 
 - [x] **Phase 1: Rebrand + Content Foundation** - Rename practices, rewrite scripts, and reframe onboarding
-- [ ] **Phase 2: Practice Progression & Schedule Control** - Solidify schedule logic, flexibility, and longer training options
+- [x] **Phase 2: Practice Progression & Schedule Control** - Solidify schedule logic, flexibility, and longer training options
 - [ ] **Phase 3: Feedback & Metrics Capture** - Daily survey, lapse counts, and uninterrupted interval tracking
 - [ ] **Phase 4: Weekly Review & Recommendations** - Aggregate metrics + journaling highlights into weekly insights
 - [ ] **Phase 5: Notifications & Release Readiness** - Weekly summary reminder + cross‑platform polish
@@ -41,8 +41,8 @@ Plans:
 **Plans**: TBD (2–3 plans)
 
 Plans:
-- [ ] 02-01: Schedule engine updates (6‑week + flexible pacing)
-- [ ] 02-02: Practice selection UX + extended training option
+- [x] 02-01: Schedule engine updates (6‑week + flexible pacing)
+- [x] 02-02: Practice selection UX + extended training option
 
 ### Phase 3: Feedback & Metrics Capture
 **Goal**: Implement deliberate‑practice feedback loop with surveys, lapses, and uninterrupted interval tracking.
@@ -96,7 +96,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Rebrand + Content Foundation | 3/3 | Complete | 2026-02-04 |
-| 2. Practice Progression & Schedule Control | 0/2 | Not started | - |
+| 2. Practice Progression & Schedule Control | 2/2 | Complete | 2026-02-04 |
 | 3. Feedback & Metrics Capture | 0/3 | Not started | - |
 | 4. Weekly Review & Recommendations | 0/2 | Not started | - |
 | 5. Notifications & Release Readiness | 0/2 | Not started | - |

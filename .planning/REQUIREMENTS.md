@@ -9,10 +9,10 @@
 - [x] **ONBOARD-01**: Onboarding frames Focus Reps as a deliberate‑practice mentor
 
 ### Practice & Schedule
-- [ ] **SCHED-01**: Default 6‑week training schedule
-- [ ] **SCHED-02**: Flexible pacing after week 4 (continue without strict day‑by‑day adherence)
-- [ ] **SCHED-03**: Users can select practices outside the schedule
-- [ ] **SCHED-04**: Longer training option available (assumed extended schedule, e.g., 8‑week)
+- [x] **SCHED-01**: Default 6‑week training schedule
+- [x] **SCHED-02**: Flexible pacing after week 4 (continue without strict day‑by‑day adherence)
+- [x] **SCHED-03**: Users can select practices outside the schedule
+- [x] **SCHED-04**: Longer training option available (assumed extended schedule, e.g., 8‑week)
 
 ### Feedback & Metrics
 - [ ] **FEED-01**: Daily survey captures focus quality, mood, stress, and energy
