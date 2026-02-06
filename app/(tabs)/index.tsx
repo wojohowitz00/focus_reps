@@ -90,30 +90,30 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#F5F7FA',
   },
   header: {
     paddingTop: 60,
     paddingHorizontal: 20,
     paddingBottom: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
   },
   content: {
     flex: 1,
     padding: 20,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 20,
     marginBottom: 20,
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 14,
-    color: '#666',
+    color: '#64748B',
     marginBottom: 8,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
@@ -133,30 +133,30 @@ const styles = StyleSheet.create({
   practiceName: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 4,
   },
   practiceDuration: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
     marginBottom: 20,
   },
   startButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#1D4ED8',
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 8,
     alignItems: 'center',
   },
   startButtonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
   },
   stats: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 20,
     shadowColor: '#000',
@@ -171,12 +171,12 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#4CAF50',
+    color: '#1D4ED8',
     marginBottom: 4,
   },
   statLabel: {
     fontSize: 12,
-    color: '#666',
+    color: '#64748B',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },

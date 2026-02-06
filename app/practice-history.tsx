@@ -138,33 +138,33 @@ export default function PracticeHistoryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#F5F7FA',
   },
   header: {
     paddingTop: 60,
     paddingHorizontal: 20,
     paddingBottom: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: '#E2E8F0',
   },
   backButton: {
     marginBottom: 12,
   },
   backButtonText: {
     fontSize: 16,
-    color: '#4CAF50',
+    color: '#1D4ED8',
     fontWeight: '600',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
   },
   content: {
     flex: 1,
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
   },
   emptyState: {
     alignItems: 'center',
@@ -187,16 +187,16 @@ const styles = StyleSheet.create({
   },
   emptyStateText: {
     fontSize: 18,
-    color: '#666',
+    color: '#64748B',
     marginBottom: 8,
   },
   emptyStateSubtext: {
     fontSize: 14,
-    color: '#999',
+    color: '#94A3B8',
     textAlign: 'center',
   },
   sessionCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -217,12 +217,12 @@ const styles = StyleSheet.create({
   practiceName: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 4,
   },
   sessionDate: {
     fontSize: 14,
-    color: '#666',
+    color: '#64748B',
   },
   sessionStats: {
     alignItems: 'flex-end',
@@ -230,17 +230,17 @@ const styles = StyleSheet.create({
   duration: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#4CAF50',
+    color: '#1D4ED8',
     marginBottom: 4,
   },
   partial: {
     fontSize: 12,
-    color: '#ff9800',
+    color: '#B45309',
     fontStyle: 'italic',
   },
   hasJournal: {
     fontSize: 12,
-    color: '#4CAF50',
+    color: '#1D4ED8',
     marginTop: 8,
     fontStyle: 'italic',
   },

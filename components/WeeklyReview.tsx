@@ -101,7 +101,7 @@ export default function WeeklyReview({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#F5F7FA',
   },
   scrollView: {
     flex: 1,
@@ -116,15 +116,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 6,
   },
   subtitle: {
     fontSize: 14,
-    color: '#666',
+    color: '#64748B',
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 12,
   },
   metricRow: {
@@ -150,23 +150,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     marginHorizontal: 4,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#F8FAFC',
     borderRadius: 8,
   },
   metricValue: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#4CAF50',
+    color: '#1D4ED8',
   },
   metricLabel: {
     fontSize: 12,
-    color: '#666',
+    color: '#64748B',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   placeholder: {
     fontSize: 14,
-    color: '#999',
+    color: '#94A3B8',
     fontStyle: 'italic',
   },
   highlightItem: {
@@ -174,26 +174,26 @@ const styles = StyleSheet.create({
   },
   highlightDate: {
     fontSize: 12,
-    color: '#999',
+    color: '#94A3B8',
     marginBottom: 4,
   },
   highlightText: {
     fontSize: 14,
-    color: '#333',
+    color: '#0F172A',
   },
   recommendationTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 6,
   },
   recommendationText: {
     fontSize: 14,
-    color: '#666',
+    color: '#64748B',
     marginBottom: 12,
   },
   primaryButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#1D4ED8',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
@@ -201,6 +201,6 @@ const styles = StyleSheet.create({
   primaryButtonText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#fff',
+    color: '#FFFFFF',
   },
 });

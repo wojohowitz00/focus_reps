@@ -24,12 +24,19 @@ function TabNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#4CAF50',
-        tabBarInactiveTintColor: '#999',
+        tabBarActiveTintColor: '#1D4ED8',
+        tabBarInactiveTintColor: '#94A3B8',
         tabBarStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: '#FFFFFF',
           borderTopWidth: 1,
-          borderTopColor: '#e0e0e0',
+          borderTopColor: '#E2E8F0',
+          height: 64,
+          paddingTop: 8,
+          paddingBottom: 8,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
         },
       }}
     >
@@ -107,7 +114,19 @@ export default function RootLayout() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          headerStyle: { backgroundColor: '#FFFFFF' },
+          headerTintColor: '#0F172A',
+          headerTitleStyle: {
+            fontSize: 17,
+            fontWeight: '700',
+          },
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+        }}
+      >
         {showOnboarding ? (
           <Stack.Screen name="Onboarding" component={OnboardingScreen} />
         ) : null}

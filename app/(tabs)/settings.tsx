@@ -332,8 +332,8 @@ export default function SettingsScreen() {
             <Switch
               value={settings.notificationsEnabled}
               onValueChange={(value) => handleToggle('notificationsEnabled', value)}
-              trackColor={{ false: '#e0e0e0', true: '#4CAF50' }}
-              thumbColor="#fff"
+              trackColor={{ false: '#E2E8F0', true: '#1D4ED8' }}
+              thumbColor="#FFFFFF"
             />
           </View>
 
@@ -379,8 +379,8 @@ export default function SettingsScreen() {
             <Switch
               value={settings.weeklyReminderEnabled}
               onValueChange={handleWeeklyReminderToggle}
-              trackColor={{ false: '#e0e0e0', true: '#4CAF50' }}
-              thumbColor="#fff"
+              trackColor={{ false: '#E2E8F0', true: '#1D4ED8' }}
+              thumbColor="#FFFFFF"
             />
           </View>
 
@@ -451,8 +451,8 @@ export default function SettingsScreen() {
             <Switch
               value={settings.soundEnabled}
               onValueChange={(value) => handleToggle('soundEnabled', value)}
-              trackColor={{ false: '#e0e0e0', true: '#4CAF50' }}
-              thumbColor="#fff"
+              trackColor={{ false: '#E2E8F0', true: '#1D4ED8' }}
+              thumbColor="#FFFFFF"
             />
           </View>
         </View>
@@ -475,23 +475,23 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#F5F7FA',
   },
   header: {
     paddingTop: 60,
     paddingHorizontal: 20,
     paddingBottom: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
   },
   content: {
     flex: 1,
@@ -505,10 +505,10 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
   },
   section: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 20,
     marginBottom: 20,
@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 16,
   },
   settingRow: {
@@ -533,12 +533,12 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 4,
   },
   settingDescription: {
     fontSize: 14,
-    color: '#666',
+    color: '#64748B',
   },
   durationOptions: {
     flexDirection: 'row',
@@ -550,19 +550,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 20,
     borderWidth: 2,
-    borderColor: '#e0e0e0',
-    backgroundColor: '#fff',
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
   },
   durationOptionSelected: {
-    borderColor: '#4CAF50',
-    backgroundColor: '#f1f8f4',
+    borderColor: '#1D4ED8',
+    backgroundColor: '#E8EEFF',
   },
   durationOptionText: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
   },
   durationOptionTextSelected: {
-    color: '#4CAF50',
+    color: '#1D4ED8',
     fontWeight: '600',
   },
   timeOptions: {
@@ -581,20 +581,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
-    backgroundColor: '#fff',
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
   },
   weekdayOptionSelected: {
-    borderColor: '#4CAF50',
-    backgroundColor: '#f1f8f4',
+    borderColor: '#1D4ED8',
+    backgroundColor: '#E8EEFF',
   },
   weekdayOptionText: {
     fontSize: 12,
-    color: '#666',
+    color: '#64748B',
     fontWeight: '600',
   },
   weekdayOptionTextSelected: {
-    color: '#4CAF50',
+    color: '#1D4ED8',
   },
   trackOptions: {
     flexDirection: 'row',
@@ -606,20 +606,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 18,
     borderWidth: 2,
-    borderColor: '#e0e0e0',
-    backgroundColor: '#fff',
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
   },
   trackOptionSelected: {
-    borderColor: '#4CAF50',
-    backgroundColor: '#f1f8f4',
+    borderColor: '#1D4ED8',
+    backgroundColor: '#E8EEFF',
   },
   trackOptionText: {
     fontSize: 14,
-    color: '#666',
+    color: '#64748B',
     fontWeight: '500',
   },
   trackOptionTextSelected: {
-    color: '#4CAF50',
+    color: '#1D4ED8',
     fontWeight: '600',
   },
   practiceChips: {
@@ -632,19 +632,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
-    backgroundColor: '#fff',
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
   },
   practiceChipSelected: {
-    borderColor: '#4CAF50',
-    backgroundColor: '#f1f8f4',
+    borderColor: '#1D4ED8',
+    backgroundColor: '#E8EEFF',
   },
   practiceChipText: {
     fontSize: 13,
-    color: '#666',
+    color: '#64748B',
   },
   practiceChipTextSelected: {
-    color: '#4CAF50',
+    color: '#1D4ED8',
     fontWeight: '600',
   },
   timeOption: {
@@ -652,24 +652,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 20,
     borderWidth: 2,
-    borderColor: '#e0e0e0',
-    backgroundColor: '#fff',
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
   },
   timeOptionSelected: {
-    borderColor: '#4CAF50',
-    backgroundColor: '#f1f8f4',
+    borderColor: '#1D4ED8',
+    backgroundColor: '#E8EEFF',
   },
   timeOptionText: {
     fontSize: 14,
-    color: '#666',
+    color: '#64748B',
   },
   timeOptionTextSelected: {
-    color: '#4CAF50',
+    color: '#1D4ED8',
     fontWeight: '600',
   },
   aboutText: {
     fontSize: 14,
-    color: '#666',
+    color: '#64748B',
     lineHeight: 20,
     marginBottom: 12,
   },

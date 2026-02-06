@@ -146,7 +146,7 @@ export default function SessionCheckIn({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#F5F7FA',
   },
   scrollView: {
     flex: 1,
@@ -161,21 +161,21 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 6,
   },
   subtitle: {
     fontSize: 14,
-    color: '#666',
+    color: '#64748B',
     marginBottom: 6,
   },
   practiceLabel: {
     fontSize: 14,
-    color: '#4CAF50',
+    color: '#1D4ED8',
     fontWeight: '600',
   },
   metricCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -188,12 +188,12 @@ const styles = StyleSheet.create({
   metricTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 6,
   },
   metricHelper: {
     fontSize: 12,
-    color: '#666',
+    color: '#64748B',
     marginBottom: 10,
   },
   metricScale: {
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
   metricAnchor: {
     fontSize: 12,
-    color: '#999',
+    color: '#94A3B8',
   },
   ratingRow: {
     flexDirection: 'row',
@@ -214,32 +214,32 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 22,
     borderWidth: 2,
-    borderColor: '#e0e0e0',
+    borderColor: '#E2E8F0',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   ratingButtonSelected: {
-    borderColor: '#4CAF50',
-    backgroundColor: '#f1f8f4',
+    borderColor: '#1D4ED8',
+    backgroundColor: '#E8EEFF',
   },
   ratingButtonText: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
     fontWeight: '600',
   },
   ratingButtonTextSelected: {
-    color: '#4CAF50',
+    color: '#1D4ED8',
   },
   lapseInput: {
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: '#E2E8F0',
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 16,
-    color: '#333',
-    backgroundColor: '#fafafa',
+    color: '#0F172A',
+    backgroundColor: '#F8FAFC',
   },
   actions: {
     flexDirection: 'row',
@@ -251,25 +251,25 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: '#ddd',
+    borderColor: '#CBD5E1',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   skipButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#666',
+    color: '#64748B',
   },
   saveButton: {
     flex: 2,
     paddingVertical: 14,
     borderRadius: 8,
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#1D4ED8',
     alignItems: 'center',
   },
   saveButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#fff',
+    color: '#FFFFFF',
   },
 });

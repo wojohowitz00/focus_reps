@@ -135,7 +135,7 @@ export default function AudioPlayer({ audioUri, onPlaybackComplete }: AudioPlaye
           <MaterialCommunityIcons
             name={isPlaying ? 'pause' : 'play'}
             size={32}
-            color="#4CAF50"
+            color="#1D4ED8"
           />
         </TouchableOpacity>
 
@@ -147,9 +147,9 @@ export default function AudioPlayer({ audioUri, onPlaybackComplete }: AudioPlaye
             maximumValue={duration || 1}
             value={position}
             onValueChange={handleSeek}
-            minimumTrackTintColor="#4CAF50"
-            maximumTrackTintColor="#e0e0e0"
-            thumbTintColor="#4CAF50"
+            minimumTrackTintColor="#1D4ED8"
+            maximumTrackTintColor="#E2E8F0"
+            thumbTintColor="#1D4ED8"
             disabled={!sound}
           />
           <Text style={styles.timeText}>{formatTime(duration)}</Text>
@@ -157,16 +157,16 @@ export default function AudioPlayer({ audioUri, onPlaybackComplete }: AudioPlaye
       </View>
 
       <View style={styles.volumeContainer}>
-        <MaterialCommunityIcons name="volume-high" size={20} color="#666" />
+        <MaterialCommunityIcons name="volume-high" size={20} color="#64748B" />
         <Slider
           style={styles.volumeSlider}
           minimumValue={0}
           maximumValue={1}
           value={volume}
           onValueChange={handleVolumeChange}
-          minimumTrackTintColor="#4CAF50"
-          maximumTrackTintColor="#e0e0e0"
-          thumbTintColor="#4CAF50"
+          minimumTrackTintColor="#1D4ED8"
+          maximumTrackTintColor="#E2E8F0"
+          thumbTintColor="#1D4ED8"
         />
       </View>
     </View>
@@ -176,7 +176,7 @@ export default function AudioPlayer({ audioUri, onPlaybackComplete }: AudioPlaye
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     marginVertical: 10,
   },
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 12,
-    color: '#666',
+    color: '#64748B',
     minWidth: 40,
     textAlign: 'center',
   },
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
     borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
+    borderTopColor: '#E2E8F0',
   },
   volumeSlider: {
     flex: 1,

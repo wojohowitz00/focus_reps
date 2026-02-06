@@ -156,30 +156,30 @@ export default function ProgressScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#F5F7FA',
   },
   header: {
     paddingTop: 60,
     paddingHorizontal: 20,
     paddingBottom: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
   },
   content: {
     flex: 1,
     padding: 20,
   },
   statsCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 20,
     marginBottom: 20,
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 20,
     marginBottom: 20,
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 16,
   },
   statRow: {
@@ -215,24 +215,24 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#F8FAFC',
     borderRadius: 8,
     marginHorizontal: 4,
   },
   statValue: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#4CAF50',
+    color: '#1D4ED8',
     marginBottom: 4,
   },
   statLabel: {
     fontSize: 12,
-    color: '#666',
+    color: '#64748B',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   placeholder: {
-    color: '#999',
+    color: '#94A3B8',
     fontStyle: 'italic',
   },
   loadingContainer: {
@@ -243,26 +243,26 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
   },
   weeklyStats: {
     marginTop: 8,
   },
   weeklyText: {
     fontSize: 14,
-    color: '#666',
+    color: '#64748B',
     marginBottom: 8,
   },
   progressBar: {
     height: 8,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#E2E8F0',
     borderRadius: 4,
     marginTop: 8,
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#1D4ED8',
     borderRadius: 4,
   },
   milestoneItem: {
@@ -270,12 +270,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: 16,
     padding: 12,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#F8FAFC',
     borderRadius: 8,
   },
   milestoneIcon: {
     fontSize: 24,
-    color: '#4CAF50',
+    color: '#1D4ED8',
     marginRight: 12,
   },
   milestoneContent: {
@@ -284,21 +284,21 @@ const styles = StyleSheet.create({
   milestoneName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 4,
   },
   milestoneDescription: {
     fontSize: 14,
-    color: '#666',
+    color: '#64748B',
   },
   streakValue: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#4CAF50',
+    color: '#1D4ED8',
     marginTop: 8,
   },
   historyButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#1D4ED8',
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -307,22 +307,22 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   historyButtonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
   },
   reviewButton: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 8,
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#4CAF50',
+    borderColor: '#1D4ED8',
     marginBottom: 40,
   },
   reviewButtonText: {
-    color: '#4CAF50',
+    color: '#1D4ED8',
     fontSize: 16,
     fontWeight: '600',
   },

@@ -22,7 +22,7 @@ interface TimerProps {
 
 type TimerPhase = 'setup' | 'practice' | 'closing';
 
-export default function Timer({ duration, onComplete, onPause }: TimerProps) {
+export default function Timer({ duration, onComplete, onPause, onTick }: TimerProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [phase, setPhase] = useState<TimerPhase>('setup');
@@ -138,7 +138,7 @@ export default function Timer({ duration, onComplete, onPause }: TimerProps) {
             cx={CIRCLE_SIZE / 2}
             cy={CIRCLE_SIZE / 2}
             r={RADIUS}
-            stroke="#e0e0e0"
+            stroke="#E2E8F0"
             strokeWidth={STROKE_WIDTH}
             fill="transparent"
           />
@@ -147,7 +147,7 @@ export default function Timer({ duration, onComplete, onPause }: TimerProps) {
             cx={CIRCLE_SIZE / 2}
             cy={CIRCLE_SIZE / 2}
             r={RADIUS}
-            stroke="#4CAF50"
+            stroke="#1D4ED8"
             strokeWidth={STROKE_WIDTH}
             fill="transparent"
             strokeDasharray={CIRCUMFERENCE}
@@ -185,15 +185,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
   },
   phaseIndicator: {
     marginBottom: 20,
   },
   phaseText: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: '600',
-    color: '#666',
+    color: '#64748B',
     textTransform: 'uppercase',
+    letterSpacing: 0.8,
   },
   timerContainer: {
     position: 'relative',
@@ -212,7 +217,7 @@ const styles = StyleSheet.create({
   timeText: {
     fontSize: 48,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#0F172A',
   },
   controls: {
     flexDirection: 'row',
@@ -223,20 +228,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 12,
     borderRadius: 25,
-    borderWidth: 2,
-    borderColor: '#ddd',
-    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#CBD5E1',
+    backgroundColor: '#FFFFFF',
   },
   primaryButton: {
-    backgroundColor: '#4CAF50',
-    borderColor: '#4CAF50',
+    backgroundColor: '#1D4ED8',
+    borderColor: '#1D4ED8',
   },
   buttonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#666',
+    color: '#64748B',
   },
   primaryButtonText: {
-    color: '#fff',
+    color: '#FFFFFF',
   },
 });

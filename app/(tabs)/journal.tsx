@@ -139,30 +139,30 @@ export default function JournalScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#F5F7FA',
   },
   header: {
     paddingTop: 60,
     paddingHorizontal: 20,
     paddingBottom: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
   },
   content: {
     flex: 1,
     padding: 20,
   },
   newEntryButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#1D4ED8',
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   newEntryButtonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
   },
@@ -181,16 +181,16 @@ const styles = StyleSheet.create({
   },
   emptyStateText: {
     fontSize: 18,
-    color: '#666',
+    color: '#64748B',
     marginBottom: 8,
   },
   emptyStateSubtext: {
     fontSize: 14,
-    color: '#999',
+    color: '#94A3B8',
     textAlign: 'center',
   },
   entryCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -209,12 +209,12 @@ const styles = StyleSheet.create({
   entryDate: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#666',
+    color: '#64748B',
     marginBottom: 2,
   },
   entryPractice: {
     fontSize: 12,
-    color: '#4CAF50',
+    color: '#1D4ED8',
     fontWeight: '500',
   },
   deleteButton: {
@@ -223,17 +223,17 @@ const styles = StyleSheet.create({
   },
   deleteButtonText: {
     fontSize: 12,
-    color: '#f44336',
+    color: '#B91C1C',
   },
   entryMood: {
     fontSize: 14,
-    color: '#4CAF50',
+    color: '#1D4ED8',
     marginBottom: 8,
     fontStyle: 'italic',
   },
   entryContent: {
     fontSize: 14,
-    color: '#333',
+    color: '#0F172A',
     lineHeight: 20,
     marginBottom: 12,
   },
@@ -246,10 +246,10 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 12,
-    backgroundColor: '#f1f8f4',
+    backgroundColor: '#E8EEFF',
   },
   tagText: {
     fontSize: 12,
-    color: '#4CAF50',
+    color: '#1D4ED8',
   },
 });

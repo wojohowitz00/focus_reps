@@ -65,7 +65,9 @@ export default function OnboardingScreen() {
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
         {step === 1 && (
           <View style={styles.step}>
-            <Text style={styles.emoji}>🧘</Text>
+            <View style={styles.stepPill}>
+              <Text style={styles.stepPillText}>Step 1 of 3</Text>
+            </View>
             <Text style={styles.title}>Welcome to Focus Reps</Text>
             <Text style={styles.description}>
               Focus Reps is deliberate-practice training for attention. You will do
@@ -80,22 +82,24 @@ export default function OnboardingScreen() {
 
         {step === 2 && (
           <View style={styles.step}>
-            <Text style={styles.emoji}>📅</Text>
+            <View style={styles.stepPill}>
+              <Text style={styles.stepPillText}>Step 2 of 3</Text>
+            </View>
             <Text style={styles.title}>Your Training Loop</Text>
             <Text style={styles.description}>
-              <Text style={styles.bold}>Week 1:</Text> Anchor Breath
+              <Text style={styles.bold}>Week 1:</Text> Find Your Flashlight
             </Text>
             <Text style={styles.description}>
-              <Text style={styles.bold}>Week 2:</Text> Add Body Sweep
+              <Text style={styles.bold}>Week 2:</Text> Add Body Scan
             </Text>
             <Text style={styles.description}>
-              <Text style={styles.bold}>Week 3:</Text> Add Thought Traffic
+              <Text style={styles.bold}>Week 3:</Text> Add River of Thought
             </Text>
             <Text style={styles.description}>
-              <Text style={styles.bold}>Week 4:</Text> Add Kindness Circuit
+              <Text style={styles.bold}>Week 4:</Text> Add Connection Practice
             </Text>
             <Text style={styles.description}>
-              <Text style={styles.bold}>Weeks 5-6:</Text> Customize and continue
+              <Text style={styles.bold}>Weeks 5+:</Text> Customize and continue
             </Text>
             <Text style={styles.description}>
               Daily practice → quick check-in → weekly review. The goal is steady
@@ -106,7 +110,9 @@ export default function OnboardingScreen() {
 
         {step === 3 && (
           <View style={styles.step}>
-            <Text style={styles.emoji}>⚙️</Text>
+            <View style={styles.stepPill}>
+              <Text style={styles.stepPillText}>Step 3 of 3</Text>
+            </View>
             <Text style={styles.title}>Set Up Reminders</Text>
             <Text style={styles.description}>
               We will remind you to practice daily. You can change this later in settings.
@@ -186,7 +192,7 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   scrollView: {
     flex: 1,
@@ -199,27 +205,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 40,
   },
-  emoji: {
-    fontSize: 64,
+  stepPill: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
     marginBottom: 20,
+  },
+  stepPillText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#64748B',
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 20,
     textAlign: 'center',
   },
   description: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
     lineHeight: 24,
     marginBottom: 12,
     textAlign: 'center',
   },
   bold: {
     fontWeight: '600',
-    color: '#333',
+    color: '#0F172A',
   },
   settingRow: {
     width: '100%',
@@ -229,7 +247,7 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
+    color: '#0F172A',
     marginBottom: 12,
   },
   timeOptions: {
@@ -242,19 +260,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 20,
     borderWidth: 2,
-    borderColor: '#e0e0e0',
-    backgroundColor: '#fff',
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
   },
   timeOptionSelected: {
-    borderColor: '#4CAF50',
-    backgroundColor: '#f1f8f4',
+    borderColor: '#1D4ED8',
+    backgroundColor: '#E8EEFF',
   },
   timeOptionText: {
     fontSize: 16,
-    color: '#666',
+    color: '#64748B',
   },
   timeOptionTextSelected: {
-    color: '#4CAF50',
+    color: '#1D4ED8',
     fontWeight: '600',
   },
   toggleRow: {
@@ -267,18 +285,18 @@ const styles = StyleSheet.create({
     width: 50,
     height: 30,
     borderRadius: 15,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#E2E8F0',
     justifyContent: 'center',
     paddingHorizontal: 2,
   },
   toggleActive: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#1D4ED8',
   },
   toggleThumb: {
     width: 26,
     height: 26,
     borderRadius: 13,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     alignSelf: 'flex-start',
   },
   toggleThumbActive: {
@@ -295,26 +313,26 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: '#ddd',
-    backgroundColor: '#fff',
+    borderColor: '#CBD5E1',
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
   },
   backButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#666',
+    color: '#64748B',
   },
   nextButton: {
     flex: 2,
     paddingVertical: 14,
     borderRadius: 8,
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#1D4ED8',
     alignItems: 'center',
   },
   nextButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#fff',
+    color: '#FFFFFF',
   },
   skipButton: {
     marginTop: 20,
@@ -322,6 +340,6 @@ const styles = StyleSheet.create({
   },
   skipButtonText: {
     fontSize: 14,
-    color: '#999',
+    color: '#94A3B8',
   },
 });
