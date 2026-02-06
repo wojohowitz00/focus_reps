@@ -27,261 +27,320 @@ export interface PracticeInstruction {
 export const practiceInstructions: Record<string, PracticeInstruction> = {
   'anchor-breath': {
     id: 'anchor-breath',
-    name: 'Anchor Breath',
-    description: 'Foundational focus reps using the breath as a steady anchor. Each return is a rep that strengthens sustained attention and recovery from lapses.',
+    name: 'Find Your Flashlight',
+    description: 'Foundational breath awareness practice. Each redirect to the breath is one successful attention rep.',
     whatYoureTraining: [
-      'Sustained focus on a single target',
-      'Lapse detection (noticing drift quickly)',
-      'Rapid recovery back to the anchor',
-      'Consistency under mild distraction'
+      'Orienting system (flashlight): directing attention to a chosen target',
+      'Meta-awareness: noticing when the mind has wandered',
+      'Cognitive control: disengaging from distractions and returning',
+      'Sustained attention over time'
     ],
     setup: [
-      'Sit upright with a stable posture. Relax the shoulders and jaw.',
+      'Sit in a stable, alert posture. Chair or cushion both work.',
       'Set a timer for 12 minutes.',
-      'Choose one breath sensation to anchor on (nostrils, chest, or belly).'
+      'Close your eyes or keep a soft downward gaze.'
     ],
     practiceSteps: [
-      'Place attention on the chosen breath sensation.',
-      'Stay with the sensation for as long as you can without forcing the breath.',
-      'When you notice your mind has drifted, label it softly (e.g., "thinking", "planning") and return to the breath.',
-      'Count each return as a rep. The goal is not zero lapses but faster detection and recovery.',
-      'Repeat the cycle until the timer ends.'
+      'Choose one breath sensation (nostrils, chest, or belly) and keep that one target for the full session.',
+      'Observe natural breathing. Do not control pace or depth.',
+      'When attention wanders, notice where it went and gently return to the breath.',
+      'Treat each return as a successful rep.',
+      'Repeat focus, notice wandering, and redirect until the timer ends.'
     ],
     closing: [
-      'Notice your current state without judging it.',
-      'Take one full breath intentionally.',
-      'Open your eyes and transition back to the room.'
+      'Notice your current state without judgment.',
+      'Take one deliberate breath.',
+      'Transition back to the room and open your eyes.'
     ],
     criticalNotes: {
       is: [
-        'A repetition practice focused on noticing and returning',
-        'Training recovery speed, not perfect stillness',
-        'Gentle redirection without self-criticism'
+        'Training to notice wandering and redirect attention',
+        'Building tolerance for mind wandering without harsh self-talk',
+        'A repetition practice where redirects are the core work'
       ],
       isNot: [
-        'Breath control or slow-breathing technique',
-        'A test of willpower or suppression of thoughts',
-        'A relaxation hack (calm may happen, but it is not the target)'
+        'A blank-mind exercise',
+        'Breath control or pranayama',
+        'A perfection test with zero wandering'
       ]
     },
     pitfalls: [
       {
-        title: 'Trying to force a clear mind',
-        why: 'We equate focus with no thoughts at all',
-        truth: 'Thoughts will appear; the rep is the return.',
-        fix: 'Measure success by how quickly you notice and return.'
+        title: 'Judging yourself for wandering',
+        why: 'Attention drift is mistaken for failure',
+        truth: 'Wandering is expected. Noticing and returning is the exercise.',
+        fix: 'Count redirects as wins, not mistakes.'
       },
       {
         title: 'Controlling the breath',
-        why: 'Focusing on breath can turn into breath management',
+        why: 'Focusing on breathing can trigger breath management',
         truth: 'Natural breathing is the target.',
-        fix: 'Let the breath do what it does. Track sensation only.'
+        fix: 'Observe sensation only and release control attempts.'
       },
       {
-        title: 'Harsh self-talk after lapses',
-        why: 'We treat lapses as failures',
-        truth: 'Lapses are the training stimulus.',
-        fix: 'Use neutral labels and return without commentary.'
+        title: 'Expecting immediate outcomes',
+        why: 'Attention gains are expected instantly',
+        truth: 'Neural adaptation requires consistent practice over weeks.',
+        fix: 'Prioritize daily completion over short-term feeling changes.'
+      },
+      {
+        title: 'Late detection of mind wandering',
+        why: 'Meta-awareness is initially weak',
+        truth: 'Detection speed improves with repetitions.',
+        fix: 'Return immediately once noticed, regardless of how long you drifted.'
+      },
+      {
+        title: 'Turning practice into a chore',
+        why: 'Session length feels demanding at first',
+        truth: 'Consistency matters more than perfect subjective quality.',
+        fix: 'Anchor practice to a stable daily cue (time and location).'
       }
     ],
     keysToSuccess: [
-      'Keep the anchor consistent for the full session',
-      'Aim for quick detection and calm resets',
-      'Practice at a consistent time to build momentum',
-      'Log your estimated lapse count after the session'
+      'Consistency over perfection',
+      'Use the same time and place when possible',
+      'Drop session-quality judgments',
+      'Track completion to maintain accountability'
     ],
-    researchNotes: 'Progress is reflected in fewer lapses and faster recovery, not in eliminating thoughts.'
+    researchNotes: 'Research in high-stress populations found benefit when practice reached at least 12 minutes per day, 5 days per week.'
   },
   'body-sweep': {
     id: 'body-sweep',
-    name: 'Body Sweep',
-    description: 'Deliberate attention shifts through the body to train controlled movement of focus without losing stability.',
+    name: 'Body Scan',
+    description: 'Systematic scan through body regions to train deliberate movement of attention while staying present.',
     whatYoureTraining: [
-      'Smooth attention transitions',
-      'Sensory discrimination and precision',
-      'Stability while moving the focus target',
-      'Recovery after drift during transitions'
+      'Attention mobility across targets',
+      'Interoception (internal body awareness)',
+      'Present-moment anchoring through sensation',
+      'Disengagement from rumination into direct sensory data'
     ],
     setup: [
-      'Sit or lie down with a stable, comfortable posture.',
+      'Sit or lie down in a stable, comfortable posture.',
       'Set a timer for 12 minutes.',
-      'Start with two calm breaths to settle attention.'
+      'Start with 2 to 3 breaths to settle attention.'
     ],
     practiceSteps: [
-      'Direct attention to the feet. Notice any sensation or the absence of it.',
-      'Move attention upward in zones: feet, calves, knees, thighs, hips, abdomen, chest, shoulders, arms, hands, neck, face, crown.',
-      'Pause 2-3 breaths per zone. Keep the pace steady.',
+      'Begin by settling attention on the breath.',
+      'Start at the feet and notice direct sensation (temperature, pressure, movement, or no clear sensation).',
+      'Move upward through regions: calves, knees, thighs, hips, abdomen, chest, shoulders, arms, hands, neck, face, head.',
+      'Move at a deliberate pace and keep scanning rhythm stable.',
       'If the mind drifts, return to the last zone you remember and continue.',
-      'Complete the sweep or repeat a shorter loop if time remains.'
+      'Complete a full sweep and hold whole-body awareness before closing.'
     ],
     closing: [
-      'Take a full-body snapshot of sensation.',
-      'Notice overall energy and tone.',
-      'Open your eyes and end the session.'
+      'Take a whole-body snapshot of present sensation.',
+      'Notice overall state without analysis.',
+      'Transition back gradually.'
     ],
     criticalNotes: {
       is: [
-        'Moving attention with control',
-        'Noticing direct sensation as it is',
-        'Staying present even when sensation is faint'
+        'Noticing physical sensation, not stories about sensation',
+        'Training stable attention while the target moves',
+        'Allowing faint or absent sensations without forcing'
       ],
       isNot: [
-        'Chasing strong sensations',
-        'Analyzing or diagnosing the body',
-        'Rushing through the scan to finish'
+        'Searching for dramatic sensations',
+        'Diagnosing the body during practice',
+        'A rapid checklist pass'
       ]
     },
     pitfalls: [
       {
-        title: 'Rushing the scan',
-        why: 'We want to finish the list quickly',
-        truth: 'The training is the pace and steadiness.',
-        fix: 'Slow down and keep a consistent cadence.'
+        title: 'Trying to create sensations',
+        why: 'Expectation of a target feeling drives forcing',
+        truth: 'Whatever is present or absent is valid practice input.',
+        fix: 'Observe what is actually there and continue.'
       },
       {
-        title: 'Searching for a specific feeling',
-        why: 'We assume there is a correct sensation to find',
-        truth: 'Any sensation or absence is valid data.',
-        fix: 'Note what is present and move on.'
+        title: 'Getting pulled into explanation',
+        why: 'Sensation triggers stories and analysis',
+        truth: 'The training target is raw sensation.',
+        fix: 'Return to direct descriptors like pressure, warmth, tension, or pulse.'
       },
       {
-        title: 'Getting stuck in analysis',
-        why: 'Sensations trigger stories or interpretations',
-        truth: 'The target is raw sensation, not explanation.',
-        fix: 'Return to texture: pressure, temperature, movement.'
+        title: 'Scanning too quickly',
+        why: 'Completion urgency replaces training quality',
+        truth: 'Steady pacing builds sustained attention.',
+        fix: 'Slow down and spend meaningful time per region.'
+      },
+      {
+        title: 'Falling asleep',
+        why: 'Low arousal plus lying posture reduces alertness',
+        truth: 'Alert stability is part of the training target.',
+        fix: 'Switch to seated posture or earlier practice time.'
+      },
+      {
+        title: 'Reactive discomfort handling',
+        why: 'Discomfort triggers immediate avoidance',
+        truth: 'Mild discomfort can be observed without instant reaction.',
+        fix: 'Adjust only when pain is sharp or concerning; otherwise observe response patterns.'
       }
     ],
     keysToSuccess: [
-      'Use a steady zone-by-zone rhythm',
-      'Treat transitions as the rep',
-      'Reset to breath if you lose the thread',
-      'Keep the session light and curious'
-    ]
+      'Keep a steady scan pace',
+      'Notice rather than analyze',
+      'Use breath reset when very lost',
+      'Accept pleasant, unpleasant, and neutral sensations equally'
+    ],
+    researchNotes: 'Body-based attention practices support emotional regulation and reduce rumination by anchoring attention in present-moment physical signals.'
   },
   'thought-traffic': {
     id: 'thought-traffic',
-    name: 'Thought Traffic',
-    description: 'Open monitoring practice that treats thoughts as passing traffic. You stay on the curb, noticing categories without jumping into the flow.',
+    name: 'River of Thought',
+    description: 'Meta-awareness practice for observing thoughts, emotions, and sensations as passing mental events.',
     whatYoureTraining: [
-      'Meta-awareness of mental events',
-      'Reduced reactivity to thought content',
-      'Quick recognition of being pulled in',
-      'Flexible attention with a stable observer stance'
+      'Meta-awareness of ongoing mental content',
+      'Decentering from thoughts and emotions',
+      'Non-reactivity under cognitive pull',
+      'Pattern recognition in mental habits'
     ],
     setup: [
-      'Sit upright and set a 12-minute timer.',
-      'Take 1 minute of Anchor Breath to settle.',
-      'Soften your focus and allow thoughts to arise.'
+      'Use a seated, stable posture and set 12 minutes.',
+      'Start with brief breath awareness to settle.',
+      'Establish a river visualization with you as observer on the shore.'
     ],
     practiceSteps: [
-      'Notice a thought as it appears. Label it lightly ("planning", "memory", "worry").',
-      'Let it pass without following it. Return to a neutral observer stance.',
-      'If you get pulled into a story, take one breath as a reset and resume observing.',
-      'Continue labeling and releasing thoughts for the remainder of the session.'
+      'Observe thoughts, emotions, sensations, and sounds as objects moving down the river.',
+      'Stay on the shore as observer rather than entering the stream of content.',
+      'When swept into thought, notice it, step back to observer position, and continue.',
+      'Do not edit, suppress, or judge content; allow full flow.',
+      'If overwhelmed, use breath for stabilization and then resume.'
     ],
     closing: [
-      'Drop labels and rest for two breaths.',
-      'Notice how busy or calm the mind feels.',
-      'End the session with a deliberate inhale and exhale.'
+      'Release the visualization.',
+      'Notice current mental state with neutrality.',
+      'Transition back gradually.'
     ],
     criticalNotes: {
       is: [
-        'Observing thoughts as events, not facts',
-        'Maintaining a stable observer position',
-        'Practicing non-reactivity'
+        'Observing mental events rather than identifying with them',
+        'Returning to observer stance when pulled in',
+        'Allowing all content categories equally'
       ],
       isNot: [
-        'Trying to stop thoughts',
-        'Analyzing or solving the content',
-        'Forcing a blank mind'
+        'A thought-suppression exercise',
+        'A demand for a calm or empty mind',
+        'A content-analysis session'
       ]
     },
     pitfalls: [
       {
-        title: 'Chasing the story',
-        why: 'Interesting thoughts pull attention in',
-        truth: 'The rep is noticing the pull and returning.',
-        fix: 'Use a short label and let it pass.'
+        title: 'Getting repeatedly swept into thought',
+        why: 'Habitual identification with thought is strong',
+        truth: 'Noticing and stepping back is the core rep.',
+        fix: 'Normalize frequent resets and continue.'
       },
       {
-        title: 'Suppressing thoughts',
-        why: 'We think success means silence',
-        truth: 'Thoughts are normal; observation is the skill.',
-        fix: 'Allow thoughts, but keep your distance.'
+        title: 'Trying to control river contents',
+        why: 'Unpleasant content triggers suppression',
+        truth: 'Control efforts increase reactivity.',
+        fix: 'Let content pass without interference.'
+      },
+      {
+        title: 'Analyzing meaning of thoughts',
+        why: 'Insight-seeking overrides attention training',
+        truth: 'Analysis is additional mental content to observe.',
+        fix: 'Return to observer stance and continue flow tracking.'
+      },
+      {
+        title: 'Frustration with a busy mind',
+        why: 'Turbulence is interpreted as failed practice',
+        truth: 'Any river state can be trained with.',
+        fix: 'Measure reps by recovery, not calmness.'
+      },
+      {
+        title: 'Losing visualization structure',
+        why: 'Attention drifts away from support image',
+        truth: 'Visualization is a support tool and can be reset any time.',
+        fix: 'Re-establish shore-and-river framing without judgment.'
       }
     ],
     keysToSuccess: [
-      'Keep labels short and neutral',
-      'Use a single breath as a reset when lost',
-      'Notice the gaps between thoughts too',
-      'Log a simple estimate of how often you were pulled in'
-    ]
+      'Embrace all content categories',
+      'Use breath as a lifeline when overloaded',
+      'Track how quickly you detect attentional hijacking',
+      'Treat each return to shore as progress'
+    ],
+    researchNotes: 'Meta-awareness practices reduce rumination and improve early detection of attentional hijacking, enabling faster recovery to task-relevant focus.'
   },
   'kindness-circuit': {
     id: 'kindness-circuit',
-    name: 'Kindness Circuit',
-    description: 'Direct attention through a circuit of people to cultivate stable, prosocial attention and soften self-criticism.',
+    name: 'Connection Practice',
+    description: 'Loving-kindness practice that directs well-wishes to self and others to stabilize attention and reduce reactivity.',
     whatYoureTraining: [
-      'Sustained focus on a chosen person',
-      'Emotional regulation through intention',
-      'Resilience when the mind drifts or resists',
-      'Balance between focus and warmth'
+      'Directed attention toward people as intentional targets',
+      'Emotional regulation under stress and self-criticism',
+      'Interpersonal connection and prosocial orientation',
+      'Self-compassion as a stability foundation'
     ],
     setup: [
-      'Sit comfortably and set a 12-minute timer.',
-      'Choose a simple phrase (e.g., "May you be steady and well").',
-      'Pick four targets: self, ally, neutral person, difficult person.'
+      'Use a comfortable seated posture and set 12 minutes.',
+      'Take 3 to 4 breaths to settle.',
+      'Prepare phrases such as: "May I/you be happy, healthy, safe, and live with ease."'
     ],
     practiceSteps: [
-      'Start with yourself. Repeat the phrase slowly for 1-2 minutes.',
-      'Move to an ally. Hold their image and repeat the phrase.',
-      'Shift to a neutral person. Keep the phrase steady.',
-      'If appropriate, include a mildly difficult person. Keep it light and brief.',
-      'Finish with a wide-field wish for all people.'
+      'Phase 1 (Self): direct phrases toward yourself for 2 to 3 minutes.',
+      'Phase 2 (Loved one): hold one person in mind and repeat phrases for 2 to 3 minutes.',
+      'Phase 3 (Neutral person): extend phrases to someone neutral for 2 to 3 minutes.',
+      'Phase 4 (Optional difficult person): choose a mildly difficult person and continue phrases with care.',
+      'Close by widening intention: "May all beings be happy, healthy, safe, and live with ease."'
     ],
     closing: [
-      'Notice the tone of your mind and body.',
-      'Return to one full breath.',
-      'End the session gently.'
+      'Notice emotional tone without forcing interpretation.',
+      'Return to one grounding breath.',
+      'Open your eyes and transition gently.'
     ],
     criticalNotes: {
       is: [
-        'Intentional attention with warmth',
-        'Training steadiness in emotional contexts',
-        'Returning to the phrase after drift'
+        'Directing attention and intention, not forcing emotion',
+        'Practicing self-compassion as the first phase',
+        'Building non-reactive social-emotional capacity'
       ],
       isNot: [
-        'Forcing a specific feeling',
-        'Excusing harmful behavior',
-        'Skipping self-care to "be good" for others'
+        'Condoning harmful behavior from difficult people',
+        'A requirement to feel warm or loving every session',
+        'A reason to skip self-directed compassion'
       ]
     },
     pitfalls: [
       {
-        title: 'Picking a too-difficult person',
-        why: 'We want to prove we can handle it',
-        truth: 'This is training, not a test.',
-        fix: 'Choose a mildly difficult person and keep it brief.'
+        title: 'Harsh self-judgment in self phase',
+        why: 'Self-directed well-wishing can feel unfamiliar',
+        truth: 'Resistance is expected and part of the work.',
+        fix: 'Notice judgment and continue with simple phrases.'
       },
       {
-        title: 'Reciting without intention',
-        why: 'The phrase becomes mechanical',
-        truth: 'The rep is the felt intention, not the words.',
-        fix: 'Slow down and re-engage the meaning.'
+        title: 'Mechanical phrase repetition',
+        why: 'Speed and routine disconnect words from intention',
+        truth: 'Intention quality matters more than phrase count.',
+        fix: 'Slow down and let each phrase land.'
       },
       {
-        title: 'Skipping self focus',
-        why: 'We think it is selfish',
-        truth: 'Self-kindness stabilizes attention for the rest of the circuit.',
-        fix: 'Always start with self, even briefly.'
+        title: 'Choosing someone too difficult too early',
+        why: 'Over-challenging triggers shutdown or strong reactivity',
+        truth: 'Difficulty should be gradual like other training loads.',
+        fix: 'Start with mildly difficult targets.'
+      },
+      {
+        title: 'Trying to force positive feeling',
+        why: 'Emotional output becomes the scorecard',
+        truth: 'Attention direction and intention are the primary reps.',
+        fix: 'Focus on sincere phrasing, not emotional intensity.'
+      },
+      {
+        title: 'Getting lost in stories',
+        why: 'People-focused practice can trigger narrative recall',
+        truth: 'Narratives are distractions from intentional practice.',
+        fix: 'Return to visualization and phrases.'
       }
     ],
     keysToSuccess: [
-      'Use one short phrase for the whole circuit',
-      'Keep imagery simple and clear',
-      'Return to the phrase after each drift',
-      'Note which target was hardest for future reflection'
-    ]
+      'Return to self-phase when overloaded',
+      'Start with uncomplicated loved-one targets',
+      'Use vivid but simple imagery for each target',
+      'Track where resistance is strongest to guide future training'
+    ],
+    researchNotes: 'Loving-kindness practice increases positive affect and social connection while reducing self-criticism and reactive interpersonal attention hijacks.'
   }
 };
 

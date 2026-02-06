@@ -175,6 +175,46 @@ export default function PracticeSessionScreen() {
             ))}
           </View>
 
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Critical Notes</Text>
+            <Text style={styles.noteHeading}>This practice is:</Text>
+            {instructions.criticalNotes.is.map((note, index) => (
+              <Text key={`is-${index}`} style={styles.bulletPoint}>
+                • {note}
+              </Text>
+            ))}
+            <Text style={styles.noteHeading}>This practice is not:</Text>
+            {instructions.criticalNotes.isNot.map((note, index) => (
+              <Text key={`isnot-${index}`} style={styles.bulletPoint}>
+                • {note}
+              </Text>
+            ))}
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Common Pitfalls</Text>
+            {instructions.pitfalls.map((pitfall, index) => (
+              <View key={pitfall.title + index} style={styles.pitfallCard}>
+                <Text style={styles.pitfallTitle}>{pitfall.title}</Text>
+                <Text style={styles.pitfallText}>Why: {pitfall.why}</Text>
+                <Text style={styles.pitfallText}>Truth: {pitfall.truth}</Text>
+                <Text style={styles.pitfallText}>Fix: {pitfall.fix}</Text>
+              </View>
+            ))}
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Keys to Success</Text>
+            {instructions.keysToSuccess.map((key, index) => (
+              <Text key={`key-${index}`} style={styles.bulletPoint}>
+                • {key}
+              </Text>
+            ))}
+            {instructions.researchNotes ? (
+              <Text style={styles.researchText}>Research note: {instructions.researchNotes}</Text>
+            ) : null}
+          </View>
+
           <View style={styles.startButtonContainer}>
             <TouchableOpacity
               style={styles.startButton}
@@ -263,6 +303,37 @@ const styles = StyleSheet.create({
     color: '#666',
     marginBottom: 12,
     lineHeight: 20,
+  },
+  noteHeading: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+    marginTop: 4,
+    marginBottom: 8,
+  },
+  pitfallCard: {
+    backgroundColor: '#f8f8f8',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 10,
+  },
+  pitfallTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 6,
+  },
+  pitfallText: {
+    fontSize: 13,
+    color: '#666',
+    lineHeight: 18,
+    marginBottom: 4,
+  },
+  researchText: {
+    marginTop: 12,
+    fontSize: 13,
+    color: '#4b5563',
+    lineHeight: 18,
   },
   startButtonContainer: {
     padding: 20,

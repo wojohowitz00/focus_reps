@@ -41,14 +41,28 @@ describe('Practice Schedule Functions', () => {
       expect(getPracticeForWeekAndDay(4, 3)).toBe('anchor-breath');
     });
 
-    test('Weeks 5-6 default to anchor-breath', () => {
+    test('Weeks 5-6 default to anchor-breath when no custom set is provided', () => {
       expect(getPracticeForWeekAndDay(5, 1)).toBe('anchor-breath');
       expect(getPracticeForWeekAndDay(6, 1)).toBe('anchor-breath');
     });
 
-    test('Extended 8-week mode defaults to anchor-breath in weeks 7-8', () => {
+    test('Weeks 5-6 use custom set rotation when provided', () => {
+      const customSet = ['body-sweep', 'thought-traffic'] as PracticeType[];
+      expect(getPracticeForWeekAndDay(5, 1, 'standard_6_week', customSet)).toBe('body-sweep');
+      expect(getPracticeForWeekAndDay(5, 2, 'standard_6_week', customSet)).toBe('thought-traffic');
+      expect(getPracticeForWeekAndDay(6, 3, 'standard_6_week', customSet)).toBe('body-sweep');
+    });
+
+    test('Extended 8-week mode defaults to anchor-breath in weeks 7-8 when no custom set is provided', () => {
       expect(getPracticeForWeekAndDay(7, 1, 'extended_8_week')).toBe('anchor-breath');
       expect(getPracticeForWeekAndDay(8, 2, 'extended_8_week')).toBe('anchor-breath');
+    });
+
+    test('Extended 8-week mode uses custom set rotation in weeks 7-8 when provided', () => {
+      const customSet = ['kindness-circuit', 'anchor-breath'] as PracticeType[];
+      expect(getPracticeForWeekAndDay(7, 1, 'extended_8_week', customSet)).toBe('kindness-circuit');
+      expect(getPracticeForWeekAndDay(7, 2, 'extended_8_week', customSet)).toBe('anchor-breath');
+      expect(getPracticeForWeekAndDay(8, 3, 'extended_8_week', customSet)).toBe('kindness-circuit');
     });
 
     test('Open training mode uses custom practice set rotation', () => {

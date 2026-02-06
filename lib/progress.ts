@@ -308,26 +308,26 @@ export function getWeeklyRecommendation(summary: WeeklySummary): WeeklyRecommend
   if (summary.sessionsCount === 0) {
     return {
       practiceType: 'anchor-breath',
-      rationale: 'Start with Anchor Breath to rebuild consistency and reset your baseline.',
+      rationale: 'Start with Find Your Flashlight to rebuild consistency and reset your baseline.',
     };
   }
 
   if (summary.avgLapses >= 6 || summary.longestIntervalSec < 120) {
     return {
       practiceType: 'anchor-breath',
-      rationale: 'Anchor Breath strengthens recovery speed when lapses are frequent.',
+      rationale: 'Find Your Flashlight strengthens recovery speed when lapses are frequent.',
     };
   }
 
   if (summary.longestIntervalSec >= 240) {
     return {
       practiceType: 'thought-traffic',
-      rationale: 'Your intervals are improving. Thought Traffic will deepen meta-awareness.',
+      rationale: 'Your intervals are improving. River of Thought will deepen meta-awareness.',
     };
   }
 
   return {
     practiceType: 'body-sweep',
-    rationale: 'Body Sweep builds steady focus while moving attention smoothly.',
+    rationale: 'Body Scan builds steady focus while moving attention smoothly.',
   };
 }

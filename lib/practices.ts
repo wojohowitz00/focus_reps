@@ -1,6 +1,6 @@
 /**
  * Practice definitions and schedule logic
- * Implements the six-week Peak Mind program structure
+ * Implements the Focus Reps program structure aligned to the expanded guide
  */
 
 import { PracticeType, PracticeSchedule, ProgramMode } from '../types';
@@ -36,37 +36,37 @@ function getCustomPracticeForDay(
 export const practiceDefinitions: Record<PracticeType, PracticeDefinition> = {
   'anchor-breath': {
     id: 'anchor-breath',
-    name: 'Anchor Breath',
-    description: 'Foundational breath focus reps to build sustained attention',
+    name: 'Find Your Flashlight',
+    description: 'Foundational breath awareness reps for sustained attention and return speed',
     defaultDuration: 12,
   },
   'body-sweep': {
     id: 'body-sweep',
-    name: 'Body Sweep',
-    description: 'Guided scan to train controlled shifts of attention',
+    name: 'Body Scan',
+    description: 'Systematic body scan that trains deliberate attention movement',
     defaultDuration: 12,
   },
   'thought-traffic': {
     id: 'thought-traffic',
-    name: 'Thought Traffic',
-    description: 'Observe thoughts passing without engagement',
+    name: 'River of Thought',
+    description: 'Meta-awareness practice for observing thoughts without getting swept in',
     defaultDuration: 12,
   },
   'kindness-circuit': {
     id: 'kindness-circuit',
-    name: 'Kindness Circuit',
-    description: 'Warmth and connection practice to reset attention',
+    name: 'Connection Practice',
+    description: 'Loving-kindness practice for attention stability and emotional regulation',
     defaultDuration: 12,
   },
 };
 
 /**
- * Six-week program structure
- * Week 1: Anchor Breath only
- * Week 2: Anchor Breath + Body Sweep (alternating)
- * Week 3: Anchor Breath + Thought Traffic (alternating)
- * Week 4: Anchor Breath + Kindness Circuit (alternating)
- * Weeks 5-6: Customizable
+ * Program structure from the expanded guide:
+ * Week 1: Find Your Flashlight only
+ * Week 2: Find Your Flashlight + Body Scan (alternating)
+ * Week 3: Find Your Flashlight + River of Thought (alternating)
+ * Week 4: Find Your Flashlight + Connection Practice (alternating)
+ * Week 5+: Customizable sequence (12+ minutes, 5+ days/week)
  */
 export function getPracticeForWeekAndDay(
   week: number,
@@ -83,26 +83,22 @@ export function getPracticeForWeekAndDay(
   }
   
   if (week === 2) {
-    // Alternating: Anchor Breath on odd days, Body Sweep on even days
+    // Alternating: Find Your Flashlight on odd days, Body Scan on even days
     return day % 2 === 1 ? 'anchor-breath' : 'body-sweep';
   }
   
   if (week === 3) {
-    // Alternating: Anchor Breath on odd days, Thought Traffic on even days
+    // Alternating: Find Your Flashlight on odd days, River of Thought on even days
     return day % 2 === 1 ? 'anchor-breath' : 'thought-traffic';
   }
   
   if (week === 4) {
-    // Alternating: Anchor Breath on odd days, Kindness Circuit on even days
+    // Alternating: Find Your Flashlight on odd days, Connection Practice on even days
     return day % 2 === 1 ? 'anchor-breath' : 'kindness-circuit';
   }
 
-  if (programMode === 'extended_8_week') {
-    return getCustomPracticeForDay(customPracticeSet, day);
-  }
-
-  // Weeks 5-6: Default to Anchor Breath for standard program
-  return 'anchor-breath';
+  // Week 5+ follows a user-customizable pattern in both standard and extended tracks.
+  return getCustomPracticeForDay(customPracticeSet, day);
 }
 
 /**
