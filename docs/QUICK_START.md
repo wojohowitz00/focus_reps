@@ -17,7 +17,7 @@ updated: '2026-01-28'
 
 ### Step 2: Start the App
 ```bash
-cd /Users/richardyu/PARA/1_projects/peak-mind-app
+cd /Users/richardyu/PARA/1_projects/focus-reps-app
 npm start
 ```
 

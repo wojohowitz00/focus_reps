@@ -23,7 +23,7 @@ updated: '2026-01-28'
 
 2. **Start development server:**
    ```bash
-   cd /Users/richardyu/PARA/1_projects/peak-mind-app
+   cd /Users/richardyu/PARA/1_projects/focus-reps-app
    npm start
    ```
 
@@ -71,9 +71,9 @@ This creates a native iOS project that you CAN open in Xcode:
 
 2. **Open in Xcode:**
    ```bash
-   open ios/peak-mind-app.xcworkspace
+   open ios/focus-reps-app.xcworkspace
    ```
-   OR manually: Double-click `ios/peak-mind-app.xcworkspace`
+   OR manually: Double-click `ios/focus-reps-app.xcworkspace`
 
 3. **Build and run:**
    - Select your iPhone in Xcode device selector
@@ -102,7 +102,7 @@ This creates a development build that works like a real app:
 2. **If you want to open in Xcode later:**
    ```bash
    npx expo prebuild
-   open ios/peak-mind-app.xcworkspace
+   open ios/focus-reps-app.xcworkspace
    ```
 
 ## Recommended Approach
@@ -126,7 +126,7 @@ npx expo run:ios
 - Check Xcode → Window → Devices and Simulators
 
 ### "Signing for ... requires a development team"
-- Open Xcode project: `open ios/peak-mind-app.xcworkspace`
+- Open Xcode project: `open ios/focus-reps-app.xcworkspace`
 - Select project in sidebar
 - Go to "Signing & Capabilities"
 - Select your Apple ID team (free account works for development)
@@ -150,7 +150,7 @@ npm run ios
 npx expo prebuild --platform ios
 
 # Open in Xcode
-open ios/peak-mind-app.xcworkspace
+open ios/focus-reps-app.xcworkspace
 
 # Development build (installs on device)
 npx expo run:ios

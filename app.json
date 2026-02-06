@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Focus Reps",
-    "slug": "focus-reps",
+    "slug": "focus-reps-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
