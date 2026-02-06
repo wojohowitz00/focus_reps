@@ -5,7 +5,7 @@
 ## Directory Layout
 
 ```
-peak-mind-app/
+focus-reps-app/
 ├── app/                  # Screens + navigation (React Navigation)
 │   ├── (tabs)/           # Tab screens (Home, Practice, Progress, Journal, Settings)
 │   ├── practice/         # Dynamic practice session route

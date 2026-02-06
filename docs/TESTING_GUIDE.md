@@ -21,7 +21,7 @@ updated: '2026-01-28'
 
 2. **Start the development server:**
    ```bash
-   cd /Users/richardyu/PARA/1_projects/peak-mind-app
+   cd /Users/richardyu/PARA/1_projects/focus-reps-app
    npm start
    ```
    This will:
@@ -78,7 +78,7 @@ For a more production-like experience:
 
 1. **Navigate to project:**
    ```bash
-   cd /Users/richardyu/PARA/1_projects/peak-mind-app
+   cd /Users/richardyu/PARA/1_projects/focus-reps-app
    ```
 
 2. **Start development server:**

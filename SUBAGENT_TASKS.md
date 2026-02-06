@@ -65,7 +65,7 @@
 
 ## Project Structure
 ```
-peak-mind-app/
+focus-reps-app/
 ├── app/              # Expo Router screens
 │   └── (tabs)/      # Tab navigation screens
 ├── components/       # Reusable components
