@@ -9,7 +9,7 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
+  Pressable,
   Switch,
   TextInput,
 } from 'react-native';
@@ -228,7 +228,7 @@ export default function SettingsScreen() {
             </View>
             <View style={styles.durationOptions}>
               {[10, 12, 15, 20, 30].map((duration) => (
-                <TouchableOpacity
+                <Pressable
                   key={duration}
                   style={[
                     styles.durationOption,
@@ -244,7 +244,7 @@ export default function SettingsScreen() {
                   >
                     {duration}
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               ))}
             </View>
           </View>
@@ -262,7 +262,7 @@ export default function SettingsScreen() {
                 { id: 'extended_8_week', label: '8-Week Extended' },
                 { id: 'open_training', label: 'Open Training' },
               ].map((option) => (
-                <TouchableOpacity
+                <Pressable
                   key={option.id}
                   style={[
                     styles.trackOption,
@@ -278,7 +278,7 @@ export default function SettingsScreen() {
                   >
                     {option.label}
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               ))}
             </View>
           </View>
@@ -295,7 +295,7 @@ export default function SettingsScreen() {
                 {Object.values(practiceDefinitions).map((practice) => {
                   const selected = settings.customPracticeSet?.includes(practice.id);
                   return (
-                    <TouchableOpacity
+                    <Pressable
                       key={practice.id}
                       style={[
                         styles.practiceChip,
@@ -311,7 +311,7 @@ export default function SettingsScreen() {
                       >
                         {practice.name}
                       </Text>
-                    </TouchableOpacity>
+                    </Pressable>
                   );
                 })}
               </View>
@@ -347,7 +347,7 @@ export default function SettingsScreen() {
               </View>
               <View style={styles.timeOptions}>
                 {['06:00', '08:00', '12:00', '18:00', '20:00'].map((time) => (
-                  <TouchableOpacity
+                  <Pressable
                     key={time}
                     style={[
                       styles.timeOption,
@@ -363,7 +363,7 @@ export default function SettingsScreen() {
                     >
                       {time}
                     </Text>
-                  </TouchableOpacity>
+                  </Pressable>
                 ))}
               </View>
             </View>
@@ -394,7 +394,7 @@ export default function SettingsScreen() {
               </View>
               <View style={styles.weeklyOptions}>
                 {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((label, index) => (
-                  <TouchableOpacity
+                  <Pressable
                     key={label}
                     style={[
                       styles.weekdayOption,
@@ -410,12 +410,12 @@ export default function SettingsScreen() {
                     >
                       {label}
                     </Text>
-                  </TouchableOpacity>
+                  </Pressable>
                 ))}
               </View>
               <View style={styles.timeOptions}>
                 {['07:00', '12:00', '18:00', '19:00', '20:00'].map((time) => (
-                  <TouchableOpacity
+                  <Pressable
                     key={time}
                     style={[
                       styles.timeOption,
@@ -431,7 +431,7 @@ export default function SettingsScreen() {
                     >
                       {time}
                     </Text>
-                  </TouchableOpacity>
+                  </Pressable>
                 ))}
               </View>
             </View>
@@ -478,24 +478,30 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F7FA',
   },
   header: {
-    paddingTop: 60,
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingTop: 64,        // 8px grid
+    paddingHorizontal: 24,  // 8px grid
+    paddingBottom: 24,      // 8px grid
     backgroundColor: '#FFFFFF',
+    shadowColor: '#1D4ED8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 2,
   },
   title: {
     fontSize: 32,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: '#0F172A',
-    marginBottom: 4,
+    marginBottom: 8,        // 8px grid
   },
   subtitle: {
     fontSize: 16,
-    color: '#64748B',
+    color: '#475569',       // Better contrast
+    fontWeight: '400',
   },
   content: {
     flex: 1,
-    padding: 20,
+    padding: 24,            // 8px grid
   },
   loadingContainer: {
     flex: 1,
@@ -505,61 +511,66 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: '#64748B',
+    color: '#475569',       // Better contrast
   },
   section: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    borderRadius: 16,       // 8px grid
+    padding: 24,            // 8px grid
+    marginBottom: 24,       // 8px grid
+    shadowColor: '#1D4ED8',
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 12,
+    elevation: 4,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '700',      // Bolder
     color: '#0F172A',
     marginBottom: 16,
+    letterSpacing: 0.3,
   },
   settingRow: {
-    marginBottom: 20,
+    marginBottom: 24,       // 8px grid
   },
   settingInfo: {
-    marginBottom: 12,
+    marginBottom: 16,       // 8px grid
   },
   settingLabel: {
     fontSize: 16,
     fontWeight: '600',
     color: '#0F172A',
-    marginBottom: 4,
+    marginBottom: 8,        // 8px grid
   },
   settingDescription: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#475569',       // Better contrast
+    lineHeight: 20,
   },
   durationOptions: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
+    gap: 8,                 // 8px grid
   },
   durationOption: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
+    paddingVertical: 12,    // 8px grid
+    paddingHorizontal: 24,  // 8px grid
+    borderRadius: 24,       // 8px grid
     borderWidth: 2,
     borderColor: '#E2E8F0',
     backgroundColor: '#FFFFFF',
+    minHeight: 44,          // Accessibility
+    justifyContent: 'center',
   },
   durationOptionSelected: {
     borderColor: '#1D4ED8',
-    backgroundColor: '#E8EEFF',
+    backgroundColor: '#E0E7FF',
   },
   durationOptionText: {
     fontSize: 16,
-    color: '#64748B',
+    color: '#475569',       // Better contrast
+    fontWeight: '500',
   },
   durationOptionTextSelected: {
     color: '#1D4ED8',
@@ -568,109 +579,120 @@ const styles = StyleSheet.create({
   timeOptions: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
+    gap: 8,                 // 8px grid
   },
   weeklyOptions: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
-    marginBottom: 12,
+    marginBottom: 16,       // 8px grid
   },
   weekdayOption: {
     paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: 16,
-    borderWidth: 1,
+    paddingHorizontal: 16,  // 8px grid
+    borderRadius: 16,       // 8px grid
+    borderWidth: 2,
     borderColor: '#E2E8F0',
     backgroundColor: '#FFFFFF',
+    minHeight: 36,
+    justifyContent: 'center',
   },
   weekdayOptionSelected: {
     borderColor: '#1D4ED8',
-    backgroundColor: '#E8EEFF',
+    backgroundColor: '#E0E7FF',
   },
   weekdayOptionText: {
     fontSize: 12,
-    color: '#64748B',
+    color: '#475569',       // Better contrast
     fontWeight: '600',
   },
   weekdayOptionTextSelected: {
     color: '#1D4ED8',
+    fontWeight: '700',
   },
   trackOptions: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
+    gap: 8,                 // 8px grid
   },
   trackOption: {
-    paddingVertical: 10,
+    paddingVertical: 12,    // 8px grid
     paddingHorizontal: 16,
-    borderRadius: 18,
+    borderRadius: 24,       // 8px grid
     borderWidth: 2,
     borderColor: '#E2E8F0',
     backgroundColor: '#FFFFFF',
+    minHeight: 44,          // Accessibility
+    justifyContent: 'center',
   },
   trackOptionSelected: {
     borderColor: '#1D4ED8',
-    backgroundColor: '#E8EEFF',
+    backgroundColor: '#E0E7FF',
   },
   trackOptionText: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#475569',       // Better contrast
     fontWeight: '500',
   },
   trackOptionTextSelected: {
     color: '#1D4ED8',
-    fontWeight: '600',
+    fontWeight: '700',
   },
   practiceChips: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
+    gap: 8,                 // 8px grid
   },
   practiceChip: {
     paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
-  },
-  practiceChipSelected: {
-    borderColor: '#1D4ED8',
-    backgroundColor: '#E8EEFF',
-  },
-  practiceChipText: {
-    fontSize: 13,
-    color: '#64748B',
-  },
-  practiceChipTextSelected: {
-    color: '#1D4ED8',
-    fontWeight: '600',
-  },
-  timeOption: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
+    paddingHorizontal: 16,  // 8px grid
+    borderRadius: 16,       // 8px grid
     borderWidth: 2,
     borderColor: '#E2E8F0',
     backgroundColor: '#FFFFFF',
+    minHeight: 36,
+    justifyContent: 'center',
+  },
+  practiceChipSelected: {
+    borderColor: '#1D4ED8',
+    backgroundColor: '#E0E7FF',
+  },
+  practiceChipText: {
+    fontSize: 13,
+    color: '#475569',       // Better contrast
+    fontWeight: '500',
+  },
+  practiceChipTextSelected: {
+    color: '#1D4ED8',
+    fontWeight: '700',
+  },
+  timeOption: {
+    paddingVertical: 12,    // 8px grid
+    paddingHorizontal: 16,
+    borderRadius: 24,       // 8px grid
+    borderWidth: 2,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
+    minHeight: 44,          // Accessibility
+    justifyContent: 'center',
   },
   timeOptionSelected: {
     borderColor: '#1D4ED8',
-    backgroundColor: '#E8EEFF',
+    backgroundColor: '#E0E7FF',
   },
   timeOptionText: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#475569',       // Better contrast
+    fontWeight: '500',
   },
   timeOptionTextSelected: {
     color: '#1D4ED8',
-    fontWeight: '600',
+    fontWeight: '700',
   },
   aboutText: {
     fontSize: 14,
-    color: '#64748B',
-    lineHeight: 20,
-    marginBottom: 12,
+    color: '#475569',       // Better contrast
+    lineHeight: 22,         // Better readability
+    marginBottom: 16,       // 8px grid
   },
 });

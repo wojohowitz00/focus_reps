@@ -3,7 +3,7 @@
  * View and create journal entries
  */
 
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { getJournalEntries, deleteJournalEntry, getSessionById } from '../../lib/storage';
@@ -80,14 +80,17 @@ export default function JournalScreen() {
       </View>
 
       <ScrollView style={styles.content}>
-        <TouchableOpacity
-          style={styles.newEntryButton}
+        <Pressable
+          style={({ pressed }) => [
+            styles.newEntryButton,
+            pressed && styles.newEntryButtonPressed
+          ]}
           onPress={() => {
             navigation.navigate('JournalEntry' as never);
           }}
         >
           <Text style={styles.newEntryButtonText}>+ New Entry</Text>
-        </TouchableOpacity>
+        </Pressable>
 
         {entries.length === 0 ? (
           <View style={styles.emptyState}>
@@ -106,12 +109,15 @@ export default function JournalScreen() {
                     <Text style={styles.entryPractice}>{entry.practiceName}</Text>
                   )}
                 </View>
-                <TouchableOpacity
+                <Pressable
                   onPress={() => handleDelete(entry.id)}
-                  style={styles.deleteButton}
+                  style={({ pressed }) => [
+                    styles.deleteButton,
+                    pressed && styles.deleteButtonPressed
+                  ]}
                 >
                   <Text style={styles.deleteButtonText}>Delete</Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
               {entry.mood && (
                 <Text style={styles.entryMood}>
@@ -142,63 +148,84 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F7FA',
   },
   header: {
-    paddingTop: 60,
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingTop: 64,        // 8px grid
+    paddingHorizontal: 24,  // 8px grid
+    paddingBottom: 24,      // 8px grid
     backgroundColor: '#FFFFFF',
+    shadowColor: '#1D4ED8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 2,
   },
   title: {
     fontSize: 32,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: '#0F172A',
-    marginBottom: 4,
+    marginBottom: 8,        // 8px grid
   },
   subtitle: {
     fontSize: 16,
-    color: '#64748B',
+    color: '#475569',       // Better contrast
+    fontWeight: '400',
   },
   content: {
     flex: 1,
-    padding: 20,
+    padding: 24,            // 8px grid
   },
   newEntryButton: {
     backgroundColor: '#1D4ED8',
-    paddingVertical: 14,
+    paddingVertical: 16,    // Accessibility
     paddingHorizontal: 24,
     borderRadius: 8,
     alignItems: 'center',
-    marginBottom: 20,
+    minHeight: 48,
+    justifyContent: 'center',
+    marginBottom: 24,       // 8px grid
+    shadowColor: '#1D4ED8',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  newEntryButtonPressed: {
+    backgroundColor: '#1E40AF',
+    transform: [{ scale: 0.98 }],
+    shadowOpacity: 0.2,
   },
   newEntryButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+    letterSpacing: 0.3,
   },
   emptyState: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 60,
+    paddingVertical: 64,    // 8px grid
   },
   emptyStateText: {
     fontSize: 18,
-    color: '#64748B',
+    color: '#475569',       // Better contrast
     marginBottom: 8,
+    fontWeight: '500',
   },
   emptyStateSubtext: {
     fontSize: 14,
-    color: '#94A3B8',
+    color: '#64748B',       // Better contrast
     textAlign: 'center',
+    lineHeight: 20,
   },
   entryCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
+    borderRadius: 16,       // 8px grid
+    padding: 24,            // 8px grid
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: '#1D4ED8',
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 12,
+    elevation: 4,
   },
   entryHeader: {
     flexDirection: 'row',
@@ -209,8 +236,8 @@ const styles = StyleSheet.create({
   entryDate: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#64748B',
-    marginBottom: 2,
+    color: '#475569',       // Better contrast
+    marginBottom: 4,        // 8px grid
   },
   entryPractice: {
     fontSize: 12,
@@ -219,37 +246,44 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingVertical: 8,     // 8px grid
+    minHeight: 32,
+  },
+  deleteButtonPressed: {
+    opacity: 0.6,
   },
   deleteButtonText: {
     fontSize: 12,
-    color: '#B91C1C',
+    color: '#DC2626',       // Slightly brighter red
+    fontWeight: '600',
   },
   entryMood: {
     fontSize: 14,
     color: '#1D4ED8',
     marginBottom: 8,
     fontStyle: 'italic',
+    fontWeight: '500',
   },
   entryContent: {
     fontSize: 14,
     color: '#0F172A',
     lineHeight: 20,
-    marginBottom: 12,
+    marginBottom: 16,       // 8px grid
   },
   tagsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 6,
+    gap: 8,                 // 8px grid
   },
   tag: {
     paddingVertical: 4,
     paddingHorizontal: 8,
-    borderRadius: 12,
-    backgroundColor: '#E8EEFF',
+    borderRadius: 16,       // 8px grid
+    backgroundColor: '#E0E7FF',
   },
   tagText: {
     fontSize: 12,
     color: '#1D4ED8',
+    fontWeight: '500',
   },
 });

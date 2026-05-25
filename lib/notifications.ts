@@ -4,21 +4,30 @@
  */
 
 import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
 import { getSettings } from './storage';
 
-// Configure notification handler
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
+const isWeb = Platform.OS === 'web';
+
+// Configure notification handler only on native platforms.
+if (!isWeb) {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    }),
+  });
+}
 
 /**
  * Request notification permissions
  */
 export async function requestPermissions(): Promise<boolean> {
+  if (isWeb) {
+    return false;
+  }
+
   try {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
@@ -39,6 +48,10 @@ export async function requestPermissions(): Promise<boolean> {
  * Schedule daily practice reminder
  */
 export async function scheduleDailyReminder(time: string = '08:00'): Promise<string | null> {
+  if (isWeb) {
+    return null;
+  }
+
   try {
     const hasPermission = await requestPermissions();
     if (!hasPermission) {
@@ -73,6 +86,10 @@ export async function scheduleDailyReminder(time: string = '08:00'): Promise<str
 }
 
 export async function cancelDailyReminders(): Promise<void> {
+  if (isWeb) {
+    return;
+  }
+
   try {
     const scheduled = await Notifications.getAllScheduledNotificationsAsync();
     const dailyIds = scheduled
@@ -89,6 +106,10 @@ export async function cancelDailyReminders(): Promise<void> {
  * Schedule streak maintenance reminder
  */
 export async function scheduleStreakReminder(streakDays: number): Promise<string | null> {
+  if (isWeb) {
+    return null;
+  }
+
   try {
     const hasPermission = await requestPermissions();
     if (!hasPermission) {
@@ -130,6 +151,10 @@ export async function scheduleWeeklySummary(
   totalSessions: number,
   totalMinutes: number
 ): Promise<string | null> {
+  if (isWeb) {
+    return null;
+  }
+
   try {
     const hasPermission = await requestPermissions();
     if (!hasPermission) {
@@ -162,6 +187,10 @@ export async function scheduleWeeklyReminder(
   day: number,
   time: string
 ): Promise<string | null> {
+  if (isWeb) {
+    return null;
+  }
+
   try {
     const hasPermission = await requestPermissions();
     if (!hasPermission) {
@@ -192,6 +221,10 @@ export async function scheduleWeeklyReminder(
 }
 
 export async function cancelWeeklyReminder(): Promise<void> {
+  if (isWeb) {
+    return;
+  }
+
   try {
     const scheduled = await Notifications.getAllScheduledNotificationsAsync();
     const weeklyIds = scheduled
@@ -208,6 +241,10 @@ export async function cancelWeeklyReminder(): Promise<void> {
  * Cancel all scheduled reminders
  */
 export async function cancelAllReminders(): Promise<void> {
+  if (isWeb) {
+    return;
+  }
+
   try {
     await Notifications.cancelAllScheduledNotificationsAsync();
   } catch (error) {
@@ -219,6 +256,10 @@ export async function cancelAllReminders(): Promise<void> {
  * Cancel a specific reminder
  */
 export async function cancelReminder(notificationId: string): Promise<void> {
+  if (isWeb) {
+    return;
+  }
+
   try {
     await Notifications.cancelScheduledNotificationAsync(notificationId);
   } catch (error) {
@@ -238,9 +279,13 @@ export async function rescheduleReminder(newTime: string): Promise<string | null
  * Initialize notifications based on user settings
  */
 export async function initializeNotifications(): Promise<void> {
+  if (isWeb) {
+    return;
+  }
+
   try {
     const settings = await getSettings();
-    
+
     if (settings?.notificationsEnabled && settings?.reminderTime) {
       await scheduleDailyReminder(settings.reminderTime);
     }
