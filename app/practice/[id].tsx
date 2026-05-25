@@ -1,429 +1,230 @@
 /**
- * Practice Session Screen
- * Full practice session flow with timer and instructions
+ * Practice Session Screen — "Approachable Science" session UI
+ * 4 elements only: label · breath ring · timer · progress bar
+ * No stats, no live score during session.
  */
 
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Dimensions,
+} from 'react-native';
+import Animated, {
+  useSharedValue, useAnimatedStyle, withRepeat, withSequence,
+  withTiming, Easing as REasing,
+} from 'react-native-reanimated';
+import Svg, { Circle } from 'react-native-svg';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import Timer from '../../components/Timer';
-import AudioPlayer from '../../components/AudioPlayer';
-import { getPracticeInstruction } from '../../lib/practiceInstructions';
-import { PracticeType, PracticeSession } from '../../types';
-import { practiceDefinitions } from '../../lib/practices';
 import { saveSession } from '../../lib/storage';
+import { practiceDefinitions } from '../../lib/practices';
+import { PracticeType, PracticeSession } from '../../types';
+import { colors, typography, spacing } from '../../constants/theme';
 
-type RouteParams = {
-  id: PracticeType;
-};
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const RING_SIZE = 120;
+const CX = RING_SIZE / 2;
+const R_OUTER = CX - 4;
+const R_MIDDLE = CX - 18;
+const R_INNER = CX - 32;
+
+type RouteParams = { id: PracticeType; repNumber?: number };
+
+function useCountdown(totalSeconds: number, running: boolean) {
+  const [remaining, setRemaining] = useState(totalSeconds);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (!running) return;
+    intervalRef.current = setInterval(() => {
+      setRemaining(prev => {
+        if (prev <= 1) {
+          clearInterval(intervalRef.current!);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(intervalRef.current!);
+  }, [running]);
+
+  const mm = String(Math.floor(remaining / 60)).padStart(2, '0');
+  const ss = String(remaining % 60).padStart(2, '0');
+  return { remaining, display: `${mm}:${ss}` };
+}
 
 export default function PracticeSessionScreen() {
   const route = useRoute();
-  const navigation = useNavigation();
-  const { id } = (route.params || {}) as RouteParams;
-  
-  const [sessionStarted, setSessionStarted] = useState(false);
-  const [sessionCompleted, setSessionCompleted] = useState(false);
-  const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [lapseTimestamps, setLapseTimestamps] = useState<number[]>([]);
-  
+  const navigation = useNavigation<any>();
+  const { id, repNumber = 1 } = (route.params || {}) as RouteParams;
+
   const practice = practiceDefinitions[id];
-  const instructions = getPracticeInstruction(id);
+  const totalSeconds = (practice?.defaultDuration ?? 12) * 60;
 
-  const setupSeconds = 90;
-  const closingSeconds = 60;
-  const totalSeconds = practice?.defaultDuration ? practice.defaultDuration * 60 : 0;
-  const practiceSeconds = Math.max(totalSeconds - setupSeconds - closingSeconds, 0);
-  const isPracticePhase = elapsedSeconds >= setupSeconds
-    && elapsedSeconds < Math.max(totalSeconds - closingSeconds, setupSeconds);
+  const [running, setRunning] = useState(false);
+  const [done, setDone] = useState(false);
+  const startTimeRef = useRef<number>(0);
 
-  if (!practice || !instructions) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.errorText}>Practice not found</Text>
-      </SafeAreaView>
+  const { remaining, display } = useCountdown(totalSeconds, running);
+
+  // Breath ring pulse animation
+  const scale = useSharedValue(1);
+  useEffect(() => {
+    scale.value = withRepeat(
+      withSequence(
+        withTiming(1.08, { duration: 4000, easing: REasing.inOut(REasing.quad) }),
+        withTiming(1.0, { duration: 4000, easing: REasing.inOut(REasing.quad) })
+      ),
+      -1,
+      false
     );
-  }
+  }, []);
 
-  const handleStart = () => {
-    setSessionStarted(true);
-  };
+  const animatedRingStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
 
-  const handleMarkLapse = () => {
-    if (!isPracticePhase) {
-      return;
-    }
-    setLapseTimestamps((prev) => {
-      const practiceElapsed = Math.max(elapsedSeconds - setupSeconds, 0);
-      const last = prev[prev.length - 1];
-      if (last === practiceElapsed) {
-        return prev;
-      }
-      return [...prev, practiceElapsed];
-    });
-  };
-
-  const calculateLongestFocusInterval = () => {
-    if (practiceSeconds <= 0) {
-      return 0;
-    }
-    if (lapseTimestamps.length === 0) {
-      return practiceSeconds;
-    }
-    const sorted = [...lapseTimestamps].sort((a, b) => a - b);
-    let longest = sorted[0];
-    let previous = sorted[0];
-
-    for (let i = 1; i < sorted.length; i++) {
-      const interval = sorted[i] - previous;
-      if (interval > longest) {
-        longest = interval;
-      }
-      previous = sorted[i];
-    }
-
-    const tailInterval = practiceSeconds - previous;
-    if (tailInterval > longest) {
-      longest = tailInterval;
-    }
-    return Math.max(0, Math.floor(longest));
-  };
-
-  const handleComplete = async () => {
-    try {
-      const longestFocusIntervalSec = calculateLongestFocusInterval();
-      // Save session to storage
+  // Session complete
+  useEffect(() => {
+    if (running && remaining === 0 && !done) {
+      setDone(true);
+      setRunning(false);
+      const durationMinutes = Math.round((Date.now() - startTimeRef.current) / 60000);
       const session: PracticeSession = {
-        id: `session-${Date.now()}`,
+        id: Date.now().toString(),
         practiceType: id,
         date: new Date(),
-        duration: practice.defaultDuration,
-        scheduledDuration: practice.defaultDuration,
+        duration: durationMinutes,
+        scheduledDuration: practice?.defaultDuration ?? 12,
         completed: true,
-        lapseCount: lapseTimestamps.length,
-        longestFocusIntervalSec,
       };
-
-      await saveSession(session);
-      setSessionCompleted(true);
-      
-      // Navigate to journal entry screen after showing completion
-      setTimeout(() => {
-        navigation.navigate('SessionCheckIn' as never, {
-          sessionId: session.id,
+      saveSession(session).then(() => {
+        navigation.replace('PostSession', {
           practiceType: id,
-          lapseCount: session.lapseCount,
-          longestFocusIntervalSec: session.longestFocusIntervalSec,
-        } as never);
-      }, 2000);
-    } catch (error) {
-      console.error('Error saving session:', error);
-      // Still show completion even if save fails
-      setSessionCompleted(true);
+          repNumber,
+          sessionId: session.id,
+        });
+      });
     }
+  }, [remaining, running, done]);
+
+  const handleStart = () => {
+    startTimeRef.current = Date.now();
+    setRunning(true);
   };
 
-  if (sessionCompleted) {
+  const progress = running ? (totalSeconds - remaining) / totalSeconds : 0;
+  const practiceLabel = practice?.name ?? id;
+  const sessionLabel = `${practiceLabel} · Rep ${repNumber}`.toUpperCase();
+
+  if (!running && !done) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.completedContainer}>
-          <Text style={styles.completedTitle}>Practice Complete! 🎉</Text>
-          <Text style={styles.completedText}>
-            Great job completing your {practice.name} practice.
-          </Text>
-          <Text style={styles.completedText}>
-            Take a moment to reflect on your experience.
-          </Text>
+      <SafeAreaView style={s.container}>
+        <View style={s.center}>
+          <Text style={s.preLabel}>{practiceLabel}</Text>
+          <Text style={s.preDuration}>{practice?.defaultDuration ?? 12} min</Text>
+          <Text style={s.preSub}>Find a comfortable position. You can close your eyes once you start.</Text>
         </View>
-      </SafeAreaView>
-    );
-  }
-
-  if (!sessionStarted) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.header}>
-            <Text style={styles.title}>{practice.name}</Text>
-            <Text style={styles.duration}>{practice.defaultDuration} minutes</Text>
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>What You're Training</Text>
-            {instructions.whatYoureTraining.map((item, index) => (
-              <Text key={index} style={styles.bulletPoint}>
-                • {item}
-              </Text>
-            ))}
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Setup</Text>
-            {instructions.setup.map((step, index) => (
-              <Text key={index} style={styles.stepText}>
-                {index + 1}. {step}
-              </Text>
-            ))}
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Practice Steps</Text>
-            {instructions.practiceSteps.map((step, index) => (
-              <Text key={index} style={styles.stepText}>
-                {index + 1}. {step}
-              </Text>
-            ))}
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Critical Notes</Text>
-            <Text style={styles.noteHeading}>This practice is:</Text>
-            {instructions.criticalNotes.is.map((note, index) => (
-              <Text key={`is-${index}`} style={styles.bulletPoint}>
-                • {note}
-              </Text>
-            ))}
-            <Text style={styles.noteHeading}>This practice is not:</Text>
-            {instructions.criticalNotes.isNot.map((note, index) => (
-              <Text key={`isnot-${index}`} style={styles.bulletPoint}>
-                • {note}
-              </Text>
-            ))}
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Common Pitfalls</Text>
-            {instructions.pitfalls.map((pitfall, index) => (
-              <View key={pitfall.title + index} style={styles.pitfallCard}>
-                <Text style={styles.pitfallTitle}>{pitfall.title}</Text>
-                <Text style={styles.pitfallText}>Why: {pitfall.why}</Text>
-                <Text style={styles.pitfallText}>Truth: {pitfall.truth}</Text>
-                <Text style={styles.pitfallText}>Fix: {pitfall.fix}</Text>
-              </View>
-            ))}
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Keys to Success</Text>
-            {instructions.keysToSuccess.map((key, index) => (
-              <Text key={`key-${index}`} style={styles.bulletPoint}>
-                • {key}
-              </Text>
-            ))}
-            {instructions.researchNotes ? (
-              <Text style={styles.researchText}>Research note: {instructions.researchNotes}</Text>
-            ) : null}
-          </View>
-
-          <View style={styles.startButtonContainer}>
-            <TouchableOpacity
-              style={styles.startButton}
-              onPress={handleStart}
-            >
-              <Text style={styles.startButtonText}>Start Practice</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+        <TouchableOpacity style={s.startButton} onPress={handleStart}>
+          <Text style={s.startButtonText}>Begin Rep {repNumber}</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.timerContainer}>
-        <Text style={styles.practiceName}>{practice.name}</Text>
-        <Timer
-          duration={practice.defaultDuration}
-          onTick={setElapsedSeconds}
-          onComplete={handleComplete}
-        />
-        <View style={styles.lapseRow}>
-          <TouchableOpacity
-            style={[styles.lapseButton, !isPracticePhase && styles.lapseButtonDisabled]}
-            onPress={handleMarkLapse}
-            disabled={!isPracticePhase}
-          >
-            <Text style={styles.lapseButtonText}>Mark Lapse</Text>
-          </TouchableOpacity>
-          <View style={styles.lapseCount}>
-            <Text style={styles.lapseCountLabel}>Lapses</Text>
-            <Text style={styles.lapseCountValue}>{lapseTimestamps.length}</Text>
-          </View>
+    <View style={s.sessionContainer}>
+      <SafeAreaView style={s.sessionInner}>
+        {/* Subdued label — top, single line */}
+        <Text style={s.sessionLabel}>{sessionLabel}</Text>
+
+        {/* Breath ring — center focal point */}
+        <View style={s.ringContainer}>
+          <Svg width={RING_SIZE} height={RING_SIZE}>
+            <Circle cx={CX} cy={CX} r={R_OUTER} stroke={colors.primaryRing1} strokeWidth={1} fill="none" />
+            <Circle cx={CX} cy={CX} r={R_MIDDLE} stroke={colors.primaryRing2} strokeWidth={1} fill="none" />
+          </Svg>
+          <Animated.View style={[s.innerRingWrapper, animatedRingStyle]}>
+            <Svg width={RING_SIZE} height={RING_SIZE} style={StyleSheet.absoluteFill}>
+              <Circle cx={CX} cy={CX} r={R_INNER} stroke={colors.primary} strokeWidth={1.5} fill={colors.background} />
+              <Circle cx={CX} cy={CX} r={5} fill={colors.primary} />
+            </Svg>
+          </Animated.View>
         </View>
-        {/* Audio player can be added here when audio files are available */}
-        {/* <AudioPlayer audioUri={instructions.audioUri} /> */}
+
+        {/* Timer — large, light weight */}
+        <Text style={s.timer}>{display}</Text>
+      </SafeAreaView>
+
+      {/* 2px progress bar — absolute bottom edge */}
+      <View style={s.progressTrack}>
+        <View style={[s.progressFill, { width: `${Math.round(progress * 100)}%` }]} />
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
+const s = StyleSheet.create({
+  sessionContainer: {
+    flex: 1, backgroundColor: colors.background,
+  },
+  sessionInner: {
+    flex: 1, alignItems: 'center', justifyContent: 'space-evenly',
+    paddingHorizontal: spacing.screenPaddingH,
+  },
+  sessionLabel: {
+    fontSize: typography.labelSize,
+    fontWeight: typography.labelWeight,
+    color: colors.textMuted,
+    textTransform: typography.labelTransform,
+    letterSpacing: typography.labelSpacing,
+    textAlign: 'center',
+  },
+  ringContainer: {
+    width: RING_SIZE, height: RING_SIZE,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  innerRingWrapper: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  timer: {
+    fontSize: typography.timerSize,
+    fontWeight: typography.timerWeight,
+    color: colors.textBody,
+    fontVariant: ['tabular-nums'],
+  },
+  progressTrack: {
+    position: 'absolute', bottom: 0, left: 0, right: 0,
+    height: spacing.progressBarHeight,
+    backgroundColor: colors.surface,
+  },
+  progressFill: {
+    height: spacing.progressBarHeight,
+    backgroundColor: colors.primary,
+  },
   container: {
-    flex: 1,
-    backgroundColor: '#F5F7FA',
+    flex: 1, backgroundColor: colors.background,
+    paddingHorizontal: spacing.screenPaddingH,
+    paddingVertical: spacing.screenPaddingV,
+    justifyContent: 'space-between',
   },
-  scrollView: {
-    flex: 1,
+  center: { flex: 1, justifyContent: 'center', gap: 12 },
+  preLabel: {
+    fontSize: 26, fontWeight: '700', color: colors.textBody,
   },
-  header: {
-    padding: 20,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
+  preDuration: {
+    fontSize: typography.labelSize, fontWeight: typography.labelWeight,
+    color: colors.textMuted, textTransform: typography.labelTransform,
+    letterSpacing: typography.labelSpacing,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#0F172A',
-    marginBottom: 4,
-  },
-  duration: {
-    fontSize: 16,
-    color: '#64748B',
-  },
-  section: {
-    padding: 20,
-    backgroundColor: '#FFFFFF',
-    marginTop: 12,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#0F172A',
-    marginBottom: 12,
-  },
-  bulletPoint: {
-    fontSize: 14,
-    color: '#64748B',
-    marginBottom: 8,
-    lineHeight: 20,
-  },
-  stepText: {
-    fontSize: 14,
-    color: '#64748B',
-    marginBottom: 12,
-    lineHeight: 20,
-  },
-  noteHeading: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#0F172A',
-    marginTop: 4,
-    marginBottom: 8,
-  },
-  pitfallCard: {
-    backgroundColor: '#F8FAFC',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 10,
-  },
-  pitfallTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#0F172A',
-    marginBottom: 6,
-  },
-  pitfallText: {
-    fontSize: 13,
-    color: '#64748B',
-    lineHeight: 18,
-    marginBottom: 4,
-  },
-  researchText: {
-    marginTop: 12,
-    fontSize: 13,
-    color: '#4b5563',
-    lineHeight: 18,
-  },
-  startButtonContainer: {
-    padding: 20,
-    marginTop: 20,
-    marginBottom: 40,
+  preSub: {
+    fontSize: typography.bodySize, color: colors.textMuted,
+    lineHeight: 22, marginTop: 8,
   },
   startButton: {
-    backgroundColor: '#1D4ED8',
-    paddingVertical: 16,
-    borderRadius: 8,
-    alignItems: 'center',
+    backgroundColor: colors.primary, borderRadius: spacing.cardRadius,
+    padding: 16, alignItems: 'center',
   },
   startButtonText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  timerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  lapseRow: {
-    marginTop: 24,
-    alignItems: 'center',
-    width: '100%',
-  },
-  lapseButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: '#1D4ED8',
-    backgroundColor: '#FFFFFF',
-    marginBottom: 12,
-  },
-  lapseButtonDisabled: {
-    borderColor: '#ccc',
-    opacity: 0.6,
-  },
-  lapseButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1D4ED8',
-  },
-  lapseCount: {
-    alignItems: 'center',
-  },
-  lapseCountLabel: {
-    fontSize: 12,
-    color: '#64748B',
-    textTransform: 'uppercase',
-    letterSpacing: 0.6,
-  },
-  lapseCountValue: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#0F172A',
-  },
-  practiceName: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#0F172A',
-    marginBottom: 40,
-  },
-  completedContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 40,
-  },
-  completedTitle: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#1D4ED8',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  completedText: {
-    fontSize: 18,
-    color: '#64748B',
-    textAlign: 'center',
-    marginBottom: 12,
-    lineHeight: 26,
-  },
-  errorText: {
-    fontSize: 16,
-    color: '#B91C1C',
-    textAlign: 'center',
-    marginTop: 40,
+    fontSize: typography.bodySize, fontWeight: '700', color: colors.background,
   },
 });
