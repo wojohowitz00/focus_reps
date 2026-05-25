@@ -71,7 +71,7 @@ export default function OnboardingScreen() {
   const handleComplete = async () => {
     const settings = await getSettings();
     await saveSettings({
-      ...settings!,
+      ...(settings ?? {}),
       userPath,
       programStartDate: new Date().toISOString(),
     });
