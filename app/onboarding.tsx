@@ -1,569 +1,265 @@
 /**
- * Onboarding Screen
- * First-time user setup and introduction
+ * Onboarding Screen — "Approachable Science" design
+ * Flow: science hook → quiz (2 q) → building animation → profile reveal
+ * SART baseline is taken after onboarding via navigation to SartTest
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
+  View, Text, StyleSheet, TouchableOpacity, SafeAreaView,
+  Animated, Easing,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { saveSettings, getSettings } from '../lib/storage';
-import { requestPermissions } from '../lib/notifications';
-import { initializeNotifications } from '../lib/notifications';
+import { requestPermissions, initializeNotifications } from '../lib/notifications';
+import { colors, typography, spacing } from '../constants/theme';
+
+type Step = 'hook' | 'quiz1' | 'quiz2' | 'building' | 'reveal';
+type UserPath = 'deep_work' | 'overwhelm' | 'burnout';
+
+const PATH_LABELS: Record<UserPath, { title: string; subtitle: string }> = {
+  deep_work: {
+    title: 'Deep Work Path',
+    subtitle: 'You'll build endurance for sustained, distraction-free attention.',
+  },
+  overwhelm: {
+    title: 'Digital Reset Path',
+    subtitle: 'You'll train the pause between stimulus and reaction.',
+  },
+  burnout: {
+    title: 'Restoration Path',
+    subtitle: 'You'll rebuild cognitive bandwidth from the ground up.',
+  },
+};
 
 export default function OnboardingScreen() {
-  const navigation = useNavigation();
-  const [step, setStep] = useState(1);
-  const [quizStep, setQuizStep] = useState(1);
-  const [q1Answer, setQ1Answer] = useState<string | null>(null);
-  const [q2Answer, setQ2Answer] = useState<string | null>(null);
-  const [userPath, setUserPath] = useState<'deep_work' | 'overwhelm' | 'burnout'>('deep_work');
-  const [reminderTime, setReminderTime] = useState('08:00');
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const navigation = useNavigation<any>();
+  const [step, setStep] = useState<Step>('hook');
+  const [q1, setQ1] = useState<string | null>(null);
+  const [userPath, setUserPath] = useState<UserPath>('deep_work');
 
-  const handleQ1Select = (ans: string) => {
-    setQ1Answer(ans);
-    setQuizStep(2);
+  const buildingProgress = useRef(new Animated.Value(0)).current;
+
+  const derivePath = (answer1: string, answer2: string): UserPath => {
+    if (answer1 === 'burnout' || answer2 === 'burnout') return 'burnout';
+    if (answer1 === 'overwhelm' || answer2 === 'overwhelm') return 'overwhelm';
+    return 'deep_work';
   };
 
-  const handleQ2Select = (ans: string) => {
-    setQ2Answer(ans);
-    const calculated = (q1Answer === 'burnout' || ans === 'burnout')
-      ? 'burnout'
-      : (q1Answer === 'overwhelm' || ans === 'overwhelm')
-      ? 'overwhelm'
-      : 'deep_work';
-    setUserPath(calculated);
-    setStep(3);
+  const handleQ1 = (answer: string) => {
+    setQ1(answer);
+    setStep('quiz2');
   };
 
-  const handleNext = async () => {
-    if (step === 1) {
-      setStep(2);
-      setQuizStep(1);
-    } else if (step === 2) {
-      if (quizStep === 1) {
-        setQuizStep(2);
-      } else {
-        // Calculate path
-        const calculated = (q1Answer === 'burnout' || q2Answer === 'burnout')
-          ? 'burnout'
-          : (q1Answer === 'overwhelm' || q2Answer === 'overwhelm')
-          ? 'overwhelm'
-          : 'deep_work';
-        setUserPath(calculated);
-        setStep(3);
-      }
-    } else if (step === 3) {
-      setStep(4);
-    } else {
-      await handleComplete();
-    }
+  const handleQ2 = (answer: string) => {
+    const path = derivePath(q1 ?? 'deep_work', answer);
+    setUserPath(path);
+    setStep('building');
+    runBuildingAnimation();
   };
 
-  const handleBack = () => {
-    if (step === 2) {
-      if (quizStep === 2) {
-        setQuizStep(1);
-      } else {
-        setStep(1);
-      }
-    } else if (step === 3) {
-      setStep(2);
-      setQuizStep(2);
-    } else if (step === 4) {
-      setStep(3);
-    }
+  const runBuildingAnimation = () => {
+    buildingProgress.setValue(0);
+    Animated.timing(buildingProgress, {
+      toValue: 1,
+      duration: 2800,
+      easing: Easing.out(Easing.quad),
+      useNativeDriver: false,
+    }).start(() => setStep('reveal'));
   };
 
   const handleComplete = async () => {
-    try {
-      // Save settings
-      const settings = await getSettings();
-      await saveSettings({
-        ...settings,
-        reminderTime,
-        notificationsEnabled,
-        userPath,
-        currentLevel: 'L1', // Starts at L1 Baseline
-      });
-
-      // Initialize notifications if enabled
-      if (notificationsEnabled) {
-        await requestPermissions();
-        await initializeNotifications();
-      }
-
-      // Navigate to main app
-      navigation.navigate('MainTabs' as never);
-    } catch (error) {
-      console.error('Error completing onboarding:', error);
-      // Still navigate even if there's an error
-      navigation.navigate('MainTabs' as never);
-    }
+    const settings = await getSettings();
+    await saveSettings({
+      ...settings!,
+      userPath,
+      programStartDate: new Date().toISOString(),
+    });
+    await requestPermissions();
+    await initializeNotifications();
+    navigation.replace('SartTest');
   };
 
-  const handleSkip = () => {
-    navigation.navigate('MainTabs' as never);
-  };
-
-  const getPathTitle = () => {
-    if (userPath === 'burnout') return 'Burnout & Brain Fog Path';
-    if (userPath === 'overwhelm') return 'Digital Overwhelm Path';
-    return 'Deep Work Path';
-  };
-
-  const getPathDescription = () => {
-    if (userPath === 'burnout') {
-      return 'Prioritizes body scans and connection practices to lower high physiological arousal, combat cognitive fatigue, and restore working memory.';
-    }
-    if (userPath === 'overwhelm') {
-      return 'Combines breath reps with meta-awareness training (River of Thought) to build the critical "pause" between digital stimulus and reactive multitasking.';
-    }
-    return 'Optimized for knowledge workers and students seeking flow. Heavy focus on sustained attention training (Find Your Flashlight) to eliminate attention residue.';
-  };
-
-  const getPathResearch = () => {
-    if (userPath === 'burnout') {
-      return 'Trauma-informed somatic grounding has been shown to reduce baseline anxiety and restore mental stamina without overwhelming the nervous system.';
-    }
-    if (userPath === 'overwhelm') {
-      return 'Differentiating between a thought/alert and the action to pursue it is a research-proven method to lower context-switching stress.';
-    }
-    return 'Sustained attention training acts as an "attention muscle" workout, protecting working memory capacity against daily fragmentation.';
-  };
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
-        {step === 1 && (
-          <View style={styles.step}>
-            <View style={styles.stepPill}>
-              <Text style={styles.stepPillText}>Step 1 of 4</Text>
-            </View>
-            <Text style={styles.title}>Welcome to Focus Reps</Text>
-            <Text style={styles.description}>
-              Focus Reps is a deliberate-practice "Cognitive Gym" designed to rebuild your attention span using elite, research-backed training methods.
-            </Text>
-            <Text style={styles.description}>
-              Expect 12 minutes of training a day. We train sustained focus, meta-awareness, and rapid distraction recovery.
-            </Text>
-          </View>
-        )}
-
-        {step === 2 && (
-          <View style={styles.step}>
-            <View style={styles.stepPill}>
-              <Text style={styles.stepPillText}>Step 2 of 4 • Attention Profile</Text>
-            </View>
-            
-            {quizStep === 1 ? (
-              <View style={styles.quizContainer}>
-                <Text style={styles.title}>What is your primary focus challenge?</Text>
-                <TouchableOpacity
-                  style={[styles.optionCard, q1Answer === 'deep_work' && styles.optionCardSelected]}
-                  onPress={() => handleQ1Select('deep_work')}
-                >
-                  <Text style={[styles.optionCardText, q1Answer === 'deep_work' && styles.optionCardTextSelected]}>
-                    Struggling to stay in deep flow, experiencing "attention residue" when switching tasks.
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[styles.optionCard, q1Answer === 'overwhelm' && styles.optionCardSelected]}
-                  onPress={() => handleQ1Select('overwhelm')}
-                >
-                  <Text style={[styles.optionCardText, q1Answer === 'overwhelm' && styles.optionCardTextSelected]}>
-                    Constantly distracted by notifications, pings, and the urge to multitask.
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[styles.optionCard, q1Answer === 'burnout' && styles.optionCardSelected]}
-                  onPress={() => handleQ1Select('burnout')}
-                >
-                  <Text style={[styles.optionCardText, q1Answer === 'burnout' && styles.optionCardTextSelected]}>
-                    Feeling mentally exhausted, brain-fogged, or close to burnout.
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View style={styles.quizContainer}>
-                <Text style={styles.title}>What is your main training goal?</Text>
-                <TouchableOpacity
-                  style={[styles.optionCard, q2Answer === 'deep_work' && styles.optionCardSelected]}
-                  onPress={() => handleQ2Select('deep_work')}
-                >
-                  <Text style={[styles.optionCardText, q2Answer === 'deep_work' && styles.optionCardTextSelected]}>
-                    Build endurance for long stretches of uninterrupted intellectual work.
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[styles.optionCard, q2Answer === 'overwhelm' && styles.optionCardSelected]}
-                  onPress={() => handleQ2Select('overwhelm')}
-                >
-                  <Text style={[styles.optionCardText, q2Answer === 'overwhelm' && styles.optionCardTextSelected]}>
-                    Reclaim the "pause" between an incoming alert and my reaction.
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[styles.optionCard, q2Answer === 'burnout' && styles.optionCardSelected]}
-                  onPress={() => handleQ2Select('burnout')}
-                >
-                  <Text style={[styles.optionCardText, q2Answer === 'burnout' && styles.optionCardTextSelected]}>
-                    Lower mental stress, ease anxiety, and restore baseline bandwidth.
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        )}
-
-        {step === 3 && (
-          <View style={styles.step}>
-            <View style={styles.stepPill}>
-              <Text style={styles.stepPillText}>Step 3 of 4 • Your Path</Text>
-            </View>
-            <Text style={styles.subtitle}>Attention Profile Complete</Text>
-            <Text style={styles.pathTitle}>{getPathTitle()}</Text>
-            
-            <View style={styles.pathCard}>
-              <Text style={styles.pathLabel}>Core Training Strategy:</Text>
-              <Text style={styles.pathDescText}>{getPathDescription()}</Text>
-              
-              <Text style={styles.pathLabel}>Research Rationale:</Text>
-              <Text style={styles.pathDescText}>{getPathResearch()}</Text>
-
-              <Text style={styles.pathLabel}>Level 1 Starts With:</Text>
-              <Text style={styles.boldText}>• Find Your Flashlight (12 min)</Text>
-            </View>
-          </View>
-        )}
-
-        {step === 4 && (
-          <View style={styles.step}>
-            <View style={styles.stepPill}>
-              <Text style={styles.stepPillText}>Step 4 of 4</Text>
-            </View>
-            <Text style={styles.title}>Set Up Reminders</Text>
-            <Text style={styles.description}>
-              Sustained attention requires a critical weekly dose. We will help you build this habit with short daily reminders.
-            </Text>
-
-            <View style={styles.settingRow}>
-              <Text style={styles.settingLabel}>Daily Reminder Time</Text>
-              <View style={styles.timeOptions}>
-                {['06:00', '08:00', '12:00', '18:00', '20:00'].map((time) => (
-                  <TouchableOpacity
-                    key={time}
-                    style={[
-                      styles.timeOption,
-                      reminderTime === time && styles.timeOptionSelected,
-                    ]}
-                    onPress={() => setReminderTime(time)}
-                  >
-                    <Text
-                      style={[
-                        styles.timeOptionText,
-                        reminderTime === time && styles.timeOptionTextSelected,
-                      ]}
-                    >
-                      {time}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
-
-            <TouchableOpacity
-              style={styles.toggleRow}
-              onPress={() => setNotificationsEnabled(!notificationsEnabled)}
-            >
-              <Text style={styles.settingLabel}>Enable Notifications</Text>
-              <View
-                style={[
-                  styles.toggle,
-                  notificationsEnabled && styles.toggleActive,
-                ]}
-              >
-                <View
-                  style={[
-                    styles.toggleThumb,
-                    notificationsEnabled && styles.toggleThumbActive,
-                  ]}
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        <View style={styles.actions}>
-          {step > 1 && (
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={handleBack}
-            >
-              <Text style={styles.backButtonText}>Back</Text>
-            </TouchableOpacity>
-          )}
-          {step !== 2 && (
-            <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-              <Text style={styles.nextButtonText}>
-                {step === 4 ? 'Get Started' : 'Next'}
-              </Text>
-            </TouchableOpacity>
-          )}
+  if (step === 'hook') {
+    return (
+      <SafeAreaView style={s.container}>
+        <View style={s.hookBody}>
+          <Text style={s.hookHeadline}>Attention is a muscle.{'\n'}You can train it.</Text>
+          <Text style={s.hookBodyText}>
+            Most people try to focus harder. Research shows that's not how it works — focus is a skill you build through practice, the same way you build any other skill.
+          </Text>
+          <Text style={s.hookCta}>12 minutes a day. We'll measure the difference.</Text>
         </View>
-
-        <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
-          <Text style={styles.skipButtonText}>Skip Setup</Text>
+        <TouchableOpacity style={s.primaryButton} onPress={() => setStep('quiz1')}>
+          <Text style={s.primaryButtonText}>Get started</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  if (step === 'quiz1') {
+    return (
+      <SafeAreaView style={s.container}>
+        <Text style={s.quizLabel}>Question 1 of 2</Text>
+        <Text style={s.quizQuestion}>Where does your focus break down most?</Text>
+        <View style={s.optionList}>
+          {[
+            { value: 'deep_work', label: 'Getting into deep work', sub: 'Starting hard tasks, staying in flow' },
+            { value: 'overwhelm', label: 'Constant interruptions', sub: 'Notifications, context-switching, reactivity' },
+            { value: 'burnout', label: 'Mental fog and fatigue', sub: 'Trouble concentrating even when rested' },
+          ].map(opt => (
+            <TouchableOpacity key={opt.value} style={s.option} onPress={() => handleQ1(opt.value)}>
+              <Text style={s.optionLabel}>{opt.label}</Text>
+              <Text style={s.optionSub}>{opt.sub}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (step === 'quiz2') {
+    return (
+      <SafeAreaView style={s.container}>
+        <Text style={s.quizLabel}>Question 2 of 2</Text>
+        <Text style={s.quizQuestion}>What matters most to you right now?</Text>
+        <View style={s.optionList}>
+          {[
+            { value: 'deep_work', label: 'Sharper focus on hard work', sub: 'Essays, code, analysis, creative projects' },
+            { value: 'overwhelm', label: 'Calmer reactions to stress', sub: 'Less reactivity, more intentional responses' },
+            { value: 'burnout', label: 'Restoring mental energy', sub: 'Getting back to baseline after depletion' },
+          ].map(opt => (
+            <TouchableOpacity key={opt.value} style={s.option} onPress={() => handleQ2(opt.value)}>
+              <Text style={s.optionLabel}>{opt.label}</Text>
+              <Text style={s.optionSub}>{opt.sub}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (step === 'building') {
+    const barWidth = buildingProgress.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0%', '100%'],
+    });
+    return (
+      <SafeAreaView style={s.container}>
+        <View style={s.buildingBody}>
+          <Text style={s.buildingHeadline}>Building your{'\n'}attention profile…</Text>
+          <View style={s.buildingBarTrack}>
+            <Animated.View style={[s.buildingBarFill, { width: barWidth }]} />
+          </View>
+          <Text style={s.buildingSub}>Calibrating to your training path</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  const pathInfo = PATH_LABELS[userPath];
+  return (
+    <SafeAreaView style={s.container}>
+      <View style={s.revealBody}>
+        <Text style={s.revealLabel}>Your attention profile</Text>
+        <Text style={s.revealTitle}>{pathInfo.title}</Text>
+        <Text style={s.revealSub}>{pathInfo.subtitle}</Text>
+        <View style={s.revealCard}>
+          <Text style={s.revealCardText}>Next: a 60-second focus baseline test.</Text>
+          <Text style={s.revealCardSub}>This gives you your starting score — the number you'll improve over the coming weeks.</Text>
+        </View>
+      </View>
+      <TouchableOpacity style={s.primaryButton} onPress={handleComplete}>
+        <Text style={s.primaryButtonText}>Take my baseline test</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+const s = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background,
+    paddingHorizontal: spacing.screenPaddingH,
+    paddingVertical: spacing.screenPaddingV,
+    justifyContent: 'space-between',
   },
-  scrollView: {
-    flex: 1,
+  hookBody: { flex: 1, justifyContent: 'center', gap: 20 },
+  hookHeadline: {
+    fontSize: 28, fontWeight: '700', color: colors.textBody, lineHeight: 36,
   },
-  content: {
-    padding: 30,
-    alignItems: 'center',
-    paddingBottom: 60,
+  hookBodyText: {
+    fontSize: typography.bodySize, fontWeight: typography.bodyWeight,
+    color: colors.textMuted, lineHeight: 22,
   },
-  step: {
-    alignItems: 'center',
-    marginBottom: 20,
-    width: '100%',
+  hookCta: {
+    fontSize: typography.bodySize, fontWeight: '600',
+    color: colors.primary, marginTop: 8,
   },
-  stepPill: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
-    marginBottom: 20,
+  quizLabel: {
+    fontSize: typography.labelSize, fontWeight: typography.labelWeight,
+    color: colors.textMuted, textTransform: typography.labelTransform,
+    letterSpacing: typography.labelSpacing, marginBottom: 12,
   },
-  stepPillText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#64748B',
-    letterSpacing: 0.6,
-    textTransform: 'uppercase',
+  quizQuestion: {
+    fontSize: 22, fontWeight: '700', color: colors.textBody,
+    lineHeight: 30, marginBottom: 28,
   },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    color: '#0F172A',
-    marginBottom: 20,
-    textAlign: 'center',
-    lineHeight: 32,
+  optionList: { gap: 12 },
+  option: {
+    backgroundColor: colors.surface, borderRadius: spacing.cardRadius,
+    borderWidth: 1, borderColor: colors.border,
+    padding: spacing.cardPadding,
   },
-  subtitle: {
-    fontSize: 16,
-    color: '#64748B',
-    fontWeight: '600',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 8,
-  },
-  pathTitle: {
-    fontSize: 28,
-    fontWeight: '800',
-    color: '#1D4ED8',
-    marginBottom: 24,
-    textAlign: 'center',
-  },
-  description: {
-    fontSize: 16,
-    color: '#475569',
-    lineHeight: 24,
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  bold: {
-    fontWeight: '600',
-    color: '#0F172A',
-  },
-  quizContainer: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  optionCard: {
-    width: '100%',
-    padding: 18,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
-    marginBottom: 14,
-    shadowColor: '#1D4ED8',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 1,
-  },
-  optionCardSelected: {
-    borderColor: '#1D4ED8',
-    backgroundColor: '#EFF6FF',
-  },
-  optionCardText: {
-    fontSize: 15,
-    color: '#475569',
-    lineHeight: 22,
-    fontWeight: '500',
-  },
-  optionCardTextSelected: {
-    color: '#1D4ED8',
-    fontWeight: '600',
-  },
-  pathCard: {
-    backgroundColor: '#F8FAFC',
-    borderRadius: 16,
-    padding: 20,
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-  },
-  pathLabel: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#475569',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginTop: 14,
+  optionLabel: {
+    fontSize: typography.bodySize, fontWeight: '600', color: colors.textBody,
     marginBottom: 4,
   },
-  pathDescText: {
-    fontSize: 15,
-    color: '#0F172A',
-    lineHeight: 22,
+  optionSub: {
+    fontSize: typography.cardTextSize, color: colors.textMuted,
   },
-  boldText: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#1D4ED8',
-    marginTop: 4,
+  buildingBody: { flex: 1, justifyContent: 'center', gap: 28 },
+  buildingHeadline: {
+    fontSize: 26, fontWeight: '700', color: colors.textBody, lineHeight: 34,
   },
-  settingRow: {
-    width: '100%',
-    marginTop: 15,
-    marginBottom: 20,
+  buildingBarTrack: {
+    height: 4, backgroundColor: colors.surface,
+    borderRadius: 2, overflow: 'hidden',
   },
-  settingLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#0F172A',
-    marginBottom: 12,
+  buildingBarFill: {
+    height: 4, backgroundColor: colors.primary, borderRadius: 2,
   },
-  timeOptions: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
+  buildingSub: {
+    fontSize: typography.cardTextSize, color: colors.textMuted,
   },
-  timeOption: {
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
+  revealBody: { flex: 1, justifyContent: 'center', gap: 12 },
+  revealLabel: {
+    fontSize: typography.labelSize, fontWeight: typography.labelWeight,
+    color: colors.textMuted, textTransform: typography.labelTransform,
+    letterSpacing: typography.labelSpacing,
   },
-  timeOptionSelected: {
-    borderColor: '#1D4ED8',
-    backgroundColor: '#EFF6FF',
+  revealTitle: {
+    fontSize: 28, fontWeight: '700', color: colors.textBody,
   },
-  timeOptionText: {
-    fontSize: 15,
-    color: '#64748B',
+  revealSub: {
+    fontSize: typography.bodySize, color: colors.textMuted, lineHeight: 22,
   },
-  timeOptionTextSelected: {
-    color: '#1D4ED8',
-    fontWeight: '600',
+  revealCard: {
+    backgroundColor: colors.surface, borderRadius: spacing.cardRadius,
+    borderWidth: 1, borderColor: colors.border,
+    padding: spacing.cardPadding, marginTop: 12, gap: 8,
   },
-  toggleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 20,
-    width: '100%',
+  revealCardText: {
+    fontSize: typography.bodySize, fontWeight: '600', color: colors.textBody,
   },
-  toggle: {
-    width: 50,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: '#E2E8F0',
-    justifyContent: 'center',
-    paddingHorizontal: 2,
+  revealCardSub: {
+    fontSize: typography.cardTextSize, color: colors.textMuted, lineHeight: 16,
   },
-  toggleActive: {
-    backgroundColor: '#1D4ED8',
+  primaryButton: {
+    backgroundColor: colors.primary, borderRadius: spacing.cardRadius,
+    padding: 16, alignItems: 'center',
   },
-  toggleThumb: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    backgroundColor: '#FFFFFF',
-    alignSelf: 'flex-start',
-  },
-  toggleThumbActive: {
-    alignSelf: 'flex-end',
-  },
-  actions: {
-    flexDirection: 'row',
-    width: '100%',
-    gap: 12,
-    marginTop: 20,
-  },
-  backButton: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#CBD5E1',
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#64748B',
-  },
-  nextButton: {
-    flex: 2,
-    paddingVertical: 14,
-    borderRadius: 8,
-    backgroundColor: '#1D4ED8',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  nextButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
-  skipButton: {
-    marginTop: 30,
-    paddingVertical: 10,
-  },
-  skipButtonText: {
-    fontSize: 14,
-    color: '#94A3B8',
+  primaryButtonText: {
+    fontSize: typography.bodySize, fontWeight: '700', color: colors.background,
   },
 });
-
