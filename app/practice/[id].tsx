@@ -6,7 +6,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Dimensions,
+  View, Text, StyleSheet, SafeAreaView, TouchableOpacity,
 } from 'react-native';
 import Animated, {
   useSharedValue, useAnimatedStyle, withRepeat, withSequence,
@@ -19,7 +19,6 @@ import { practiceDefinitions } from '../../lib/practices';
 import { PracticeType, PracticeSession } from '../../types';
 import { colors, typography, spacing } from '../../constants/theme';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const RING_SIZE = 120;
 const CX = RING_SIZE / 2;
 const R_OUTER = CX - 4;
@@ -96,15 +95,20 @@ export default function PracticeSessionScreen() {
         scheduledDuration: practice?.defaultDuration ?? 12,
         completed: true,
       };
-      saveSession(session).then(() => {
+      (async () => {
+        try {
+          await saveSession(session);
+        } catch {
+          // Save failed — still navigate, progress will resync on next load
+        }
         navigation.replace('PostSession', {
           practiceType: id,
           repNumber,
           sessionId: session.id,
         });
-      });
+      })();
     }
-  }, [remaining, running, done]);
+  }, [remaining, running, done, id, practice, repNumber, navigation]);
 
   const handleStart = () => {
     startTimeRef.current = Date.now();
