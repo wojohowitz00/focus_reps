@@ -27,7 +27,7 @@ React Native implementation uses hex equivalents in constants/theme.ts.
 | `coral` | oklch(65% 0.187 30) | #ff7043 | Earned outcomes — score deltas, CTAs, SART score |
 | `textBody` | oklch(96% 0.007 248) | #f1f5f9 | Body text, timers |
 | `textMuted` | primary at 31% opacity | rgba(56,189,248,0.31) | Subdued labels, secondary info |
-| `border` | oklch(19% 0.029 248) | #1e3a5a | Card borders, dividers |
+| `border` | oklch(24% 0.065 248) | #1e3a5a | Card borders, dividers |
 
 ### Contrast flows (visual hierarchy)
 1. Timer / Score (coral or textBody) — maximum weight
