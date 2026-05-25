@@ -17,6 +17,7 @@ import PracticeHistoryScreen from './practice-history';
 import SartTestScreen from './sart-test';
 import PostSessionScreen from './post-session';
 import { getProgress } from '../lib/storage';
+import { colors } from '../constants/theme';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -26,12 +27,12 @@ function TabNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#1D4ED8',
-        tabBarInactiveTintColor: '#94A3B8',
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textMuted,
         tabBarStyle: {
-          backgroundColor: '#FFFFFF',
+          backgroundColor: colors.background,
           borderTopWidth: 1,
-          borderTopColor: '#E2E8F0',
+          borderTopColor: colors.border,
           height: 64,
           paddingTop: 8,
           paddingBottom: 8,
