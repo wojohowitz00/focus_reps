@@ -82,8 +82,8 @@ export default function HomeScreen() {
 
         <View style={styles.stats}>
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>{progress?.currentStreak || 0}</Text>
-            <Text style={styles.statLabel}>Day Streak</Text>
+            <Text style={styles.statValue}>{progress?.totalMinutes || 0}</Text>
+            <Text style={styles.statLabel}>Minutes</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>{progress?.totalSessions || 0}</Text>
