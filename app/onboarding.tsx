@@ -75,8 +75,13 @@ export default function OnboardingScreen() {
       userPath,
       programStartDate: new Date().toISOString(),
     });
-    await requestPermissions();
-    await initializeNotifications();
+    // Permissions / notifications are best-effort — never block progression
+    try {
+      await requestPermissions();
+      await initializeNotifications();
+    } catch {
+      // Silently continue — notifications are optional, training is not
+    }
     navigation.replace('SartTest');
   };
 
