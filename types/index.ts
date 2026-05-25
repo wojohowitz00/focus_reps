@@ -47,6 +47,8 @@ export interface UserProgress {
   longestStreak: number;
   practiceHistory: PracticeSession[];
   settings: UserSettings;
+  sartHistory?: SartTestResult[];
+  resilienceShield?: number;
 }
 
 export interface UserSettings {
@@ -60,7 +62,19 @@ export interface UserSettings {
   weeklyReminderEnabled: boolean;
   weeklyReminderDay: number; // 0-6 (Sun-Sat)
   weeklyReminderTime: string; // "19:00"
+  userPath?: 'deep_work' | 'overwhelm' | 'burnout';
+  currentLevel?: 'L1' | 'L2' | 'L3';
 }
+
+export interface SartTestResult {
+  id: string;
+  date: string; // ISO string
+  lapses: number;
+  misses: number;
+  avgReactionTimeMs: number;
+  focusScore: number;
+}
+
 
 export interface PracticeSchedule {
   week: number;

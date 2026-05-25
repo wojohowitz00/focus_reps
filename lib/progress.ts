@@ -3,7 +3,7 @@
  * Calculates streaks, statistics, and progress metrics
  */
 
-import { PracticeSession, UserProgress, ProgramMode, WeeklySummary, WeeklyRecommendation } from '../types';
+import { PracticeSession, UserProgress, ProgramMode, WeeklySummary, WeeklyRecommendation, SartTestResult } from '../types';
 import { getSessions, getJournalEntries } from './storage';
 import { getCurrentWeek, getCurrentDay } from './practices';
 
@@ -186,7 +186,7 @@ export async function calculateAllProgress(startDate?: Date): Promise<UserProgre
   const totalMinutes = await getTotalMinutes();
 
   // Get default settings
-  const { getSettings } = await import('./storage');
+  const { getSettings, saveSettings, getSartHistory } = await import('./storage');
   const settings = await getSettings();
   const programMode = settings?.programMode ?? 'standard_6_week';
   const resolvedStartDate = startDate
@@ -197,6 +197,52 @@ export async function calculateAllProgress(startDate?: Date): Promise<UserProgre
   const currentWeek = getCurrentWeek(resolvedStartDate, programMode);
   const currentDay = getCurrentDay(resolvedStartDate);
 
+  // Dynamic Level Advancement Check
+  let activeLevel = settings?.currentLevel ?? 'L1';
+  
+  // Count unique active days in a rolling 7-day window
+  const now = new Date();
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(now.getDate() - 7);
+  
+  const recentSessions = sessions.filter((s) => {
+    const sessionDate = new Date(s.date);
+    return sessionDate >= sevenDaysAgo && sessionDate <= now && s.completed;
+  });
+  
+  const uniqueRecentDays = new Set(
+    recentSessions.map((s) => new Date(s.date).toDateString())
+  ).size;
+  
+  // Level Promotion (L1 -> L2 on >= 5 days, L2 -> L3 on >= 6 days)
+  let needsSettingsUpdate = false;
+  if (uniqueRecentDays >= 5 && activeLevel === 'L1') {
+    activeLevel = 'L2';
+    needsSettingsUpdate = true;
+  }
+  if (uniqueRecentDays >= 6 && (activeLevel === 'L1' || activeLevel === 'L2')) {
+    activeLevel = 'L3';
+    needsSettingsUpdate = true;
+  }
+  
+  if (needsSettingsUpdate && settings) {
+    await saveSettings({
+      ...settings,
+      currentLevel: activeLevel,
+    });
+  }
+
+  // Resilience Shield = 20% per unique day practiced in the rolling 7-day window (capped at 100%)
+  const resilienceShield = Math.min(100, uniqueRecentDays * 20);
+
+  // Load SART test history
+  let sartHistory: SartTestResult[] = [];
+  try {
+    sartHistory = await getSartHistory();
+  } catch (error) {
+    console.error('Error loading SART history in progress calculation:', error);
+  }
+
   return {
     currentWeek,
     currentDay,
@@ -205,13 +251,19 @@ export async function calculateAllProgress(startDate?: Date): Promise<UserProgre
     currentStreak,
     longestStreak,
     practiceHistory: sessions,
-    settings: settings || {
+    settings: settings ? { ...settings, currentLevel: activeLevel } : {
       defaultDuration: 12,
       soundEnabled: true,
       notificationsEnabled: true,
       programMode: 'standard_6_week',
       programStartDate: new Date().toISOString(),
+      currentLevel: activeLevel,
+      weeklyReminderEnabled: false,
+      weeklyReminderDay: 0,
+      weeklyReminderTime: '19:00',
     },
+    resilienceShield,
+    sartHistory,
   };
 }
 

@@ -128,13 +128,68 @@ export function getCurrentDay(startDate: Date): number {
 }
 
 /**
+ * Check if a practice is unlocked based on current level
+ */
+export function isPracticeUnlocked(practiceType: PracticeType, level: 'L1' | 'L2' | 'L3' = 'L1'): boolean {
+  if (level === 'L1') {
+    return practiceType === 'anchor-breath' || practiceType === 'body-sweep';
+  }
+  return true; // L2 and L3 unlock all core practices
+}
+
+/**
  * Get today's recommended practice
  */
 export function getTodayPractice(
   startDate: Date,
   programMode: ProgramMode = DEFAULT_PROGRAM_MODE,
-  customPracticeSet?: PracticeType[]
+  customPracticeSet?: PracticeType[],
+  userPath?: 'deep_work' | 'overwhelm' | 'burnout',
+  currentLevel?: 'L1' | 'L2' | 'L3',
+  dayOffset = 0
 ): PracticeType {
+  if (userPath && currentLevel) {
+    const day = (getCurrentDay(startDate) + dayOffset - 1) % 7 + 1;
+    
+    // Level 1: Baseline unlocks Breath (Find Your Flashlight) and Body Scan
+    if (currentLevel === 'L1') {
+      if (userPath === 'burnout') {
+        return 'body-sweep'; // Burnout path prioritizes Somatic Grounding
+      }
+      return 'anchor-breath';
+    }
+
+    // Level 2: Expansion unlocks River of Thought (Meta-Awareness) & Connection
+    if (currentLevel === 'L2') {
+      if (userPath === 'deep_work') {
+        return day % 2 === 1 ? 'anchor-breath' : 'body-sweep';
+      }
+      if (userPath === 'overwhelm') {
+        return day % 2 === 1 ? 'anchor-breath' : 'thought-traffic';
+      }
+      if (userPath === 'burnout') {
+        return day % 2 === 1 ? 'body-sweep' : 'kindness-circuit';
+      }
+    }
+
+    // Level 3: Mastery unlocks Advanced custom rotations
+    if (currentLevel === 'L3') {
+      if (customPracticeSet && customPracticeSet.length > 0) {
+        return getCustomPracticeForDay(customPracticeSet, day);
+      }
+      if (userPath === 'deep_work') {
+        return day % 3 === 0 ? 'thought-traffic' : day % 3 === 1 ? 'anchor-breath' : 'body-sweep';
+      }
+      if (userPath === 'overwhelm') {
+        return day % 3 === 0 ? 'kindness-circuit' : day % 3 === 1 ? 'anchor-breath' : 'thought-traffic';
+      }
+      if (userPath === 'burnout') {
+        return day % 3 === 0 ? 'kindness-circuit' : day % 3 === 1 ? 'body-sweep' : 'thought-traffic';
+      }
+    }
+  }
+
+  // Fallback to legacy linear weekly scheduler
   const week = getCurrentWeek(startDate, programMode);
   const day = getCurrentDay(startDate);
   return getPracticeForWeekAndDay(week, day, programMode, customPracticeSet);
@@ -146,19 +201,11 @@ export function getTodayPractice(
 export function getNextPractice(
   startDate: Date,
   programMode: ProgramMode = DEFAULT_PROGRAM_MODE,
-  customPracticeSet?: PracticeType[]
+  customPracticeSet?: PracticeType[],
+  userPath?: 'deep_work' | 'overwhelm' | 'burnout',
+  currentLevel?: 'L1' | 'L2' | 'L3'
 ): PracticeType {
-  const week = getCurrentWeek(startDate, programMode);
-  const day = getCurrentDay(startDate);
-
-  const limit = getProgramWeekLimit(programMode);
-  if (day === 7) {
-    // Next week, day 1
-    const nextWeek = limit ? Math.min(week + 1, limit) : week + 1;
-    return getPracticeForWeekAndDay(nextWeek, 1, programMode, customPracticeSet);
-  }
-
-  return getPracticeForWeekAndDay(week, day + 1, programMode, customPracticeSet);
+  return getTodayPractice(startDate, programMode, customPracticeSet, userPath, currentLevel, 1);
 }
 
 /**

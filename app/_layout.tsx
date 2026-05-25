@@ -14,6 +14,7 @@ import SessionCheckInScreen from './session-checkin';
 import WeeklyReviewScreen from './weekly-review';
 import SettingsScreen from './(tabs)/settings';
 import PracticeHistoryScreen from './practice-history';
+import SartTestScreen from './sart-test';
 import { getProgress } from '../lib/storage';
 
 const Tab = createBottomTabNavigator();
@@ -131,6 +132,11 @@ export default function RootLayout() {
           <Stack.Screen name="Onboarding" component={OnboardingScreen} />
         ) : null}
         <Stack.Screen name="MainTabs" component={TabNavigator} />
+        <Stack.Screen
+          name="SartTest"
+          component={SartTestScreen}
+          options={{ headerShown: true, title: 'Focus Test' }}
+        />
         <Stack.Screen
           name="PracticeSession"
           component={PracticeSessionScreen}

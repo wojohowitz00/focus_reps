@@ -4,13 +4,14 @@
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { PracticeSession, JournalEntry, UserProgress, UserSettings } from '../types';
+import { PracticeSession, JournalEntry, UserProgress, UserSettings, SartTestResult } from '../types';
 
 const STORAGE_KEYS = {
   SESSIONS: '@peak_mind:sessions',
   JOURNAL_ENTRIES: '@peak_mind:journal_entries',
   PROGRESS: '@peak_mind:progress',
   SETTINGS: '@peak_mind:settings',
+  SART_HISTORY: '@peak_mind:sart_history',
 } as const;
 
 const LEGACY_PRACTICE_ID_MAP: Record<string, string> = {
@@ -246,4 +247,21 @@ export async function updateSetting<K extends keyof UserSettings>(
     console.error(`Error updating setting ${key}:`, error);
     return false;
   }
+}
+
+// SART test history storage operations
+export async function saveSartTestResult(result: SartTestResult): Promise<boolean> {
+  try {
+    const history = await getSartHistory();
+    const updatedHistory = [...history, result];
+    return await setItem(STORAGE_KEYS.SART_HISTORY, updatedHistory);
+  } catch (error) {
+    console.error('Error saving SART test result:', error);
+    return false;
+  }
+}
+
+export async function getSartHistory(): Promise<SartTestResult[]> {
+  const history = await getItem<SartTestResult[]>(STORAGE_KEYS.SART_HISTORY);
+  return history || [];
 }
